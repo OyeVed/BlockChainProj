@@ -1,12 +1,12 @@
 function preAssessment(course_id, course_name) {
     Swal.fire({
-        title: '<strong>Pre-Assessment Report</strong>',
+        title: '<strong>Upload Pre-Assessment Report</strong>',
         html:
             '<form action="/BlockChainProj/back-end/pre_assessment.php" method="POST" enctype="multipart/form-data">' +
             `<input type="hidden" class="form-control" name="course-id" placeholder="Course Id" value="${course_id}"/><br>` +
             `<h3>${course_name}<h3><br>` +
-            'Fill Pre-Assessment Report (upload csv)<input type="file" class="form-control" accept=".csv" name="pre-assessment-file" value="Import Students"/><br>' +
-            '<input type="submit" class="form-control bg-success text-white" value="Upload">' +
+            '<input type="file" class="form-control" accept=".csv" name="pre-assessment-file" value="Import Students"/><br>' +
+            '<center><center><input type= style="width: 120px;""submit" style="width: 120px;" class="form-control btn-success text-white" value="Upload"></center></center>' +
             '</form>',
         showCancelButton: true,
         allowEscapeKey: true,
@@ -17,13 +17,13 @@ function preAssessment(course_id, course_name) {
 
 function postAssessment(course_id, course_name) {
     Swal.fire({
-        title: '<strong>Post-Assessment Report</strong>',
+        title: '<strong>Upload Post-Assessment Report</strong>',
         html:
             '<form action="/BlockChainProj/back-end/post_assessment.php" method="POST" enctype="multipart/form-data">' +
             `<input type="hidden" class="form-control" name="course-id" placeholder="Course Id" value="${course_id}"/><br>` +
             `<h3>${course_name}<h3><br>` +
-            'Fill Post-Assessment Report (upload csv)<input type="file" class="form-control" accept=".csv" name="post-assessment-file" value="Import Students"/><br>' +
-            '<input type="submit" class="form-control bg-success text-white" value="Upload">' +
+            '<input type="file" class="form-control" accept=".csv" name="post-assessment-file" value="Import Students"/><br>' +
+            '<center><center><input type= style="width: 120px;""submit" style="width: 120px;" class="form-control btn-success text-white" value="Upload"></center></center>' +
             '</form>',
         showCancelButton: true,
         allowEscapeKey: true,
@@ -34,14 +34,14 @@ function postAssessment(course_id, course_name) {
 
 function markAttendance(course_id, course_name) {
     Swal.fire({
-        title: '<strong>Attendance Report</strong>',
+        title: '<strong>Mark Attendance</strong>',
         html:
             '<form action="/BlockChainProj/back-end/attendance.php" method="POST" enctype="multipart/form-data">' +
             `<input type="hidden" class="form-control" name="course-id" placeholder="Course Id" value="${course_id}"/><br>` +
-            `<h3>${course_name}<h3><br>` +
+            `<h3>${course_name}<h3>` +
             '<input type="date" class="form-control mb-3 mt-3" name="attendance-date" value="Select Date"/>' +
-            'Update Attendance (upload csv)<input type="file" class="form-control" name="attendance-file" value="Import Students" accept=".csv"/><br>' +
-            '<input type="submit" class="form-control bg-success text-white" value="Upload">' +
+            '<input type="file" class="form-control" name="attendance-file" value="Import Students" accept=".csv"/><br>' +
+            '<center><input type="submit" style="width: 120px;" class="form-control btn-success text-white" value="Upload"></center>' +
             '</form>',
         showCancelButton: true,
         allowEscapeKey: true,
@@ -52,7 +52,7 @@ function markAttendance(course_id, course_name) {
 
 function sendReports(course_id) {
     Swal.fire({
-        title: '<strong>Email Report</strong>',
+        title: '<strong>Send Email Report</strong>',
         html:
             '<b>Course Name<b><br>' +
             '<input type="text" class="form-control" placeholder="Receiver\'s mail ID\'s: "/><br>' +
@@ -77,7 +77,7 @@ function addCourse() {
             '<input type="text" class="form-control" name="course-name" placeholder="Course Name"/><br>' +
             '<input type="text" class="form-control date" name="course-dates" placeholder="Pick the multiple dates"><br>' +
             'Import Students (upload csv)<input type="file" class="form-control" name="students-file" accept=".csv" value="Import Students"/><br>' +
-            '<input type="submit" class="form-control bg-success text-white" value="Add New Course">' +
+            '<center><input type="submit" style="width: 120px;" class="form-control btn-success text-white" value="Add New Course"></center>' +
             '</form>',
         showCancelButton: true,
         allowEscapeKey: true,
@@ -95,7 +95,7 @@ function editCourse(course) {
             `<input type="hidden" class="form-control" name="course-id" placeholder="Course Id" value="${course[0]}"/><br>` +
             `<input type="text" class="form-control" name="course-name" placeholder="Course Name" value="${course[1]}"/><br>` +
             `<input type="text" class="form-control date" name="course-dates" placeholder="Pick the multiple dates"><br>` +
-            `<input type="submit" class="form-control bg-success text-white" value="Save Changes">` +
+            `<center><input type="submit" style="width: 120px;" class="form-control btn-success text-white" value="Save Changes"></center>` +
             `</form>`,
         showCancelButton: true,
         allowEscapeKey: true,
@@ -111,7 +111,7 @@ function deleteCourse(course_id, course_name) {
             '<form action="/BlockChainProj/back-end/delete_course.php" method="POST" enctype="multipart/form-data">' +
             `<input type="hidden" class="form-control" name="course-id" placeholder="Course Id" value="${course_id}"/><br>` +
             `<h3>${course_name}<h3><br>` +
-            '<input type="submit" class="form-control bg-danger text-white" value="Confirm Delete">' +
+            `<center><input type="submit" style="width: 120px;" class="form-control bg-danger text-white" value="Confirm Delete"></center>` +
             '</form>',
         showCancelButton: true,
         allowEscapeKey: true,

@@ -79,10 +79,10 @@
                       <th style="vertical-align: middle; text-align:center; width: 50px;">ID</th>
                       <th style="vertical-align: middle; text-align:center;">Course Name</th>
                       <th style="vertical-align: middle; text-align:center; width: 80px;">Number of Students</th>
-                      <th style="vertical-align: middle; text-align:center; width: 80px;">Average Attendance (%)</th>
+                      <th style="vertical-align: middle; text-align:center; width: 100px;">Average Attendance (%)</th>
                       <th style="vertical-align: middle; text-align:center; width: 120px;">Average Pre-Assessment (%)</th>
                       <th style="vertical-align: middle; text-align:center; width: 120px;">Average Post-Assessment (%)</th>
-                      <th style="vertical-align: middle; text-align:center; width: 180px;">Course Actions</th>
+                      <th style="vertical-align: middle; text-align:center; width: 120px;">Course Actions</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -104,15 +104,15 @@
 
                     foreach((new RecursiveArrayIterator($stmt->fetchAll())) as $k=>$v) {
                       echo "<tr>";
-                      echo "<td style=\"text-align:center; line-height: 100%;\" onclick=\" window.location.href= 'view_course.php?courseid=$v[id]' \" >".$v['id']."</td>";
-                      echo "<td style=\"text-align:center; line-height: 100%;\" onclick=\" window.location.href= 'view_course.php?courseid=$v[id]' \" >".$v['name']."</td>";
-                      echo "<td style=\"text-align:center; line-height: 100%;\" onclick=\" window.location.href= 'view_course.php?courseid=$v[id]' \" >".$v['no_of_students']."</td>";
-                      echo "<td style=\"text-align:center; line-height: 100%;\" onclick=\" window.location.href= 'view_course.php?courseid=$v[id]' \" >".$v['avg_attendance']."</td>";
-                      echo "<td style=\"text-align:center; line-height: 100%;\" onclick=\" window.location.href= 'view_course.php?courseid=$v[id]' \" >".$v['avg_pre_assessment']."</td>";
-                      echo "<td style=\"text-align:center; line-height: 100%;\" onclick=\" window.location.href= 'view_course.php?courseid=$v[id]' \" >".$v['avg_post_assessment']."</td>";
-                      echo "<td style=\"text-align:center; line-height: 100%;\">
-                              <a onclick=\"editCourse([$v[id], '$v[name]', $v[no_of_students]])\" class='btn ml-1 mr-1 mt-0 mb-0 btn-warning text-light'>Edit</a>
-                              <a onclick=\"deleteCourse($v[id], '$v[name]')\" class='btn ml-1 mr-1 mt-0 mb-0 btn-danger text-white'>Delete</a>
+                      echo "<td style=\"vertical-align: middle; text-align:center; line-height: 100%;\" onclick=\" window.location.href= 'view_course.php?courseid=$v[id]' \" >".$v['id']."</td>";
+                      echo "<td style=\"vertical-align: middle; text-align:center; line-height: 100%;\" onclick=\" window.location.href= 'view_course.php?courseid=$v[id]' \" >".$v['name']."</td>";
+                      echo "<td style=\"vertical-align: middle; text-align:center; line-height: 100%;\" onclick=\" window.location.href= 'view_course.php?courseid=$v[id]' \" >".$v['no_of_students']."</td>";
+                      echo "<td style=\"vertical-align: middle; text-align:center; line-height: 100%;\" onclick=\" window.location.href= 'view_course.php?courseid=$v[id]' \" >".$v['avg_attendance']."</td>";
+                      echo "<td style=\"vertical-align: middle; text-align:center; line-height: 100%;\" onclick=\" window.location.href= 'view_course.php?courseid=$v[id]' \" >".$v['avg_pre_assessment']."</td>";
+                      echo "<td style=\"vertical-align: middle; text-align:center; line-height: 100%;\" onclick=\" window.location.href= 'view_course.php?courseid=$v[id]' \" >".$v['avg_post_assessment']."</td>";
+                      echo "<td style=\"vertical-align: middle; text-align:center; line-height: 100%;\">
+                              <a onclick=\"editCourse([$v[id], '$v[name]', $v[no_of_students]])\" class='btn ml-1 mr-1 mt-0 mb-0 btn-warning text-light'><i class='fa fa-pencil-square-o' aria-hidden='true'></i></a>
+                              <a onclick=\"deleteCourse($v[id], '$v[name]')\" class='btn ml-1 mr-1 mt-0 mb-0 btn-danger text-white'><i class='fa fa-trash' aria-hidden='true'></i></a>
                             </td>";
                       echo "</tr>";
                     }

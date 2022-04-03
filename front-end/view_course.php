@@ -109,12 +109,8 @@
         <div style="width: 100%;">
           <h1 style="display: inline;">Course Details:-</h1>
           <span style="float: right;">
-            <button class="btn btn-outline-success" onclick='preAssessment(<?php echo $course_id; ?>, "<?php echo $course[1]; ?>")' style="margin-right:5px;">Enter Pre-Assessment Details</button>
-            <button class="btn btn-outline-success" onclick='postAssessment(<?php echo $course_id; ?>, "<?php echo $course[1]; ?>")' style="margin-right:5px;">Enter Post-Assessment Details</button>
-            <button class="btn btn-outline-success" onclick='markAttendance(<?php echo $course_id; ?>, "<?php echo $course[1]; ?>")' style="margin-right:5px;">Mark Attendance</button>
-            <button class="btn btn-outline-success" onclick="sendReports(<?php echo $course_id; ?>)" style="margin-right:5px;">Send Reports</button>
-            <button class="btn btn-warning text-light" onclick='editCourse(<?php echo "[$course[0], \"$course[1]\", $course[2] ]"; ?>)' style="margin-right:5px;">Edit Course</button>
-            <button class="btn btn-danger" onclick='deleteCourse(<?php echo $course_id; ?>, "<?php echo $course[1]; ?>")' style="margin-right:5px;">Delete Course</button>
+            <button class="btn btn-warning text-light" onclick='editCourse(<?php echo "[$course[0], \"$course[1]\", $course[2] ]"; ?>)'><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
+            <button class="btn btn-danger" onclick='deleteCourse(<?php echo $course_id; ?>, "<?php echo $course[1]; ?>")'><i class="fa fa-trash" aria-hidden="true"></i></button>
           </span>
         </div>
       </div>
@@ -122,11 +118,22 @@
         <div class="col-md-12">
           <div class="tile">
             <div class="tile-body">
-              <h2><?php echo $course[1] ?></h2>
-              <label class="col-form-label"><b>Total Students Enrolled: <?php echo $course[2] ?></b></label>
-              <br>
-              <label class="col-form-label"><b>Students Attendance Table</b></label>
-              <div class="table-responsive">
+              <div class="mb-4">
+                <h1 style="display: inline;"><?php echo $course[1] ?></h1>
+                <span style="float: right;">
+                  <button class="btn btn-success" onclick='preAssessment(<?php echo $course_id; ?>, "<?php echo $course[1]; ?>")'>Pre-Assessment</button>
+                  <button class="btn btn-success" onclick='postAssessment(<?php echo $course_id; ?>, "<?php echo $course[1]; ?>")'>Post-Assessment</button>
+                  <button class="btn btn-success" onclick="sendReports(<?php echo $course_id; ?>)">Reports</button>
+                </span>
+              </div>
+              <div class="mt-4 mb-3">
+                <h5 style="display: inline;"><b>Total Students Enrolled: <?php echo $course[2] ?></b></h5>
+              </div>
+              <div class="mt-4 mb-3">
+                <h5 style="display: inline;">Students Attendance Table</h5>
+                <button class="btn btn-success" style="float: right;" onclick='markAttendance(<?php echo $course_id; ?>, "<?php echo $course[1]; ?>")'>Mark Attendance</button>
+              </div>
+              <div class="table-responsive mt-4">
                 <table class="table table-hover table-bordered" id="sampleTable">
                   <thead>
                     <tr>
