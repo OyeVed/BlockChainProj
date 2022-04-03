@@ -45,3 +45,18 @@ CREATE TABLE IF NOT EXISTS student_table
     updated_by INT NOT NULL DEFAULT 0,
     FOREIGN KEY (student_course_id) REFERENCES course_table(course_id)
 );
+
+-- attendance table
+CREATE TABLE IF NOT EXISTS attendance_table
+(
+    attendance_id INT PRIMARY KEY AUTO_INCREMENT,
+    attendance_student_id INT NOT NULL,
+    attendance_course_date_id INT NOT NULL,
+    attendance_status VARCHAR(255) NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    created_by INT NOT NULL DEFAULT 0,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_by INT NOT NULL DEFAULT 0,
+    FOREIGN KEY (attendance_student_id) REFERENCES student_table(student_id),
+    FOREIGN KEY (attendance_course_date_id) REFERENCES course_date_table(course_date_id)
+);

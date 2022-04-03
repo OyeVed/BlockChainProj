@@ -112,7 +112,7 @@
                       echo "<td style=\"text-align:center; line-height: 100%;\" onclick=\" window.location.href= 'view_course.php?courseid=$v[id]' \" >".$v['avg_post_assessment']."</td>";
                       echo "<td style=\"text-align:center; line-height: 100%;\">
                               <a onclick=\"editCourse([$v[id], '$v[name]', $v[no_of_students]])\" class='btn ml-1 mr-1 mt-0 mb-0 btn-warning text-light'>Edit</a>
-                              <a href='#delete_course.php?courseid=$v[id]' class='btn ml-1 mr-1 mt-0 mb-0 btn-danger'>Delete</a>
+                              <a onclick=\"deleteCourse($v[id], '$v[name]')\" class='btn ml-1 mr-1 mt-0 mb-0 btn-danger text-white'>Delete</a>
                             </td>";
                       echo "</tr>";
                     }

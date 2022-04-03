@@ -6,13 +6,15 @@ $entry_no = 0;
 
 $validated = TRUE;
 
+$data = fgetcsv($file_to_be_validated, 1000, ","); // read out the first line in file to not count the header.
 while (($data = fgetcsv($file_to_be_validated, 1000, ",")) !== FALSE){
 
+    $entry_no++;
     if(!in_array($data[$email_column], $email_list)){
         array_push($email_list, $data[$email_column]);
-        $entry_no++;
     }
     else{
+
         echo "<script src='https://cdn.jsdelivr.net/npm/sweetalert2@8'></script><script type='text/javascript'>console.log('Error: ' );
             Swal.fire
                 ({

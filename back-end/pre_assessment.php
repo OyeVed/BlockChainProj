@@ -19,16 +19,21 @@ try{
         $course_id = $_POST['course-id'];
 
         $file_to_be_validated = fopen($filepath, "r");
-
         require_once("validations/find_column.php");
         $column_indices = find_columns($file_to_be_validated, array("email", "total points"));
+        fclose($file_to_be_validated);
 
         $email_column = $column_indices["email"];
         $total_points_column = $column_indices["total points"];
 
+        $file_to_be_validated = fopen($filepath, "r");
         require_once("validations/duplicate_email.php");
-
         fclose($file_to_be_validated);
+
+        $file_to_be_validated = fopen($filepath, "r");
+        require_once("validations/file_db_email.php");
+        fclose($file_to_be_validated);
+
         if($validated){
 
             $pre_assessment_file = fopen($filepath, "r");
@@ -67,7 +72,7 @@ try{
 
 } 
 catch(PDOException $e) {
-    echo $pre_assessment_details_query . "<br>" . $e->getMessage();
+    echo $e->getMessage();
 }
 
 $conn = null;

@@ -1,18 +1,26 @@
--- fetch courses
-SELECT
-course_table.course_id AS 'id',
-course_table.course_name AS 'name',
-course_table.course_student_count AS 'no_of_students',
-90 AS 'avg_attendance',
-90 AS 'avg_pre_assessment',
-90 AS 'avg_post_assessment'
-FROM course_table;
+INSERT INTO course_date_table
+(
+    course_id,
+    course_date
+)
+VALUES
+(1, '2022-04-02'),
+(1, '2022-04-03'),
+(1, '2022-04-04');
 
--- insert course
-INSERT INTO course_table
-(course_name, course_student_count)
-VALUES ('course_name', 45);
-
-
-
--- WHERE course_table.course_id = 1;
+INSERT INTO attendance_table
+(
+    attendance_student_id,
+    attendance_course_date_id,
+    attendance_status
+)
+VALUES
+(1, 1, 'P'),
+(2, 1, 'A'),
+(3, 1, 'P'),
+(1, 2, 'A'),
+(2, 2, '-'),
+(3, 2, 'P'),
+(1, 3, 'P'),
+(2, 3, 'P'),
+(3, 3, '-');

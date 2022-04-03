@@ -114,7 +114,7 @@
             <button class="btn btn-outline-success" onclick='markAttendance(<?php echo $course_id; ?>, "<?php echo $course[1]; ?>")' style="margin-right:5px;">Mark Attendance</button>
             <button class="btn btn-outline-success" onclick="sendReports(<?php echo $course_id; ?>)" style="margin-right:5px;">Send Reports</button>
             <button class="btn btn-warning text-light" onclick='editCourse(<?php echo "[$course[0], \"$course[1]\", $course[2] ]"; ?>)' style="margin-right:5px;">Edit Course</button>
-            <button class="btn btn-danger" onclick=" window.location.href = '#' " style="margin-right:5px;">Delete Course</button>
+            <button class="btn btn-danger" onclick='deleteCourse(<?php echo $course_id; ?>, "<?php echo $course[1]; ?>")' style="margin-right:5px;">Delete Course</button>
           </span>
         </div>
       </div>
@@ -123,50 +123,7 @@
           <div class="tile">
             <div class="tile-body">
               <h2><?php echo $course[1] ?></h2>
-              <br>
               <label class="col-form-label"><b>Total Students Enrolled: <?php echo $course[2] ?></b></label>
-              <br>
-
-              <div class="container">
-                <h4>Select Course Dates</h4>
-                <input type="text" id="date-selector" class="form-control date-selector" placeholder="Pick the multiple dates">
-              </div>
-              
-              <!-- <div class="table-responsive">
-                <table class="table table-hover table-bordered" id="courses-dates-table">
-                  <thead>
-                    <tr>
-                      <th>Course Day</th>
-                      <th>Course Date</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <?php
-
-                        $days = array(
-                            [1, '26th March, 2022'],
-                            [2, '27th March, 2022'],
-                            [3, '28th March, 2022'],
-                            [4, '29th March, 2022'],
-                            [5, '30th March, 2022'],
-                            [6, '31st March, 2022'],
-                        );
-
-                        foreach ($days as $day) {
-                            echo "<tr>";
-                            echo "<td>".$day[0]."</td>";
-                            echo "<td>".$day[1]."</td>";
-                            echo "</tr>";
-                        }
-                    
-                    ?>
-                    
-                    <?php
-                    // }
-                    ?>
-                  </tbody>
-                </table>
-              </div> -->
               <br>
               <label class="col-form-label"><b>Students Attendance Table</b></label>
               <div class="table-responsive">
@@ -177,8 +134,21 @@
                       <th>Student Name</th>
                       <?php
 
-                        foreach ($days as $day) {
-                          echo "<th>Day " . $day[0] . " of course</th>";
+                        $days = array();
+
+                        $stmt = $conn->prepare("
+                        select
+                        course_date_table.course_date
+                        from course_date_table
+                        WHERE course_date_table.course_id=$course_id
+                        ");
+                        $stmt->execute();
+                        $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
+
+                        $students = array();
+
+                        foreach((new RecursiveArrayIterator($stmt->fetchAll())) as $k=>$v) {
+                          echo "<th>" . $v['course_date'] . "</th>";
                         }
                         
                       ?>
@@ -188,14 +158,24 @@
 
                       <?php
 
-                        $students = array(
-                          [1, 'Student 1', ['A', 'P', 'P', 'A', 'P', '-']],
-                          [2, 'Student 2', ['P', 'P', 'A', 'P', 'P', 'P']],
-                          [3, 'Student 3', ['P', 'P', 'A', '-', 'A', 'P']],
-                          [4, 'Student 4', ['P', 'A', 'A', 'A', '-', 'P']],
-                          [5, 'Student 5', ['P', 'A', 'P', 'A', 'P', 'P']],
-                          [6, 'Student 6', ['P', 'A', '-', 'P', 'A', 'P']],
-                        );
+                        $stmt = $conn->prepare("
+                        select
+                        student_table.student_id AS ID,
+                        student_table.student_name AS NAME,
+                        GROUP_CONCAT(attendance_table.attendance_status) AS attendance
+                        from student_table
+                        JOIN attendance_table on attendance_table.attendance_student_id=student_table.student_id
+                        WHERE student_table.student_course_id=$course_id
+                        GROUP BY student_table.student_id
+                        ");
+                        $stmt->execute();
+                        $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
+
+                        $students = array();
+
+                        foreach((new RecursiveArrayIterator($stmt->fetchAll())) as $k=>$v) {
+                          array_push($students, array($v['ID'], $v['NAME'], explode(",", $v['attendance'])));
+                        }
 
                         foreach ($students as $student) {
                           echo "<tr>";
@@ -248,12 +228,12 @@
     <script type="text/javascript" src="js/plugins/dataTables.bootstrap.min.js"></script>
     <script type="text/javascript">$('#sampleTable').DataTable();</script>
 
-    <script>
+    <!-- <script>
       $('.date-selector').datepicker({
         multidate: true,
         format: 'dd-mm-yyyy'
       });
-    </script>
+    </script> -->
     
   </body>
 </html>

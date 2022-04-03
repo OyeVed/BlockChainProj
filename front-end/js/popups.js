@@ -5,8 +5,8 @@ function preAssessment(course_id, course_name) {
             '<form action="/BlockChainProj/back-end/pre_assessment.php" method="POST" enctype="multipart/form-data">' +
             `<input type="hidden" class="form-control" name="course-id" placeholder="Course Id" value="${course_id}"/><br>` +
             `<h3>${course_name}<h3><br>` +
-            'Fill Pre-Assessment Report (upload csv)<input type="file" class="form-control" name="pre-assessment-file" value="Import Students"/><br>' +
-            '<input type="submit" class="form-control bg-success text-white" value="Upload" accept=".csv">' +
+            'Fill Pre-Assessment Report (upload csv)<input type="file" class="form-control" accept=".csv" name="pre-assessment-file" value="Import Students"/><br>' +
+            '<input type="submit" class="form-control bg-success text-white" value="Upload">' +
             '</form>',
         showCancelButton: true,
         allowEscapeKey: true,
@@ -22,8 +22,8 @@ function postAssessment(course_id, course_name) {
             '<form action="/BlockChainProj/back-end/post_assessment.php" method="POST" enctype="multipart/form-data">' +
             `<input type="hidden" class="form-control" name="course-id" placeholder="Course Id" value="${course_id}"/><br>` +
             `<h3>${course_name}<h3><br>` +
-            'Fill Post-Assessment Report (upload csv)<input type="file" class="form-control" name="post-assessment-file" value="Import Students"/><br>' +
-            '<input type="submit" class="form-control bg-success text-white" value="Upload" accept=".csv">' +
+            'Fill Post-Assessment Report (upload csv)<input type="file" class="form-control" accept=".csv" name="post-assessment-file" value="Import Students"/><br>' +
+            '<input type="submit" class="form-control bg-success text-white" value="Upload">' +
             '</form>',
         showCancelButton: true,
         allowEscapeKey: true,
@@ -40,8 +40,8 @@ function markAttendance(course_id, course_name) {
             `<input type="hidden" class="form-control" name="course-id" placeholder="Course Id" value="${course_id}"/><br>` +
             `<h3>${course_name}<h3><br>` +
             '<input type="date" class="form-control mb-3 mt-3" name="attendance-date" value="Select Date"/>' +
-            'Update Attendance (upload csv)<input type="file" class="form-control" name="attendance-file" value="Import Students"/><br>' +
-            '<input type="submit" class="form-control bg-success text-white" value="Upload" accept=".csv">' +
+            'Update Attendance (upload csv)<input type="file" class="form-control" name="attendance-file" value="Import Students" accept=".csv"/><br>' +
+            '<input type="submit" class="form-control bg-success text-white" value="Upload">' +
             '</form>',
         showCancelButton: true,
         allowEscapeKey: true,
@@ -76,8 +76,8 @@ function addCourse() {
             '<form action="/BlockChainProj/back-end/add_course.php" method="POST" enctype="multipart/form-data">' +
             '<input type="text" class="form-control" name="course-name" placeholder="Course Name"/><br>' +
             '<input type="text" class="form-control date" name="course-dates" placeholder="Pick the multiple dates"><br>' +
-            'Import Students (upload csv)<input type="file" class="form-control" name="students-file" value="Import Students"/><br>' +
-            '<input type="submit" class="form-control bg-success text-white" value="Add New Course" accept=".csv">' +
+            'Import Students (upload csv)<input type="file" class="form-control" name="students-file" accept=".csv" value="Import Students"/><br>' +
+            '<input type="submit" class="form-control bg-success text-white" value="Add New Course">' +
             '</form>',
         showCancelButton: true,
         allowEscapeKey: true,
@@ -87,8 +87,6 @@ function addCourse() {
 }
 
 function editCourse(course) {
-
-    console.log(course);
 
     Swal.fire({
         title: '<strong>Edit Course</strong>',
@@ -103,5 +101,21 @@ function editCourse(course) {
         allowEscapeKey: true,
         showConfirmButton: false,
         cancelButtonText: 'Discard',
+    });
+}
+
+function deleteCourse(course_id, course_name) {
+    Swal.fire({
+        title: '<strong>Delete Course?</strong>',
+        html:
+            '<form action="/BlockChainProj/back-end/delete_course.php" method="POST" enctype="multipart/form-data">' +
+            `<input type="hidden" class="form-control" name="course-id" placeholder="Course Id" value="${course_id}"/><br>` +
+            `<h3>${course_name}<h3><br>` +
+            '<input type="submit" class="form-control bg-danger text-white" value="Confirm Delete">' +
+            '</form>',
+        showCancelButton: true,
+        allowEscapeKey: true,
+        showConfirmButton: false,
+        cancelButtonText: 'Cancel',
     });
 }
