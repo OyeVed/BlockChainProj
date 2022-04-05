@@ -69,7 +69,18 @@ try{
         </script>";
 
     } else {
-        echo "File not uploaded\n";
+        echo "<script src='https://cdn.jsdelivr.net/npm/sweetalert2@8'></script><script type='text/javascript'>console.log('Error: ' );
+                Swal.fire(
+                    'Error!',
+                    'New Course addition unsuccessful.',
+                    'error'
+                  )
+        </script>";
+        echo "<script>
+        setTimeout(function() {
+            window.history.go(-1);
+        }, 1000);
+        </script>";
     }
 
 } 

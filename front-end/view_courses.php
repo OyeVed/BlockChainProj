@@ -64,10 +64,63 @@
         <div style="width: 100%;">
           <h1 style="display: inline;">All Courses:-</h1>
           <span style="float: right;">
-            <button class="btn btn-outline-success" onclick="addCourse()">Add Course</button>
+            <button class="btn btn-outline-success" data-toggle="modal" data-target="#myModal">Add Course</button>
           </span>
         </div>
       </div>
+      <!-- Add modal -->
+      <div class="modal fade" id="myModal" role="dialog">
+      <div class="modal-dialog  modal-dialog-centered ">
+    
+      <!-- Modal content-->
+      
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Add New Course</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+        <form action="/BlockChainProj/back-end/add_course.php" method="POST" enctype="multipart/form-data">
+            <input type="text" class="form-control" name="course-name" placeholder="Course Name"/><br>
+            <input type="text" class="form-control date" name="course-dates" placeholder="Pick the multiple dates"><br>
+           <div class="form-group">
+                    <label for="exampleInputFile">Students</label>
+                    <input class="form-control-file" name="students-file" id="exampleInputFile" type="file"  accept=".csv" aria-describedby="fileHelp"><small class="form-text text-muted" id="fileHelp">Import student list using .csv file.</small>
+                  </div>
+           <div class="modal-footer " style="justify-content: center;" >
+          <button class="btn btn-success " type="submit">Save</button>
+        </div> 
+          </form>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+        <!-- edit modal -->
+        <div class="modal fade" id="edit_course_Modal" role="dialog">
+      <div class="modal-dialog  modal-dialog-centered ">
+    
+      <!-- Modal content-->
+      
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Edit Course</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+        <form action="/BlockChainProj/back-end/edit_course.php" method="POST" enctype="multipart/form-data">
+        <input type="hidden" class="form-control" name="course-id" id="edit_course_course_id" placeholder="Course Id" value="" />    
+        <input type="text" class="form-control" name="course-name" id="edit_course_course_name" placeholder="Course Name" value=""/><br>
+            <input type="text" class="form-control date" name="course-dates" placeholder="Pick the multiple dates"><br>
+           <div class="modal-footer " style="justify-content: center;" >
+          <button class="btn btn-success " type="submit">Save</button>
+        </div> 
+          </form>
+        </div>
+      </div>
+      
+    </div>
+  </div>
       <div class="row">
         <div class="col-md-12">
           <div class="tile">
@@ -103,7 +156,7 @@
                     $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
 
                     foreach((new RecursiveArrayIterator($stmt->fetchAll())) as $k=>$v) {
-                      echo "<tr>";
+                      echo "<tr style=\"cursor: pointer;\" >";
                       echo "<td style=\"vertical-align: middle; text-align:center; line-height: 100%;\" onclick=\" window.location.href= 'view_course.php?courseid=$v[id]' \" >".$v['id']."</td>";
                       echo "<td style=\"vertical-align: middle; text-align:center; line-height: 100%;\" onclick=\" window.location.href= 'view_course.php?courseid=$v[id]' \" >".$v['name']."</td>";
                       echo "<td style=\"vertical-align: middle; text-align:center; line-height: 100%;\" onclick=\" window.location.href= 'view_course.php?courseid=$v[id]' \" >".$v['no_of_students']."</td>";
@@ -111,8 +164,8 @@
                       echo "<td style=\"vertical-align: middle; text-align:center; line-height: 100%;\" onclick=\" window.location.href= 'view_course.php?courseid=$v[id]' \" >".$v['avg_pre_assessment']."</td>";
                       echo "<td style=\"vertical-align: middle; text-align:center; line-height: 100%;\" onclick=\" window.location.href= 'view_course.php?courseid=$v[id]' \" >".$v['avg_post_assessment']."</td>";
                       echo "<td style=\"vertical-align: middle; text-align:center; line-height: 100%;\">
-                              <a onclick=\"editCourse([$v[id], '$v[name]', $v[no_of_students]])\" class='btn ml-1 mr-1 mt-0 mb-0 btn-warning text-light'><i class='fa fa-pencil-square-o' aria-hidden='true'></i></a>
-                              <a onclick=\"deleteCourse($v[id], '$v[name]')\" class='btn ml-1 mr-1 mt-0 mb-0 btn-danger text-white'><i class='fa fa-trash' aria-hidden='true'></i></a>
+                              <i data-toggle=\"modal\" data-target=\"#edit_course_Modal\" onclick=\"editCourse([$v[id], '$v[name]', $v[no_of_students]])\"  class='fa fa-pencil-square-o btn btn-warning text-light pt-2 pb-2' aria-hidden='true' ></i>
+                             <i onclick=\"deleteCourse($v[id], '$v[name]')\" class='fa fa-trash btn btn-danger text-light pt-2 pb-2' aria-hidden='true'></i>
                             </td>";
                       echo "</tr>";
                     }

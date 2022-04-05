@@ -109,29 +109,130 @@
         <div style="width: 100%;">
           <h1 style="display: inline;">Course Details:-</h1>
           <span style="float: right;">
-            <button class="btn btn-warning text-light" onclick='editCourse(<?php echo "[$course[0], \"$course[1]\", $course[2] ]"; ?>)'><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
-            <button class="btn btn-danger" onclick='deleteCourse(<?php echo $course_id; ?>, "<?php echo $course[1]; ?>")'><i class="fa fa-trash" aria-hidden="true"></i></button>
+          <button class="btn btn-outline-success" data-toggle="modal" data-target="#pre_assesment_course_modal" onclick='preAssessment(<?php echo $course_id; ?>, "<?php echo $course[1]; ?>")'>Pre-Assessment</button>
+                  <button class="btn btn-outline-success" data-toggle="modal" data-target="#post_assesment_course_modal" onclick='postAssessment(<?php echo $course_id; ?>, "<?php echo $course[1]; ?>")'>Post-Assessment</button>
+                  <button class="btn btn-outline-success" onclick="sendReports(<?php echo $course_id; ?>)">Reports</button>
           </span>
         </div>
       </div>
+      <!-- edit modal -->
+      <div class="modal fade" id="edit_course_Modal" role="dialog">
+      <div class="modal-dialog  modal-dialog-centered ">
+    
+      <!-- Modal content-->
+      
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Edit Course</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+        <form action="/BlockChainProj/back-end/edit_course.php" method="POST" enctype="multipart/form-data">
+        <input type="hidden" class="form-control" name="course-id" id="edit_course_course_id" placeholder="Course Id" value="" />    
+        <input type="text" class="form-control" name="course-name" id="edit_course_course_name" placeholder="Course Name" value=""/><br>
+            <input type="text" class="form-control date" name="course-dates" placeholder="Pick the multiple dates"><br>
+           <div class="modal-footer " style="justify-content: center;" >
+          <button class="btn btn-success " type="submit">Save</button>
+        </div> 
+          </form>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  <!-- pre assesment modal -->
+  <div class="modal fade" id="pre_assesment_course_modal" role="dialog">
+      <div class="modal-dialog  modal-dialog-centered ">
+    
+      <!-- Modal content-->
+      
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Upload Pre-Assessment Report<br /><p style="text-align:left; font-size:13px;font-weight:500;" id="pre_assesment_course_name" ><p></h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+        <form action="/BlockChainProj/back-end/pre_assessment.php" method="POST" enctype="multipart/form-data">
+            <input type="hidden" class="form-control" name="course-id" placeholder="Course Id" value="" id="pre_assesment_course_id" /><br>
+            <p style="text-align:left; font-size:14px; margin-top: -20px;"  for="exampleInputFile">Import File</p>
+            <input class="form-control-file" style="font-size:14px;margin-bottom:20px;"  name="pre-assessment-file" id="exampleInputFile" type="file"  accept=".csv" aria-describedby="fileHelp">
+            <div class="modal-footer " style="justify-content: center;" >
+          <button class="btn btn-success " type="submit">Upload</button>
+        </div>  
+          </form>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+   <!-- post assesment modal -->
+   <div class="modal fade" id="post_assesment_course_modal" role="dialog">
+      <div class="modal-dialog  modal-dialog-centered ">
+    
+      <!-- Modal content-->
+      
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Upload Post-Assessment  Report<br /><p style="text-align:left; font-size:13px;font-weight:500;" id="post_assesment_course_name" ><p></h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+        <form action="/BlockChainProj/back-end/post_assessment.php" method="POST" enctype="multipart/form-data">
+            <input type="hidden" class="form-control" name="course-id" placeholder="Course Id" value="" id="post_assesment_course_id" /><br>
+            <p style="text-align:left; font-size:14px; margin-top: -20px;"  for="exampleInputFile">Import File</p>
+            <input class="form-control-file" style="font-size:14px;margin-bottom:20px;"  name="post-assessment-file" id="exampleInputFile" type="file"  accept=".csv" aria-describedby="fileHelp">
+            <div class="modal-footer " style="justify-content: center;" >
+          <button class="btn btn-success " type="submit">Upload</button>
+        </div>  
+          </form>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+   <!-- mark attendance modal -->
+   <div class="modal fade" id="mark_attendance_modal" role="dialog">
+      <div class="modal-dialog  modal-dialog-centered ">
+    
+      <!-- Modal content-->
+      
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Mark Attendance<br /><p style="text-align:left; font-size:13px;font-weight:500;" id="mark_attendance_course_name" ><p></h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+        <form action="/BlockChainProj/back-end/attendance.php" method="POST" enctype="multipart/form-data">
+            <input type="hidden" class="form-control" name="course-id" placeholder="Course Id" value="" id="mark_attendance_course_id" /><br>
+            <input type="date" class="form-control mb-3 mt-1" name="attendance-date" value="Select Date"/>
+            <p style="text-align:left; font-size:14px;"  for="exampleInputFile">Import File</p>
+            <input type="file" class="form-control-file" style="font-size:14px;margin-bottom:20px;" name="attendance-file" value="Import Students" accept=".csv"/>
+            <div class="modal-footer " style="justify-content: center;" >
+          <button class="btn btn-success " type="submit">Upload</button>
+        </div>  
+          </form>
+        </div>
+      </div>
+      
+    </div>
+  </div>
       <div class="row">
         <div class="col-md-12">
           <div class="tile">
             <div class="tile-body">
-              <div class="mb-4">
+              <div class="mb-1">
                 <h1 style="display: inline;"><?php echo $course[1] ?></h1>
                 <span style="float: right;">
-                  <button class="btn btn-success" onclick='preAssessment(<?php echo $course_id; ?>, "<?php echo $course[1]; ?>")'>Pre-Assessment</button>
-                  <button class="btn btn-success" onclick='postAssessment(<?php echo $course_id; ?>, "<?php echo $course[1]; ?>")'>Post-Assessment</button>
-                  <button class="btn btn-success" onclick="sendReports(<?php echo $course_id; ?>)">Reports</button>
+                            <i onclick='editCourse(<?php echo "[$course[0], \"$course[1]\", $course[2] ]"; ?>)' data-toggle="modal" data-target="#edit_course_Modal" class="fa fa-pencil-square-o btn btn-warning text-light " aria-hidden="true"></i>
+           <i onclick='deleteCourse(<?php echo $course_id; ?>, "<?php echo $course[1]; ?>")' class="fa fa-trash btn btn-danger" aria-hidden="true"></i>
                 </span>
               </div>
-              <div class="mt-4 mb-3">
-                <h5 style="display: inline;"><b>Total Students Enrolled: <?php echo $course[2] ?></b></h5>
+              <div class="mt-2 mb-4">
+                <p style="display: inline;">Total Students Enrolled: <?php echo $course[2] ?></p>
               </div>
-              <div class="mt-4 mb-3">
+              <div class="mb-3" style="margin-top: 60px;" >
                 <h5 style="display: inline;">Students Attendance Table</h5>
-                <button class="btn btn-success" style="float: right;" onclick='markAttendance(<?php echo $course_id; ?>, "<?php echo $course[1]; ?>")'>Mark Attendance</button>
+                <button class="btn btn-success"  data-toggle="modal" data-target="#mark_attendance_modal" style="float: right;"  onclick='markAttendance(<?php echo $course_id; ?>, "<?php echo $course[1]; ?>")'>Mark Attendance</button>
               </div>
               <div class="table-responsive mt-4">
                 <table class="table table-hover table-bordered" id="sampleTable">
