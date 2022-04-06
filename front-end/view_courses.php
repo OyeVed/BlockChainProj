@@ -17,6 +17,41 @@
     <link rel="stylesheet" type="text/css" href="css/main.css">
     <!-- Font-icon css-->
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- multi date picker links -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.js"></script>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.css"
+      rel="stylesheet"
+    />
+    <script type="text/javascript">
+        jQuery(function($) {
+          $(document).ready(function() {
+    $('#datepicker').datepicker({
+        startDate: new Date(),
+        multidate: true,
+        format: "dd/mm/yyyy",
+        daysOfWeekHighlighted: "5,6",
+        language: 'en'
+    }).on('changeDate', function(e) {
+        // `e` here contains the extra attributes
+        $(this).find('.input-group-addon .count').text(' ' + e.dates.length);
+    });
+});
+$(document).ready(function() {
+    $('#datepicker2').datepicker({
+        startDate: new Date(),
+        multidate: true,
+        format: "dd/mm/yyyy",
+        daysOfWeekHighlighted: "5,6",
+        language: 'en'
+    }).on('changeDate', function(e) {
+        // `e` here contains the extra attributes
+        $(this).find('.input-group-addon .count').text(' ' + e.dates.length);
+    });
+});
+         });
+    </script>
   </head>
   <body class="app sidebar-mini">
     <!-- Navbar-->
@@ -82,10 +117,22 @@
         <div class="modal-body">
         <form action="/BlockChainProj/back-end/add_course.php" method="POST" enctype="multipart/form-data">
             <input type="text" class="form-control" name="course-name" placeholder="Course Name"/><br>
-            <input type="text" class="form-control date" name="course-dates" placeholder="Pick the multiple dates"><br>
-           <div class="form-group">
+            <div class="form-group">
+                    <select class="form-control" id="exampleSelect1">
+                      <option value="" >Select Trainer Name</option>
+                      <option>2</option>
+                      <option>3</option>
+                      <option>4</option>
+                      <option>5</option>
+                    </select>
+                  </div>
+            <div class="input-group date form-group" id="datepicker">
+               <input type="text" class="form-control" id="Dates" name="Dates" placeholder="Course Dates" required />
+                <span class="input-group-addon" style="margin-top: 7px;margin-left:5px;" ><i class="glyphicon glyphicon-calendar fa fa-calendar"></i><span class="count"></span></span>
+            </div>
+            <div class="form-group mt-3">
                     <label for="exampleInputFile">Students</label>
-                    <input class="form-control-file" name="students-file" id="exampleInputFile" type="file"  accept=".csv" aria-describedby="fileHelp"><small class="form-text text-muted" id="fileHelp">Import student list using .csv file.</small>
+                    <input class="form-control-file" name="students-file" id="exampleInputFile" type="file"  accept=".csv" aria-describedby="fileHelp"><small class="form-text text-muted" id="fileHelp">Import student list using .csv file. <a href="./files/students.csv" download>Download Sample</a></small>
                   </div>
            <div class="modal-footer " style="justify-content: center;" >
           <button class="btn btn-success " type="submit">Save</button>
@@ -111,7 +158,19 @@
         <form action="/BlockChainProj/back-end/edit_course.php" method="POST" enctype="multipart/form-data">
         <input type="hidden" class="form-control" name="course-id" id="edit_course_course_id" placeholder="Course Id" value="" />    
         <input type="text" class="form-control" name="course-name" id="edit_course_course_name" placeholder="Course Name" value=""/><br>
-            <input type="text" class="form-control date" name="course-dates" placeholder="Pick the multiple dates"><br>
+        <div class="form-group">
+                    <select class="form-control" id="exampleSelect1">
+                      <option  value="" >Select Trainer Name</option>
+                      <option>2</option>
+                      <option>3</option>
+                      <option>4</option>
+                      <option>5</option>
+                    </select>
+                  </div>
+            <div class="input-group date form-group" id="datepicker2">
+               <input type="text" class="form-control" id="Dates" name="Dates" placeholder="Course Dates" required />
+                <span class="input-group-addon" style="margin-top: 7px;margin-left:5px;" ><i class="glyphicon glyphicon-calendar fa fa-calendar"></i><span class="count"></span></span>
+            </div>
            <div class="modal-footer " style="justify-content: center;" >
           <button class="btn btn-success " type="submit">Save</button>
         </div> 
@@ -131,6 +190,7 @@
                     <tr>
                       <th style="vertical-align: middle; text-align:center; width: 50px;">ID</th>
                       <th style="vertical-align: middle; text-align:center;">Course Name</th>
+                      <th style="vertical-align: middle; text-align:center;">Trainer Name</th>
                       <th style="vertical-align: middle; text-align:center; width: 80px;">Number of Students</th>
                       <th style="vertical-align: middle; text-align:center; width: 100px;">Average Attendance (%)</th>
                       <th style="vertical-align: middle; text-align:center; width: 120px;">Average Pre-Assessment (%)</th>
@@ -159,6 +219,7 @@
                       echo "<tr style=\"cursor: pointer;\" >";
                       echo "<td style=\"vertical-align: middle; text-align:center; line-height: 100%;\" onclick=\" window.location.href= 'view_course.php?courseid=$v[id]' \" >".$v['id']."</td>";
                       echo "<td style=\"vertical-align: middle; text-align:center; line-height: 100%;\" onclick=\" window.location.href= 'view_course.php?courseid=$v[id]' \" >".$v['name']."</td>";
+                      echo "<td style=\"vertical-align: middle; text-align:center; line-height: 100%;\" onclick=\" window.location.href= 'view_course.php?courseid=$v[id]' \" ></td>";
                       echo "<td style=\"vertical-align: middle; text-align:center; line-height: 100%;\" onclick=\" window.location.href= 'view_course.php?courseid=$v[id]' \" >".$v['no_of_students']."</td>";
                       echo "<td style=\"vertical-align: middle; text-align:center; line-height: 100%;\" onclick=\" window.location.href= 'view_course.php?courseid=$v[id]' \" >".$v['avg_attendance']."</td>";
                       echo "<td style=\"vertical-align: middle; text-align:center; line-height: 100%;\" onclick=\" window.location.href= 'view_course.php?courseid=$v[id]' \" >".$v['avg_pre_assessment']."</td>";

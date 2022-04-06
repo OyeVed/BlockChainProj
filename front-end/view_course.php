@@ -17,6 +17,29 @@
     <link rel="stylesheet" type="text/css" href="css/main.css">
     <!-- Font-icon css-->
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- multi date picker links -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.js"></script>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.css"
+      rel="stylesheet"
+    />
+    <script type="text/javascript">
+        jQuery(function($) {
+$(document).ready(function() {
+    $('#datepicker2').datepicker({
+        startDate: new Date(),
+        multidate: true,
+        format: "dd/mm/yyyy",
+        daysOfWeekHighlighted: "5,6",
+        language: 'en'
+    }).on('changeDate', function(e) {
+        // `e` here contains the extra attributes
+        $(this).find('.input-group-addon .count').text(' ' + e.dates.length);
+    });
+});
+         });
+    </script>
   </head>
   <body class="app sidebar-mini">
     <!-- Navbar-->
@@ -109,6 +132,7 @@
         <div style="width: 100%;">
           <h1 style="display: inline;">Course Details:-</h1>
           <span style="float: right;">
+          <button class="btn btn-outline-success" >Feedback</button>
           <button class="btn btn-outline-success" data-toggle="modal" data-target="#pre_assesment_course_modal" onclick='preAssessment(<?php echo $course_id; ?>, "<?php echo $course[1]; ?>")'>Pre-Assessment</button>
                   <button class="btn btn-outline-success" data-toggle="modal" data-target="#post_assesment_course_modal" onclick='postAssessment(<?php echo $course_id; ?>, "<?php echo $course[1]; ?>")'>Post-Assessment</button>
                   <button class="btn btn-outline-success" onclick="sendReports(<?php echo $course_id; ?>)">Reports</button>
@@ -130,7 +154,19 @@
         <form action="/BlockChainProj/back-end/edit_course.php" method="POST" enctype="multipart/form-data">
         <input type="hidden" class="form-control" name="course-id" id="edit_course_course_id" placeholder="Course Id" value="" />    
         <input type="text" class="form-control" name="course-name" id="edit_course_course_name" placeholder="Course Name" value=""/><br>
-            <input type="text" class="form-control date" name="course-dates" placeholder="Pick the multiple dates"><br>
+        <div class="form-group">
+                    <select class="form-control" id="exampleSelect1">
+                      <option  value="" >Select Trainer Name</option>
+                      <option>2</option>
+                      <option>3</option>
+                      <option>4</option>
+                      <option>5</option>
+                    </select>
+                  </div>
+            <div class="input-group date form-group" id="datepicker2">
+               <input type="text" class="form-control" id="Dates" name="Dates" placeholder="Course Dates" required />
+                <span class="input-group-addon" style="margin-top: 7px;margin-left:5px;" ><i class="glyphicon glyphicon-calendar fa fa-calendar"></i><span class="count"></span></span>
+            </div>
            <div class="modal-footer " style="justify-content: center;" >
           <button class="btn btn-success " type="submit">Save</button>
         </div> 
@@ -155,8 +191,8 @@
         <form action="/BlockChainProj/back-end/pre_assessment.php" method="POST" enctype="multipart/form-data">
             <input type="hidden" class="form-control" name="course-id" placeholder="Course Id" value="" id="pre_assesment_course_id" /><br>
             <p style="text-align:left; font-size:14px; margin-top: -20px;"  for="exampleInputFile">Import File</p>
-            <input class="form-control-file" style="font-size:14px;margin-bottom:20px;"  name="pre-assessment-file" id="exampleInputFile" type="file"  accept=".csv" aria-describedby="fileHelp">
-            <div class="modal-footer " style="justify-content: center;" >
+            <input class="form-control-file" style="font-size:14px;"  name="pre-assessment-file" id="exampleInputFile" type="file"  accept=".csv" aria-describedby="fileHelp"><small class="form-text text-muted" id="fileHelp"><a href="./files/pre assessment report.csv" download>Download Sample</a></small>
+            <div class="modal-footer " style="justify-content: center;margin-top:20px;" >
           <button class="btn btn-success " type="submit">Upload</button>
         </div>  
           </form>
@@ -180,8 +216,8 @@
         <form action="/BlockChainProj/back-end/post_assessment.php" method="POST" enctype="multipart/form-data">
             <input type="hidden" class="form-control" name="course-id" placeholder="Course Id" value="" id="post_assesment_course_id" /><br>
             <p style="text-align:left; font-size:14px; margin-top: -20px;"  for="exampleInputFile">Import File</p>
-            <input class="form-control-file" style="font-size:14px;margin-bottom:20px;"  name="post-assessment-file" id="exampleInputFile" type="file"  accept=".csv" aria-describedby="fileHelp">
-            <div class="modal-footer " style="justify-content: center;" >
+            <input class="form-control-file" style="font-size:14px;"  name="post-assessment-file" id="exampleInputFile" type="file"  accept=".csv" aria-describedby="fileHelp"><small class="form-text text-muted" id="fileHelp"><a href="./files/post assessment report.csv" download>Download Sample</a></small>
+            <div class="modal-footer " style="justify-content: center;margin-top:20px;" >
           <button class="btn btn-success " type="submit">Upload</button>
         </div>  
           </form>
@@ -228,18 +264,23 @@
                 </span>
               </div>
               <div class="mt-2 mb-4">
-                <p style="display: inline;">Total Students Enrolled: <?php echo $course[2] ?></p>
+                <p style="display: inline;">Total Students Enrolled: <?php echo $course[2] ?></p><br />
               </div>
+              <h6 style="display: inline;margin-top:10px;" >Trainer Name:</h6><br />
+              <h6 style="display: inline;margin-top:10px;" >Duration:</h6>
               <div class="mb-3" style="margin-top: 60px;" >
                 <h5 style="display: inline;">Students Attendance Table</h5>
-                <button class="btn btn-success"  data-toggle="modal" data-target="#mark_attendance_modal" style="float: right;"  onclick='markAttendance(<?php echo $course_id; ?>, "<?php echo $course[1]; ?>")'>Mark Attendance</button>
+                <button class="btn btn-outline-success"  data-toggle="modal" data-target="#mark_attendance_modal" style="float: right;"  onclick='markAttendance(<?php echo $course_id; ?>, "<?php echo $course[1]; ?>")'>Add Student</button>
               </div>
               <div class="table-responsive mt-4">
                 <table class="table table-hover table-bordered" id="sampleTable">
                   <thead>
                     <tr>
-                      <th>ID</th>
+                      <th>Sr.No</th>
                       <th>Student Name</th>
+                      <!-- <th>Position</th>
+                      <th>Email</th>
+                      <th>Final Attendance</th> -->
                       <?php
 
                         $days = array();
@@ -261,6 +302,12 @@
                         
                       ?>
                     </tr>
+                    <!-- <tr>Empoyee No</tr>
+                    <tr>Contact Number</tr>
+                    <tr>Division</tr>
+                    <tr>Region</tr>
+                    <tr>Manager Name</tr> -->
+                    <!-- <tr>Region</tr> -->
                   </thead>
                   <tbody>
 
