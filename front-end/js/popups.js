@@ -62,3 +62,27 @@ function deleteCourse(course_id, course_name) {
         }
       })
 }
+
+function deleteStudent(student_id, student_name) {
+    Swal.fire({
+        title: 'Are you sure?',
+        icon: 'warning',
+        type: 'warning',
+                html:
+            '<form action="/BlockChainProj/back-end/delete_student.php" method="POST" enctype="multipart/form-data">' +
+            `<small>You won't be able to revert ${student_name}!</small>` +
+            `<input type="hidden" class="form-control" name="course-id" placeholder="Course Id" value="${student_id}"/><br>` +
+            `<input  id="delete_course_btn" type="submit" style="width: 120px; visibility: hidden;" class="form-control bg-danger text-white" value="Confirm Delete">` +
+            '</form>',
+        showCancelButton: true,
+        showConfirmButton: true,
+        allowEscapeKey: true,
+        confirmButtonText: 'Yes, delete it!'
+      }).then((result) => {
+        if (result?.value) {
+            let dltBtn = document.getElementById('delete_course_btn')
+            console.log(dltBtn)
+            dltBtn.click()
+        }
+      })
+}

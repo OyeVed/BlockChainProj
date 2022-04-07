@@ -24,6 +24,7 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.css"
       rel="stylesheet"
     />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>  <script src="jquery.multiselect.js"></script> <link rel="stylesheet" href="jquery.multiselect.css">
     <script type="text/javascript">
         jQuery(function($) {
 $(document).ready(function() {
@@ -37,7 +38,14 @@ $(document).ready(function() {
         // `e` here contains the extra attributes
         $(this).find('.input-group-addon .count').text(' ' + e.dates.length);
     });
+    $('select[name=skills]').multiselect({
+    columns: 1,
+    placeholder: 'Select skills',
+    search: true,
+    selectAll: true
 });
+});
+
          });
     </script>
   </head>
@@ -226,6 +234,64 @@ $(document).ready(function() {
       
     </div>
   </div>
+        <!-- edit student -->
+        <div class="modal fade" id="edit_student_Modal" role="dialog">
+      <div class="modal-dialog  modal-dialog-centered modal-lg">
+    
+      <!-- Modal content-->
+      
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Edit Student</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+        <form action="/BlockChainProj/back-end/edit_student.php" method="POST" enctype="multipart/form-data">
+        <input type="hidden" class="form-control" name="student-id" placeholder="Course Id" value="" />    
+        <div class="container" >
+        <div class="row justify-content-between " >
+           <div class="col" >
+           <input type="text" class="form-control"  name="student-name" id="edit_student_name" placeholder="Student Name" value=""/><br>
+           <input type="email" class="form-control" name="student-email" id="edit_student_email" placeholder="Email" value=""/><br>
+           <input type="text" class="form-control" name="student-employee-no" id="edit_student_employee_no" placeholder="Employee No." value=""/><br>
+           <input type="text" class="form-control" name="student-division" id="edit_student_division" placeholder="Division" value=""/><br>
+           <input type="text" class="form-control" name="student-manager-name" id="edit_student_manager-name" placeholder="Manager Name" value=""/><br>
+
+           </div>
+           <div class="col">
+           <input type="text"  class="form-control" name="student-position" id="edit_student_position" placeholder="Position" value=""/><br>
+           <input type="text" class="form-control" name="student-final-attendance" id="edit_student_final_attendance" placeholder="Final Attendance" value=""/><br>
+           <input type="text" class="form-control" name="student-contact-no" id="edit_student_contact_no" placeholder="Contact No." value=""/><br>
+           <input type="text" class="form-control" name="student-region" id="edit_student_region" placeholder="Region" value=""/><br>
+
+           </div>
+        </div>
+        <label for="">Day Wise Attendance:</label>
+           <div class="d-flex" >
+           <div class="mr-4" >
+             <label for="">2022-04-02</label>
+             <input type="checkbox" class="ml-4" >
+           </div>
+           <div class="mr-4">
+             <label for="">2022-04-02</label>
+             <input type="checkbox" class="ml-4">
+           </div>
+           <div class="mr-4">
+             <label for="">2022-04-02</label>
+             <input type="checkbox" class="ml-4">
+           </div>
+           </div>
+        </div>
+        
+           <div class="modal-footer " style="justify-content: center;" >
+          <button class="btn btn-success " type="submit">Save</button>
+        </div> 
+          </form>
+        </div>
+      </div>
+      
+    </div>
+  </div>
    <!-- mark attendance modal -->
    <div class="modal fade" id="mark_attendance_modal" role="dialog">
       <div class="modal-dialog  modal-dialog-centered ">
@@ -240,9 +306,28 @@ $(document).ready(function() {
         <div class="modal-body">
         <form action="/BlockChainProj/back-end/attendance.php" method="POST" enctype="multipart/form-data">
             <input type="hidden" class="form-control" name="course-id" placeholder="Course Id" value="" id="mark_attendance_course_id" /><br>
-            <input type="date" class="form-control mb-3 mt-1" name="attendance-date" value="Select Date"/>
-            <p style="text-align:left; font-size:14px;"  for="exampleInputFile">Import File</p>
-            <input type="file" class="form-control-file" style="font-size:14px;margin-bottom:20px;" name="attendance-file" value="Import Students" accept=".csv"/>
+            <div class="form-group">
+                    <select class="form-control" id="exampleSelect1">
+                      <option value="" >Select Date</option>
+                      <option>2022-02-02</option>
+                      <option>2022-02-02</option>
+                      <option>2022-02-02</option>
+                      <option>2022-02-02</option>
+                    </select>
+                  </div>
+                  <select name="skills[]" multiple id="skills">
+    <option value="C++">C++</option>
+    <option value="Java">Java</option>
+    <option value="Objective-C">Objective-C</option>
+    <option value="JavaScript">JavaScript</option>
+    <option value="Perl">Perl</option>
+    <option value="PHP">PHP</option>
+    <option value="Ruby on Rails">Ruby on Rails</option>
+    <option value="Android">Android</option>
+    <option value="iOS">iOS</option>
+    <option value="HTML">HTML</option>
+    <option value="XML">XML</option>
+</select>
             <div class="modal-footer " style="justify-content: center;" >
           <button class="btn btn-success " type="submit">Upload</button>
         </div>  
@@ -265,12 +350,12 @@ $(document).ready(function() {
               </div>
               <div class="mt-2 mb-4">
                 <p style="display: inline;">Total Students Enrolled: <?php echo $course[2] ?></p><br />
+                <p style="display: inline;">Trainer Name: </p><br />
+                <p style="display: inline;">Duration: </p><br />
               </div>
-              <h6 style="display: inline;margin-top:10px;" >Trainer Name:</h6><br />
-              <h6 style="display: inline;margin-top:10px;" >Duration:</h6>
               <div class="mb-3" style="margin-top: 60px;" >
                 <h5 style="display: inline;">Students Attendance Table</h5>
-                <button class="btn btn-outline-success"  data-toggle="modal" data-target="#mark_attendance_modal" style="float: right;"  onclick='markAttendance(<?php echo $course_id; ?>, "<?php echo $course[1]; ?>")'>Add Student</button>
+                <button class="btn btn-outline-success"  data-toggle="modal" data-target="#mark_attendance_modal" style="float: right;"  onclick='markAttendance(<?php echo $course_id; ?>, "<?php echo $course[1]; ?>")'>Mark Attendance</button>
               </div>
               <div class="table-responsive mt-4">
                 <table class="table table-hover table-bordered" id="sampleTable">
@@ -278,9 +363,9 @@ $(document).ready(function() {
                     <tr>
                       <th>Sr.No</th>
                       <th>Student Name</th>
-                      <!-- <th>Position</th>
+                      <th>Position</th>
                       <th>Email</th>
-                      <th>Final Attendance</th> -->
+                      <th>Final Attendance</th>
                       <?php
 
                         $days = array();
@@ -301,13 +386,14 @@ $(document).ready(function() {
                         }
                         
                       ?>
+                  <th>Empoyee No</th>
+                  <th>Contact Number</th>
+                  <th>Division</th>
+                  <th>Region</th>
+                   <th>Manager Name</th>
+                 
+                   <th>Action</th>
                     </tr>
-                    <!-- <tr>Empoyee No</tr>
-                    <tr>Contact Number</tr>
-                    <tr>Division</tr>
-                    <tr>Region</tr>
-                    <tr>Manager Name</tr> -->
-                    <!-- <tr>Region</tr> -->
                   </thead>
                   <tbody>
 
@@ -346,6 +432,16 @@ $(document).ready(function() {
                             }
                             
                           }
+                            
+                           echo "<th></th>";
+                           echo  "<th></th>";
+                           echo "<th></th>";
+                           echo  "<th></th>";
+                           echo "<th></th>";
+                           echo  "<th></th>";
+                           echo  "<th></th>";
+                           echo  "<th></th>";
+                           echo  "<th><i data-toggle='modal' data-target='#edit_student_Modal' class='fa fa-pencil-square-o ml-1' style='cursor:pointer;' aria-hidden='true'></i> <i onclick='deleteCourse()' class='fa fa-trash-o ml-3' style='cursor:pointer;' aria-hidden='true'></i></th>";
 
                           echo "</tr>";
                         }
