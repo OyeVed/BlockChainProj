@@ -278,9 +278,9 @@ $(document).ready(function() {
                     <tr>
                       <th>Sr.No</th>
                       <th>Student Name</th>
-                      <!-- <th>Position</th>
+                      <th>Position</th>
                       <th>Email</th>
-                      <th>Final Attendance</th> -->
+                      <th>Final Attendance</th>
                       <?php
 
                         $days = array();
@@ -297,10 +297,15 @@ $(document).ready(function() {
                         $students = array();
 
                         foreach((new RecursiveArrayIterator($stmt->fetchAll())) as $k=>$v) {
-                          echo "<th>" . $v['course_date'] . "</th>";
+                          echo "<th style='min-width: 100px;'>" . $v['course_date'] . "</th>";
                         }
                         
                       ?>
+                      <th>Employee No.</th>
+                      <th>Contact No.</th>
+                      <th>Division</th>
+                      <th>Region</th>
+                      <th>Manager Name</th>
                     </tr>
                     <!-- <tr>Empoyee No</tr>
                     <tr>Contact Number</tr>
@@ -313,23 +318,46 @@ $(document).ready(function() {
 
                       <?php
 
-                        $stmt = $conn->prepare("
-                        select
-                        student_table.student_id AS ID,
-                        student_table.student_name AS NAME,
-                        GROUP_CONCAT(attendance_table.attendance_status) AS attendance
-                        from student_table
-                        JOIN attendance_table on attendance_table.attendance_student_id=student_table.student_id
-                        WHERE student_table.student_course_id=$course_id
-                        GROUP BY student_table.student_id
-                        ");
+                      $query = "
+                      SELECT
+                      student_table.student_id 'ID',
+                      student_table.student_name 'NAME',
+                      student_table.student_position 'POSITION',
+                      student_table.student_email 'EMAIL',
+                      student_table.student_emp_no 'EMP_NO',
+                      student_table.student_attendance 'FINAL_ATTENDANCE',
+                      student_table.student_phonenumber 'CONTACT_NO',
+                      student_table.student_division 'DIVISION',
+                      student_table.student_region 'REGION',
+                      student_table.student_manager_name 'MANAGER_NAME',
+                      GROUP_CONCAT(attendance_table.attendance_status) 'ATTENDANCE'
+                      FROM student_table
+                      JOIN attendance_table on attendance_table.attendance_student_id=student_table.student_id
+                      WHERE student_table.student_course_id=$course_id
+                      GROUP BY student_table.student_id
+                      ";
+
+                        $stmt = $conn->prepare($query);
                         $stmt->execute();
                         $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
 
                         $students = array();
 
                         foreach((new RecursiveArrayIterator($stmt->fetchAll())) as $k=>$v) {
-                          array_push($students, array($v['ID'], $v['NAME'], explode(",", $v['attendance'])));
+                          array_push($students, array(
+                              $v['ID'],
+                              $v['NAME'],
+                              $v['POSITION'],
+                              $v['EMAIL'],
+                              $v['FINAL_ATTENDANCE'],
+                              explode(",", $v['ATTENDANCE']),
+                              $v['EMP_NO'],
+                              $v['CONTACT_NO'],
+                              $v['DIVISION'],
+                              $v['REGION'],
+                              $v['MANAGER_NAME'],
+                            )
+                          );
                         }
 
                         foreach ($students as $student) {
