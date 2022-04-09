@@ -31,7 +31,6 @@
         startDate: new Date(),
         multidate: true,
         format: "dd/mm/yyyy",
-        daysOfWeekHighlighted: "5,6",
         language: 'en'
     }).on('changeDate', function(e) {
         // `e` here contains the extra attributes
@@ -43,7 +42,6 @@ $(document).ready(function() {
         startDate: new Date(),
         multidate: true,
         format: "dd/mm/yyyy",
-        daysOfWeekHighlighted: "5,6",
         language: 'en'
     }).on('changeDate', function(e) {
         // `e` here contains the extra attributes
@@ -126,9 +124,9 @@ $(document).ready(function() {
                       <option>5</option>
                     </select>
                   </div>
-            <div class="input-group date form-group" id="datepicker">
-               <input type="text" class="form-control" id="Dates" name="Dates" placeholder="Course Dates" required />
-                <span class="input-group-addon" style="margin-top: 7px;margin-left:5px;" ><i class="glyphicon glyphicon-calendar fa fa-calendar"></i><span class="count"></span></span>
+            <div class="input-group date form-group" style="margin-top: 60px;" id="datepicker">
+               <input type="text" class="form-control" id="Dates" name="Dates" style="margin-top: -40px;" placeholder="Course Dates" required />
+                <span class="input-group-addon"  style="margin-top: -35px;margin-left:5px;"  ><i class="glyphicon glyphicon-calendar fa fa-calendar"></i><span class="count"></span></span>
             </div>
             <div class="form-group mt-3">
                     <label for="exampleInputFile">Students</label>
@@ -167,9 +165,9 @@ $(document).ready(function() {
                       <option>5</option>
                     </select>
                   </div>
-            <div class="input-group date form-group" id="datepicker2">
-               <input type="text" class="form-control" id="Dates" name="Dates" placeholder="Course Dates" required />
-                <span class="input-group-addon" style="margin-top: 7px;margin-left:5px;" ><i class="glyphicon glyphicon-calendar fa fa-calendar"></i><span class="count"></span></span>
+            <div class="input-group date form-group" id="datepicker2" style="margin-top: 60px;">
+               <input type="text" class="form-control" id="Dates" style="margin-top: -40px;" name="Dates" placeholder="Course Dates" required />
+                <span class="input-group-addon"  style="margin-top: -35px ;margin-left: 5px;"  ><i class="glyphicon glyphicon-calendar fa fa-calendar"></i><span class="count"></span></span>
             </div>
            <div class="modal-footer " style="justify-content: center;" >
           <button class="btn btn-success " type="submit">Save</button>

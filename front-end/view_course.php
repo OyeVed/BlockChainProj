@@ -17,35 +17,33 @@
     <link rel="stylesheet" type="text/css" href="css/main.css">
     <!-- Font-icon css-->
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <!-- multi date picker links -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+       <!-- multi date picker links -->
+       <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.js"></script>
     <link
       href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.css"
       rel="stylesheet"
     />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>  <script src="jquery.multiselect.js"></script> <link rel="stylesheet" href="jquery.multiselect.css">
     <script type="text/javascript">
-        jQuery(function($) {
+             jQuery(function($) {
+
 $(document).ready(function() {
-    $('#datepicker2').datepicker({
+    $('#datepicker3').datepicker({  
         startDate: new Date(),
         multidate: true,
         format: "dd/mm/yyyy",
-        daysOfWeekHighlighted: "5,6",
-        language: 'en'
+        language: 'en',
+        // beforeShow: function (input, inst) {
+        // var rect = input.getBoundingClientRect();
+        // setTimeout(function () {
+	      //   inst.dpDiv.css({ top: rect.top + 40, left: rect.left + 0 });
+        // }, 0);
+        // }
     }).on('changeDate', function(e) {
         // `e` here contains the extra attributes
         $(this).find('.input-group-addon .count').text(' ' + e.dates.length);
     });
-    $('select[name=skills]').multiselect({
-    columns: 1,
-    placeholder: 'Select skills',
-    search: true,
-    selectAll: true
 });
-});
-
          });
     </script>
   </head>
@@ -171,9 +169,9 @@ $(document).ready(function() {
                       <option>5</option>
                     </select>
                   </div>
-            <div class="input-group date form-group" id="datepicker2">
-               <input type="text" class="form-control" id="Dates" name="Dates" placeholder="Course Dates" required />
-                <span class="input-group-addon" style="margin-top: 7px;margin-left:5px;" ><i class="glyphicon glyphicon-calendar fa fa-calendar"></i><span class="count"></span></span>
+                  <div class="input-group date form-group " style="margin-top: 60px;" id="datepicker3">
+               <input type="text" class="form-control" id="Dates" style="margin-top: -40px;" name="Dates" placeholder="Course Dates" required />
+                <span class="input-group-addon" style="margin-top: -35px;margin-left:5px;" ><i class="glyphicon glyphicon-calendar fa fa-calendar"></i><span class="count"></span></span>
             </div>
            <div class="modal-footer " style="justify-content: center;" >
           <button class="btn btn-success " type="submit">Save</button>
@@ -267,20 +265,27 @@ $(document).ready(function() {
            </div>
         </div>
         <label for="">Day Wise Attendance:</label>
-           <div class="d-flex" >
-           <div class="mr-4" >
+           <!-- <div class="d-flex w-100 justify-content-around text-center" > -->
+           <div class="col-12 d-flex justify-content-around align-items-center mt-3" >
+             <label for="" class="ml-2">Date</label>
+             <label for="">Present/Absent</label>
+             </div>
+             <div class="col-12 d-flex justify-content-around align-items-center mt-3" >
              <label for="">2022-04-02</label>
              <input type="checkbox" class="ml-4" >
-           </div>
-           <div class="mr-4">
+             </div>
+             <div class="col-12 d-flex justify-content-around align-items-center mt-3" >
              <label for="">2022-04-02</label>
-             <input type="checkbox" class="ml-4">
-           </div>
-           <div class="mr-4">
+             <input type="checkbox" class="ml-4" >
+             </div>
+             <div class="col-12 d-flex justify-content-around align-items-center mt-3" >
              <label for="">2022-04-02</label>
-             <input type="checkbox" class="ml-4">
-           </div>
-           </div>
+             <input type="checkbox" class="ml-4" >
+             </div>
+             <div class="col-12 d-flex justify-content-around align-items-center mt-3" >
+             <label for="">2022-04-02</label>
+             <input type="checkbox" class="ml-4" >
+             </div>
         </div>
         
            <div class="modal-footer " style="justify-content: center;" >
@@ -315,20 +320,67 @@ $(document).ready(function() {
                       <option>2022-02-02</option>
                     </select>
                   </div>
-                  <select name="skills[]" multiple id="skills">
-    <option value="C++">C++</option>
-    <option value="Java">Java</option>
-    <option value="Objective-C">Objective-C</option>
-    <option value="JavaScript">JavaScript</option>
-    <option value="Perl">Perl</option>
-    <option value="PHP">PHP</option>
-    <option value="Ruby on Rails">Ruby on Rails</option>
-    <option value="Android">Android</option>
-    <option value="iOS">iOS</option>
-    <option value="HTML">HTML</option>
-    <option value="XML">XML</option>
-</select>
-            <div class="modal-footer " style="justify-content: center;" >
+                  <div class="form-group">
+
+                  </div>
+                  <label for="">Mark Attendance:</label>
+                  <div style="max-height:200px;overflow:auto;" >
+
+                  <div class="col-12 d-flex justify-content-around align-items-center mt-3" >
+             <label for="" class="">Student Name</label>
+             <label for="">Present/Absent</label>
+             </div>
+             <div class="col-12 d-flex justify-content-around align-items-center mt-3" >
+             <label for="">Student 1</label>
+             <input type="checkbox" class="ml-4" >
+             </div>
+             <div class="col-12 d-flex justify-content-around align-items-center mt-3" >
+             <label for="">Student 2</label>
+             <input type="checkbox" class="ml-4" >
+             </div>
+             <div class="col-12 d-flex justify-content-around align-items-center mt-3" >
+             <label for="">Student 1</label>
+             <input type="checkbox" class="ml-4" >
+             </div>
+             <div class="col-12 d-flex justify-content-around align-items-center mt-3" >
+             <label for="">Student 2</label>
+             <input type="checkbox" class="ml-4" >
+             </div>
+             <div class="col-12 d-flex justify-content-around align-items-center mt-3" >
+             <label for="">Student 1</label>
+             <input type="checkbox" class="ml-4" >
+             </div>
+             <div class="col-12 d-flex justify-content-around align-items-center mt-3" >
+             <label for="">Student 2</label>
+             <input type="checkbox" class="ml-4" >
+             </div>
+             <div class="col-12 d-flex justify-content-around align-items-center mt-3" >
+             <label for="">Student 1</label>
+             <input type="checkbox" class="ml-4" >
+             </div>
+             <div class="col-12 d-flex justify-content-around align-items-center mt-3" >
+             <label for="">Student 2</label>
+             <input type="checkbox" class="ml-4" >
+             </div>
+             <div class="col-12 d-flex justify-content-around align-items-center mt-3" >
+             <label for="">Student 1</label>
+             <input type="checkbox" class="ml-4" >
+             </div>
+             <div class="col-12 d-flex justify-content-around align-items-center mt-3" >
+             <label for="">Student 2</label>
+             <input type="checkbox" class="ml-4" >
+             </div>
+             <div class="col-12 d-flex justify-content-around align-items-center mt-3" >
+             <label for="">Student 1</label>
+             <input type="checkbox" class="ml-4" >
+             </div>
+             <div class="col-12 d-flex justify-content-around align-items-center mt-3" >
+             <label for="">Student 2</label>
+             <input type="checkbox" class="ml-4" >
+             </div>
+             </div>
+
+            <div class="modal-footer mt-3" style="justify-content: center;" >
           <button class="btn btn-success " type="submit">Upload</button>
         </div>  
           </form>
