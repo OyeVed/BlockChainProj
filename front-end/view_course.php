@@ -414,7 +414,7 @@ $(document).ready(function() {
                   <thead>
                     <tr>
                       <th>Sr.No</th>
-                      <th>Student Name</th>
+                      <th style="white-space: nowrap;">Student Name</th>
                       <th>Position</th>
                       <th>Email</th>
                       <th>Final Attendance</th>
