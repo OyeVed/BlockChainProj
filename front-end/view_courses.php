@@ -116,16 +116,16 @@ $(document).ready(function() {
         <form action="/BlockChainProj/back-end/add_course.php" method="POST" enctype="multipart/form-data">
             <input type="text" class="form-control" name="course-name" placeholder="Course Name"/><br>
             <div class="form-group">
-                    <select class="form-control" id="exampleSelect1">
+                    <select class="form-control" id="exampleSelect1" name="course-trainer">
                       <option value="" >Select Trainer Name</option>
-                      <option>2</option>
-                      <option>3</option>
-                      <option>4</option>
-                      <option>5</option>
+                      <option>trainer 1</option>
+                      <option>trainer 2</option>
+                      <option>trainer 3</option>
+                      <option>trainer 4</option>
                     </select>
                   </div>
             <div class="input-group date form-group" style="margin-top: 60px;" id="datepicker">
-               <input type="text" class="form-control" id="Dates" name="Dates" style="margin-top: -40px;" placeholder="Course Dates" required />
+               <input type="text" class="form-control" id="Dates" name="course-dates" style="margin-top: -40px;" placeholder="Course Dates" required />
                 <span class="input-group-addon"  style="margin-top: -35px;margin-left:5px;"  ><i class="glyphicon glyphicon-calendar fa fa-calendar"></i><span class="count"></span></span>
             </div>
             <div class="form-group mt-3">
@@ -159,10 +159,10 @@ $(document).ready(function() {
         <div class="form-group">
                     <select class="form-control" id="exampleSelect1">
                       <option  value="" >Select Trainer Name</option>
-                      <option>2</option>
-                      <option>3</option>
-                      <option>4</option>
-                      <option>5</option>
+                      <option>trainer 1</option>
+                      <option>trainer 2</option>
+                      <option>trainer 3</option>
+                      <option>trainer 4</option>
                     </select>
                   </div>
             <div class="input-group date form-group" id="datepicker2" style="margin-top: 60px;">
@@ -202,6 +202,7 @@ $(document).ready(function() {
                     SELECT
                     course_table.course_id AS 'id',
                     course_table.course_name AS 'name',
+                    course_table.course_trainer AS 'trainer',
                     course_table.course_student_count AS 'no_of_students',
                     90 AS 'avg_attendance',
                     AVG(student_table.student_pre_assesment_score) AS 'avg_pre_assessment',
@@ -217,7 +218,7 @@ $(document).ready(function() {
                       echo "<tr style=\"cursor: pointer;\" >";
                       echo "<td style=\"vertical-align: middle; text-align:center; line-height: 100%;\" onclick=\" window.location.href= 'view_course.php?courseid=$v[id]' \" >".$v['id']."</td>";
                       echo "<td style=\"vertical-align: middle; text-align:center; line-height: 100%;\" onclick=\" window.location.href= 'view_course.php?courseid=$v[id]' \" >".$v['name']."</td>";
-                      echo "<td style=\"vertical-align: middle; text-align:center; line-height: 100%;\" onclick=\" window.location.href= 'view_course.php?courseid=$v[id]' \" ></td>";
+                      echo "<td style=\"vertical-align: middle; text-align:center; line-height: 100%;\" onclick=\" window.location.href= 'view_course.php?courseid=$v[id]' \" >".$v['trainer']."</td>";
                       echo "<td style=\"vertical-align: middle; text-align:center; line-height: 100%;\" onclick=\" window.location.href= 'view_course.php?courseid=$v[id]' \" >".$v['no_of_students']."</td>";
                       echo "<td style=\"vertical-align: middle; text-align:center; line-height: 100%;\" onclick=\" window.location.href= 'view_course.php?courseid=$v[id]' \" >".$v['avg_attendance']."</td>";
                       echo "<td style=\"vertical-align: middle; text-align:center; line-height: 100%;\" onclick=\" window.location.href= 'view_course.php?courseid=$v[id]' \" >".$v['avg_pre_assessment']."</td>";

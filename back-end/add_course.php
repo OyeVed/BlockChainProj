@@ -18,6 +18,8 @@ try{
         // taking variables form the HTML.
         $course_name = $_POST['course-name'];
         $course_dates = $_POST['course-dates'];
+        $course_trainer = $_POST['course-trainer'];
+
         $no_of_students = 0;
 
         $students_file = fopen($filepath, "r");
@@ -47,26 +49,26 @@ try{
         $student_details_query = rtrim($student_details_query, ",");
         
         // insert query to insert the course details.
-        $course_details_query = "INSERT INTO course_table (course_id, course_name, course_student_count) VALUES ($course_id, '$course_name', $no_of_students)";
+        $course_details_query = "INSERT INTO course_table (course_id, course_name, course_trainer, course_student_count) VALUES ($course_id, '$course_name', '$course_trainer', $no_of_students)";
 
         $conn->exec($course_details_query);
         $conn->exec($student_details_query);
 
         unlink($filepath);
 
-        echo "<script src='https://cdn.jsdelivr.net/npm/sweetalert2@8'></script><script type='text/javascript'>console.log('Error: ' );
-            Swal.fire
-                ({
-                'title': 'Successful',
-                'text': 'New Course added Successfully.',
-                'type': 'success'
-                })
-        </script>";
-        echo "<script>
-            setTimeout(function() {
-                window.history.go(-1);
-            }, 1000);
-        </script>";
+        // echo "<script src='https://cdn.jsdelivr.net/npm/sweetalert2@8'></script><script type='text/javascript'>console.log('Error: ' );
+        //     Swal.fire
+        //         ({
+        //         'title': 'Successful',
+        //         'text': 'New Course added Successfully.',
+        //         'type': 'success'
+        //         })
+        // </script>";
+        // echo "<script>
+        //     setTimeout(function() {
+        //         window.history.go(-1);
+        //     }, 1000);
+        // </script>";
 
     } else {
         echo "<script src='https://cdn.jsdelivr.net/npm/sweetalert2@8'></script><script type='text/javascript'>console.log('Error: ' );

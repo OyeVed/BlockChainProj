@@ -109,7 +109,8 @@ $(document).ready(function() {
           course_table.course_student_count AS 'no_of_students',
           90 AS 'avg_attendance',
           AVG(student_table.student_pre_assesment_score) AS 'avg_pre_assessment',
-          AVG(student_table.student_post_assesment_score) AS 'avg_post_assessment'
+          AVG(student_table.student_post_assesment_score) AS 'avg_post_assessment',
+          course_table.course_trainer AS 'trainer'
           FROM course_table
           JOIN student_table ON student_table.student_course_id = course_table.course_id
           WHERE course_table.course_id = $course_id
@@ -121,7 +122,7 @@ $(document).ready(function() {
           $course = array();
           
           foreach((new RecursiveArrayIterator($stmt->fetchAll())) as $k=>$v) {
-            foreach ($v as $value) {
+            foreach ($v as $key => $value) {
               array_push($course, $value);
             }
           }
@@ -163,10 +164,10 @@ $(document).ready(function() {
         <div class="form-group">
                     <select class="form-control" id="exampleSelect1">
                       <option  value="" >Select Trainer Name</option>
-                      <option>2</option>
-                      <option>3</option>
-                      <option>4</option>
-                      <option>5</option>
+                      <option>trainer 1</option>
+                      <option>trainer 2</option>
+                      <option>trainer 3</option>
+                      <option>trainer 4</option>
                     </select>
                   </div>
                   <div class="input-group date form-group " style="margin-top: 60px;" id="datepicker3">
@@ -402,7 +403,7 @@ $(document).ready(function() {
               </div>
               <div class="mt-2 mb-4">
                 <p style="display: inline;">Total Students Enrolled: <?php echo $course[2] ?></p><br />
-                <p style="display: inline;">Trainer Name: </p><br />
+                <p style="display: inline;">Trainer Name: <?php echo $course[6] ?></p><br />
                 <p style="display: inline;">Duration: </p><br />
               </div>
               <div class="mb-3" style="margin-top: 60px;" >
@@ -464,7 +465,7 @@ $(document).ready(function() {
                       student_table.student_manager_name 'MANAGER_NAME',
                       GROUP_CONCAT(attendance_table.attendance_status) 'ATTENDANCE'
                       FROM student_table
-                      JOIN attendance_table on attendance_table.attendance_student_id=student_table.student_id
+                      LEFT JOIN attendance_table on attendance_table.attendance_student_id=student_table.student_id
                       WHERE student_table.student_course_id=$course_id
                       GROUP BY student_table.student_id
                       ";

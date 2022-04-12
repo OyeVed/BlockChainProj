@@ -9,7 +9,7 @@ function find_columns($file, $column_names){
     
     foreach ($data as $key => $value) {
         
-        if ( in_array(strtolower($value), $column_names) ){
+        if ( in_array($value, $column_names) ){
             $column_indices[$value] = $key;
         }
 

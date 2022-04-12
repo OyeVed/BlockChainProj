@@ -20,11 +20,12 @@ try{
 
         $file_to_be_validated = fopen($filepath, "r");
         require_once("validations/find_column.php");
-        $column_indices = find_columns($file_to_be_validated, array("email", "total points"));
+        $column_indices = find_columns($file_to_be_validated, array("Email", "Total points"));
+
         fclose($file_to_be_validated);
 
-        $email_column = $column_indices["email"];
-        $total_points_column = $column_indices["total points"];
+        $email_column = $column_indices["Email"];
+        $total_points_column = $column_indices["Total points"];
 
         $file_to_be_validated = fopen($filepath, "r");
         require_once("validations/duplicate_email.php");
