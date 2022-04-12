@@ -47,28 +47,39 @@ try{
         }
         fclose($students_file);
         $student_details_query = rtrim($student_details_query, ",");
+
+        // insert query to insert the course dates details.
+        $course_date_details_query = "INSERT INTO course_date_table (course_id, course_date) VALUES";
+        
+        foreach (explode(',', $course_dates) as $value) {
+            $date = explode('/', $value);
+            $course_date_details_query .= " ('$course_id', '$date[2]-$date[1]-$date[0]'),";
+
+        }
+        $course_date_details_query = rtrim($course_date_details_query, ",");
         
         // insert query to insert the course details.
         $course_details_query = "INSERT INTO course_table (course_id, course_name, course_trainer, course_student_count) VALUES ($course_id, '$course_name', '$course_trainer', $no_of_students)";
-
+        
         $conn->exec($course_details_query);
+        $conn->exec($course_date_details_query);
         $conn->exec($student_details_query);
 
         unlink($filepath);
 
-        // echo "<script src='https://cdn.jsdelivr.net/npm/sweetalert2@8'></script><script type='text/javascript'>console.log('Error: ' );
-        //     Swal.fire
-        //         ({
-        //         'title': 'Successful',
-        //         'text': 'New Course added Successfully.',
-        //         'type': 'success'
-        //         })
-        // </script>";
-        // echo "<script>
-        //     setTimeout(function() {
-        //         window.history.go(-1);
-        //     }, 1000);
-        // </script>";
+        echo "<script src='https://cdn.jsdelivr.net/npm/sweetalert2@8'></script><script type='text/javascript'>console.log('Error: ' );
+            Swal.fire
+                ({
+                'title': 'Successful',
+                'text': 'New Course added Successfully.',
+                'type': 'success'
+                })
+        </script>";
+        echo "<script>
+            setTimeout(function() {
+                window.history.go(-1);
+            }, 1000);
+        </script>";
 
     } else {
         echo "<script src='https://cdn.jsdelivr.net/npm/sweetalert2@8'></script><script type='text/javascript'>console.log('Error: ' );
