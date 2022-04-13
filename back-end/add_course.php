@@ -20,8 +20,6 @@ try{
         $course_dates = $_POST['course-dates'];
         $course_trainer = $_POST['course-trainer'];
 
-        $no_of_students = 0;
-
         $students_file = fopen($filepath, "r");
 
         $sql = "SELECT MAX(course_table.course_id) AS course_id FROM course_table";
@@ -37,33 +35,90 @@ try{
             $course_id = $course_id + 1;
         }
 
+        $sql = "SELECT MAX(course_date_table.course_date_id) AS course_date_id FROM course_date_table";
+        $query = $conn -> prepare($sql);
+        $query->execute();
+        $results = $query->fetchAll(PDO::FETCH_OBJ);
+        $course_date_id = $results[0]->course_date_id;
+
+        if($course_date_id == null){
+            $course_date_id = 1;
+        }
+        else{
+            $course_date_id = $course_date_id + 1;
+        }
+
+        $sql = "SELECT MAX(student_table.student_id) AS student_id FROM student_table";
+        $query = $conn -> prepare($sql);
+        $query->execute();
+        $results = $query->fetchAll(PDO::FETCH_OBJ);
+        $student_id = $results[0]->student_id;
+
+        if($course_date_id == null){
+            $student_id = 1;
+        }
+        else{
+            $student_id = $student_id + 1;
+        }
+
         // insert query to insert the student details.
-        $student_details_query = "INSERT INTO student_table (student_course_id, student_name, student_emp_no, student_phonenumber, student_email, student_division, student_region, student_position, student_manager_name) VALUES";
-        
+        $student_details_query = "INSERT INTO student_table (student_id, student_course_id, student_name, student_emp_no, student_phonenumber, student_email, student_division, student_region, student_position, student_manager_name) VALUES";
+        $no_of_students = 0;
+        $new_student_id = $student_id;
         $data = fgetcsv($students_file, 1000, ","); // read out the first line in file to not count the header.
         while (($data = fgetcsv($students_file, 1000, ",")) !== FALSE){
-            $student_details_query .= " ('$course_id', '$data[0]', '$data[1]', '$data[2]', '$data[3]', '$data[4]', '$data[5]', '$data[6]', '$data[7]'),";
+            $student_details_query .= " ('$new_student_id', '$course_id', '$data[0]', '$data[1]', '$data[2]', '$data[3]', '$data[4]', '$data[5]', '$data[6]', '$data[7]'),";
             $no_of_students++;
+            $new_student_id++;
         }
         fclose($students_file);
         $student_details_query = rtrim($student_details_query, ",");
 
         // insert query to insert the course dates details.
-        $course_date_details_query = "INSERT INTO course_date_table (course_id, course_date) VALUES";
-        
+        $course_date_details_query = "INSERT INTO course_date_table (course_date_id, course_id, course_date) VALUES";
+        $no_of_course_dates = 0;
+        $new_course_date_id = $course_date_id;
         foreach (explode(',', $course_dates) as $value) {
             $date = explode('/', $value);
-            $course_date_details_query .= " ('$course_id', '$date[2]-$date[1]-$date[0]'),";
-
+            $course_date_details_query .= " ('$new_course_date_id', '$course_id', '$date[2]-$date[1]-$date[0]'),";
+            $no_of_course_dates++;
+            $new_course_date_id++;
         }
         $course_date_details_query = rtrim($course_date_details_query, ",");
-        
+
+        // insert query to insert the attendance details.
+        $attendance_details_query = "INSERT INTO attendance_table (attendance_student_id, attendance_course_date_id, attendance_status) VALUES";
+        for($i = $student_id; $i < $student_id + $no_of_students; $i++){
+            for($j = $course_date_id; $j < $course_date_id + $no_of_course_dates; $j++){
+                $attendance_details_query .= " ('$i', '$j', '-'),";
+            }
+        }
+        $attendance_details_query = rtrim($attendance_details_query, ",");
+
         // insert query to insert the course details.
         $course_details_query = "INSERT INTO course_table (course_id, course_name, course_trainer, course_student_count) VALUES ($course_id, '$course_name', '$course_trainer', $no_of_students)";
+        
+        // echo $course_details_query;
+
+        // echo "<br>";
+        // echo "<br>";
+
+        // echo $course_date_details_query;
+
+        // echo "<br>";
+        // echo "<br>";
+
+        // echo $student_details_query;
+        
+        // echo "<br>";
+        // echo "<br>";
+
+        // echo $attendance_details_query;
         
         $conn->exec($course_details_query);
         $conn->exec($course_date_details_query);
         $conn->exec($student_details_query);
+        $conn->exec($attendance_details_query);
 
         unlink($filepath);
 
