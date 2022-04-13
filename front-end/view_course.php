@@ -360,28 +360,28 @@
               <input type="hidden" class="form-control" name="course-id" placeholder="Course Id" value=""
                 id="mark_attendance_course_id" /><br>
               <div class="form-group">
-                <select class="form-control" id="exampleSelect1">
-                  <option value="">Select Date</option>
+                <select name="course-date" class="form-control" id="exampleSelect1">
+                  <option value="0">Select Date</option>
                   <?php
-                      $query = "
-                      SELECT
-                      course_date_table.course_date_id AS 'id',
-                      course_date_table.course_date AS 'date'
-                      FROM course_date_table
-                      WHERE course_date_table.course_id=$course_id
-                      ";
+                    $query = "
+                    SELECT
+                    course_date_table.course_date_id AS 'id',
+                    course_date_table.course_date AS 'date'
+                    FROM course_date_table
+                    WHERE course_date_table.course_id=$course_id
+                    ";
 
-                      $stmt = $conn->prepare($query);
-                      $stmt->execute();
-                      $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
+                    $stmt = $conn->prepare($query);
+                    $stmt->execute();
+                    $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
 
-                      foreach((new RecursiveArrayIterator($stmt->fetchAll())) as $k=>$v) {
-                        $date = explode("-", $v['date']);
+                    foreach((new RecursiveArrayIterator($stmt->fetchAll())) as $k=>$v) {
+                      $date = explode("-", $v['date']);
 
-                        $date = "$date[2]-$date[1]-$date[0]";
-                        
-                        echo "<option value='".$v['id']."'>".$date."</option>";
-                      }
+                      $date = "$date[2]-$date[1]-$date[0]";
+                      
+                      echo "<option value='".$v['id']."'>".$date."</option>";
+                    }
                   ?>
                 </select>
               </div>
@@ -390,8 +390,8 @@
               <label for="">Mark Attendance:</label>
               <div style="max-height:200px;overflow:auto;">
                 <div class="col-12 d-flex justify-content-around align-items-center mt-3">
-                  <label for="" class="">Student Name</label>
-                  <label for="">Present/Absent</label>
+                  <label class="">Student Name</label>
+                  <label >Present/Absent</label>
                 </div>
                 
                 <?php
@@ -410,7 +410,7 @@
                   foreach((new RecursiveArrayIterator($stmt->fetchAll())) as $k=>$v) {
                     echo "<div class='col-12 d-flex justify-content-around align-items-center mt-3'>";
                     echo "<label for='$v[id]' class='ml-2'>$v[name]</label>";
-                    echo "<input type='checkbox' class='ml-4'>";
+                    echo "<input name='$v[id]' type='checkbox' class='ml-4'>";
                     echo "</div>";
                   }
                 ?>
@@ -418,7 +418,7 @@
               </div>
 
               <div class="modal-footer mt-3" style="justify-content: center;">
-                <button class="btn btn-success " type="submit">Upload</button>
+                <input type="submit" class="btn btn-success" value="Mark Attendance">
               </div>
             </form>
           </div>

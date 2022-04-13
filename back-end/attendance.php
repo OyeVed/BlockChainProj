@@ -12,36 +12,16 @@ require_once("common/connection.php");
 
 try{
 
-    $filepath = 'uploads/' . basename($_FILES['attendance-file']['name']);
+    $course_id = $_POST['course-id'];
+    $course_date = $_POST['course-date'];
 
-    if (move_uploaded_file($_FILES['attendance-file']['tmp_name'], $filepath)) {
-        // taking variables form the HTML.
-        $course_id = $_POST['course-id'];
-        $attendance_date = $_POST['attendance-date'];
-
-        print_r($course_id);
-        
-        $attendance_file = fopen($filepath, "r");
-
-        $data = fgetcsv($attendance_file, 1000, ","); // read out the first line in file to not count the header.
-        while (($data = fgetcsv($attendance_file, 1000, ",")) !== FALSE){
-
-            // update query to update the student details.
-            // $attendance_file_details_query = "UPDATE `student_table` SET `student_pre_assessment_score` = $data[] WHERE `student_table`.`student_email` = $data[] AND `student_table`.`student_course_id` = $course_id;";
-
-            // $conn->exec($attendance_file_details_query);
-            
-        }
-        fclose($attendance_file);
-
-        unlink($filepath);
-
+    if($course_date == 0){
         echo "<script src='https://cdn.jsdelivr.net/npm/sweetalert2@8'></script><script type='text/javascript'>console.log('Error: ' );
             Swal.fire
                 ({
-                'title': 'Successful',
-                'text': 'Attendance updated Successfully.',
-                'type': 'success'
+                'title': 'Error',
+                'text': 'Course Date is not selected',
+                'type': 'Error'
                 })
         </script>";
         echo "<script>
@@ -49,14 +29,32 @@ try{
                 window.history.go(-1);
             }, 2000);
         </script>";
-
-    } else {
-        echo "File not uploaded\n";
     }
+
+    foreach ($_POST as $key => $value) {
+        if($key != 'course-id' && $key != 'course-date'){
+            $update_attendance_query = "UPDATE attendance_table SET attendance_status = 'P' WHERE attendance_course_date_id = '$course_date' AND attendance_student_id = '$key'";
+            $conn->exec($update_attendance_query);
+        }
+    }
+    
+    echo "<script src='https://cdn.jsdelivr.net/npm/sweetalert2@8'></script><script type='text/javascript'>console.log('Error: ' );
+        Swal.fire
+            ({
+            'title': 'Successful',
+            'text': 'Attendance updated Successfully.',
+            'type': 'success'
+            })
+    </script>";
+    echo "<script>
+        setTimeout(function() {
+            window.history.go(-1);
+        }, 2000);
+    </script>";
 
 } 
 catch(PDOException $e) {
-    echo $sql . "<br>" . $e->getMessage();
+    echo $e->getMessage();
 }
 
 $conn = null;
