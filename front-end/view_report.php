@@ -318,6 +318,47 @@ include('../back-end/common/connection.php');
                         </div>
                     </div>
                 </div>
+                <div class="col-12 mb-4" >
+                    <p> Any other comments to Appreciate or help us Improve the training/workshop:</p>
+                    <div class="d-flex justify-content-between" >
+                        <div style="flex-basis: 25%;" class="d-flex justify-content-center align-items-center flex-column ">
+                            <h1>7</h1>
+                            <h6>Responses</h6>
+                        </div>
+                        <div style="flex-basis: 72%;" >
+                            <p>"excellent as always. keep sharing the knowledge that will be of
+great help for our future endeavor."</p>
+                            <p>"Thank Mr. Abul Bayan"</p>
+                            <p>"excellent as always. keep sharing the knowledge that will be of
+great help for our future endeavor."</p>
+                            <p>"Thank Mr. Abul Bayan"</p>
+                            <p>"excellent as always. keep sharing the knowledge that will be of
+great help for our future endeavor."</p>
+                            <p>"Thank Mr. Abul Bayan"</p>
+                            <p>"excellent as always. keep sharing the knowledge that will be of
+great help for our future endeavor."</p>
+                    </div>
+                    </div>
+                </div>
+                <div class="col-12 mb-4" >
+                    <p> Any other comments to Appreciate or help us Improve the training/workshop:</p>
+                    <div class="d-flex justify-content-between" style="height: 150px;" >
+                        <div style="flex-basis: 25%;" class="d-flex justify-content-center align-items-center flex-column ">
+                            <h1>7</h1>
+                            <h6>Responses</h6>
+                        </div>
+                        <div style="flex-basis: 72%;" class="d-flex justify-content-center align-items-center flex-column " >
+                           <div class="d-flex" >
+                           <i class="fa fa-star" aria-hidden="true"></i>
+                           <i class="fa fa-star" aria-hidden="true"></i>
+                           <i class="fa fa-star" aria-hidden="true"></i>
+                           <i class="fa fa-star" aria-hidden="true"></i>
+                           <i class="fa fa-star" aria-hidden="true"></i>
+                           </div>
+                            <p>9.21 Average Rating</p>
+                    </div>
+                    </div>
+                </div>
                 </div>
                 
             </div>
