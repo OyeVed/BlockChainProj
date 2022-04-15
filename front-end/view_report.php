@@ -79,6 +79,51 @@ include('../back-end/common/connection.php');
             class="app-menu__icon fa fa-graduation-cap"></i><span class="app-menu__label">View Courses</span></a></li>
   </aside>
   <main class="app-content">
+      <?php
+
+        if(!isset($_GET['courseid'])){
+          ?>
+    <script>
+      window.location.href = 'view_courses.php';
+    </script>
+    <?php
+        } else {
+
+          $course_id = $_GET['courseid'];
+          
+          $stmt = $conn->prepare("
+          SELECT
+          course_table.course_id AS 'id',
+          course_table.course_name AS 'name',
+          course_table.course_student_count AS 'no_of_students',
+          90 AS 'avg_attendance',
+          AVG(student_table.student_pre_assesment_score) AS 'avg_pre_assessment',
+          AVG(student_table.student_post_assesment_score) AS 'avg_post_assessment',
+          course_table.course_trainer AS 'trainer'
+          FROM course_table
+          JOIN student_table ON student_table.student_course_id = course_table.course_id
+          WHERE course_table.course_id = $course_id
+          GROUP BY student_table.student_course_id;
+          ");
+          $stmt->execute();
+          $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
+
+          $course = array();
+          
+          foreach((new RecursiveArrayIterator($stmt->fetchAll())) as $k=>$v) {
+            foreach ($v as $key => $value) {
+              array_push($course, $value);
+            }
+          }
+          if(count($course) == 0){
+            ?>
+    <script>
+      window.location.href = 'view_courses.php';
+    </script>
+    <?php
+          }
+        }
+      ?>
   <div class="app-title">
       <div style="width: 100%;">
         <h1 style="display: inline;">Report :-</h1>
@@ -92,8 +137,8 @@ include('../back-end/common/connection.php');
             <div class="tile"  >
                 <div class="tile-body">
                     <div class="mb-1" >
-                        <h1>Google Web Development Bootcamp</h1>
-                        <p>Total Students Enrolled: 3<br>Trainer Name: trainer 2<br>Duration:</p>
+                        <h1><?php echo $course[1]; ?></h1>
+                        <p>Total Students Enrolled: 3<br>Trainer Name: <?php echo $course[6]; ?><br>Duration:</p>
                     </div>
                 </div>
             </div>
@@ -111,11 +156,8 @@ include('../back-end/common/connection.php');
                     <div class="tile"  >
                     <h6 class="tile-title">Assessment :-</h6>
                     <div style="height: 300px;" >
-
                         <canvas id="assesmentChart" ></canvas>   
                     </div>
-                    </div>
-                    <div>
                     </div>
                 </div>
             </div>
@@ -131,36 +173,31 @@ include('../back-end/common/connection.php');
                     </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Sahoochinmay</td>
-                            <td>30</td>
-                            <td>79</td>
-                            <td>65</td>
-                        </tr>
-                        <tr>
-                            <td>Sahoochinmay</td>
-                            <td>30</td>
-                            <td>79</td>
-                            <td>65</td>
-                        </tr>
-                        <tr>
-                            <td>Sahoochinmay</td>
-                            <td>30</td>
-                            <td>79</td>
-                            <td>65</td>
-                        </tr>
-                        <tr>
-                            <td>Sahoochinmay</td>
-                            <td>30</td>
-                            <td>79</td>
-                            <td>65</td>
-                        </tr>
-                        <tr>
-                            <td>Sahoochinmay</td>
-                            <td>30</td>
-                            <td>79</td>
-                            <td>65</td>
-                        </tr>
+
+                    <?php
+                        $stmt = $conn->prepare("
+                        SELECT
+                        student_table.student_name AS 'name',
+                        student_table.student_pre_assesment_score AS 'pre_assesment',
+                        student_table.student_post_assesment_score AS 'post_assesment',
+                        (SELECT COUNT(attendance_table.attendance_status) FROM attendance_table WHERE attendance_table.attendance_student_id=student_table.student_id AND attendance_table.attendance_status='P') 'final_attendance'
+                        FROM student_table
+                        WHERE student_table.student_course_id = $course_id
+                        ");
+                        $stmt->execute();
+                        $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
+              
+                        foreach((new RecursiveArrayIterator($stmt->fetchAll())) as $k=>$v) {
+                          ?>
+                            <tr>
+                                <td><?php echo $v['name']; ?></td>
+                                <td><?php echo $v['pre_assesment']; ?></td>
+                                <td><?php echo $v['post_assesment']; ?></td>
+                                <td><?php echo $v['final_attendance']; ?></td>
+                            <tr>
+                          <?php
+                        }
+                    ?>
                     </tbody>
                 </table>
             </div>
@@ -295,23 +332,48 @@ include('../back-end/common/connection.php');
     <!-- Page specific javascripts-->
     <!-- <script type="text/javascript" src="js/plugins/chart.js"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script type="text/javascript">
-      const labelsAttendance = [
-                   'Week 1',
-                   'Week 2',
-                   'Week 3'
-                    ];
 
-  const dataAttendance = {
-    labels: labelsAttendance,
-    datasets: [{
-      label: 'My First dataset',
-      backgroundColor: 'rgb(255, 99, 132)',
-      borderColor: 'rgb(255, 99, 132)',
-      data: [0, 10, 5],
-      barThickness: 30
-    }]
-  };
+    <?php
+        $stmt = $conn->prepare("
+        SELECT
+        course_date_table.course_date as 'date',
+        COUNT(attendance_table.attendance_status) as 'attendance'
+        FROM attendance_table
+        JOIN course_date_table ON course_date_table.course_date_id = attendance_table.attendance_course_date_id
+        WHERE attendance_table.attendance_status='P' AND course_date_table.course_id=$course_id
+        GROUP BY course_date_table.course_date_id
+        ");
+        $stmt->execute();
+        $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
+        ?>
+
+        <script>
+            const attendanceLabels = [];
+            const attendanceData = [];
+        </script>
+
+        <?php
+        foreach((new RecursiveArrayIterator($stmt->fetchAll())) as $k=>$v) {
+        ?>
+            <script>
+                attendanceLabels.push("<?php echo $v['date']; ?>");
+                attendanceData.push(<?php echo $v['attendance']; ?>);
+            </script>
+        <?php
+        }
+    ?>
+
+    <script type="text/javascript">
+        const dataAttendance = {
+            labels: attendanceLabels,
+            datasets: [{
+                label: 'Attendance',
+                backgroundColor: 'rgb(255, 99, 132)',
+                borderColor: 'rgb(255, 99, 132)',
+                data: attendanceData,
+                barThickness: 30
+            }]
+        };
 
   const configAttendance = {
     type: 'bar',
@@ -332,20 +394,21 @@ include('../back-end/common/connection.php');
     configAttendance
   );
       
+  
   const dataAssessment = {
     labels: ["",""],
     datasets: [{
       label: 'Pre-Assessment',
       backgroundColor: '#084DB4',
       borderColor: '#084DB4',
-      data: [10,0],
+      data: [<?php echo $course[4]; ?>,0],
       barThickness: 30
 
     },{
       label: 'Post-Assessment',
       backgroundColor: '#DA3636',
       borderColor: '#DA3636',
-      data: [0,5],
+      data: [0,<?php echo $course[5]; ?>],
       barThickness: 30
 
     }]
