@@ -160,7 +160,7 @@
             onclick='preAssessment(<?php echo $course_id; ?>, "<?php echo $course[1]; ?>")'>Pre-Assessment</button>
           <button class="btn btn-outline-success" data-toggle="modal" data-target="#post_assesment_course_modal"
             onclick='postAssessment(<?php echo $course_id; ?>, "<?php echo $course[1]; ?>")'>Post-Assessment</button>
-          <button class="btn btn-outline-success" onclick="sendReports(<?php echo $course_id; ?>)">Reports</button>
+          <a href="view_report.php" class="btn btn-outline-success" >View Reports</a>
         </span>
       </div>
     </div>
