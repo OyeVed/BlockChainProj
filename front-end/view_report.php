@@ -20,7 +20,6 @@ include('../back-end/common/connection.php');
     <link rel="stylesheet" type="text/css" href="css/main.css">
     <!-- Font-icon css-->
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   </head>
 
@@ -131,7 +130,7 @@ include('../back-end/common/connection.php');
       <div style="width: 100%;">
         <h1 style="display: inline;">Report :-</h1>
         <span style="float: right;">
-        <button class="btn btn-outline-success" onclick="downloadPdf('courseDetailsTileId','Title')">Download Report</button>
+        <button class="btn btn-outline-success" onclick="window.print()">Download Report</button>
         <button onclick="window.location.href = 'view_course.php?courseid=<?php echo $course_id; ?>' " class="btn btn-outline-success">View Course</button>
         </span>
       </div>
@@ -453,14 +452,6 @@ const feedbackChart1 = new Chart(
     document.getElementById('feedbackchart4'),
     configFeedback
   );
-  // generate pdf
-  var doc = new jsPDF();
-
- function downloadPdf(divId, title) {
- doc.fromHTML(`<html><head><title>${title}</title></head><body>` + document.getElementById(divId).innerHTML + `</body></html>`);
-    doc.save('div.pdf');
-  }
-
     </script>
 </body>
 
