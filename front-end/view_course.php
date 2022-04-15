@@ -165,7 +165,7 @@
       <div style="width: 100%;">
         <h1 style="display: inline;">Course Details:-</h1>
         <span style="float: right;">
-          <button class="btn btn-outline-success">Feedback</button>
+          <button class="btn btn-outline-success" data-toggle="modal" data-target="#feedback_course_modal"  onclick='preAssessment(<?php echo $course_id; ?>, "<?php echo $course[1]; ?>")'>Feedback</button>
           <button class="btn btn-outline-success" data-toggle="modal" data-target="#pre_assesment_course_modal"
             onclick='preAssessment(<?php echo $course_id; ?>, "<?php echo $course[1]; ?>")'>Pre-Assessment</button>
           <button class="btn btn-outline-success" data-toggle="modal" data-target="#post_assesment_course_modal"
@@ -208,6 +208,37 @@
               </div>
               <div class="modal-footer " style="justify-content: center;">
                 <button class="btn btn-success " type="submit">Save</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <!-- feedback modal -->
+    <div class="modal fade" id="feedback_course_modal" role="dialog">
+      <div class="modal-dialog  modal-dialog-centered ">
+
+        <!-- Modal content-->
+
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Upload Feedback Report<br />
+              <p style="text-align:left; font-size:13px;font-weight:500;" id="pre_assesment_course_name">
+              <p>
+            </h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+          <div class="modal-body">
+            <form action="/BlockChainProj/back-end/feedback.php" id="uploadPreAssessmentId" method="POST" enctype="multipart/form-data">
+              <input type="hidden" class="form-control" name="course-id" placeholder="Course Id" value=""
+                id="pre_assesment_course_id" /><br>
+              <p style="text-align:left; font-size:14px; margin-top: -20px;" for="exampleInputFile">Import File</p>
+              <input class="form-control-file" style="font-size:14px;" name="pre-assessment-file" id="exampleInputFile"
+                type="file" accept=".csv" aria-describedby="fileHelp"><small class="form-text text-muted"
+                id="fileHelp"><a href="./files/feedback.pdf" download>Download Sample</a></small>
+              <div class="modal-footer " style="justify-content: center;margin-top:20px;">
+                <button class="btn btn-success " type="submit">Upload</button>
               </div>
             </form>
           </div>
