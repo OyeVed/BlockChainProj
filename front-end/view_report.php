@@ -209,7 +209,7 @@ include('../back-end/common/connection.php');
                 <div class="col-6 mb-4"   >
                     <div class="d-flex justify-content-between " >
                         <div style="flex-basis: 55%;" >
-                            <p>The trainer communicated clearly and was easy to understand</p>
+                            <p>1. The trainer communicated clearly and was easy to understand</p>
                                 <table style="width: 200px;" >
                                     <tr >
                                         <td class="pb-2" > <i class="fa fa-circle" aria-hidden="true" style="color:#16a5f2;" ></i>&nbsp;&nbsp;Excellent</td>
@@ -237,7 +237,7 @@ include('../back-end/common/connection.php');
                 <div class="col-6 mb-4"   >
                     <div class="d-flex justify-content-between " >
                         <div style="flex-basis: 55%;" >
-                            <p>The trainer communicated clearly and was easy to understand</p>
+                            <p>2. The trainer communicated clearly and was easy to understand</p>
                                 <table style="width: 200px;" >
                                     <tr >
                                         <td class="pb-2" > <i class="fa fa-circle" aria-hidden="true" style="color:#16a5f2;" ></i>&nbsp;&nbsp;Excellent</td>
@@ -265,7 +265,7 @@ include('../back-end/common/connection.php');
                 <div class="col-6 mb-4"   >
                     <div class="d-flex justify-content-between " >
                         <div style="flex-basis: 55%;" >
-                            <p>The trainer communicated clearly and was easy to understand</p>
+                            <p>3. he trainer communicated clearly and was easy to understand</p>
                                 <table style="width: 200px;" >
                                     <tr >
                                         <td class="pb-2" > <i class="fa fa-circle" aria-hidden="true" style="color:#16a5f2;" ></i>&nbsp;&nbsp;Excellent</td>
@@ -293,7 +293,7 @@ include('../back-end/common/connection.php');
                 <div class="col-6 mb-4"   >
                     <div class="d-flex justify-content-between " >
                         <div style="flex-basis: 55%;" >
-                            <p>The trainer communicated clearly and was easy to understand</p>
+                            <p>4. The trainer communicated clearly and was easy to understand</p>
                                 <table style="width: 200px;" >
                                     <tr >
                                         <td class="pb-2" > <i class="fa fa-circle" aria-hidden="true" style="color:#16a5f2;" ></i>&nbsp;&nbsp;Excellent</td>
@@ -319,11 +319,11 @@ include('../back-end/common/connection.php');
                     </div>
                 </div>
                 <div class="col-12 mb-4" >
-                    <p> Any other comments to Appreciate or help us Improve the training/workshop:</p>
+                    <p>5. Any other comments to Appreciate or help us Improve the training/workshop:</p>
                     <div class="d-flex justify-content-between" >
                         <div style="flex-basis: 25%;" class="d-flex justify-content-center align-items-center flex-column ">
                             <h1>7</h1>
-                            <h6>Responses</h6>
+                            <h5>Responses</h5>
                         </div>
                         <div style="flex-basis: 72%;" >
                             <p>"excellent as always. keep sharing the knowledge that will be of
@@ -341,21 +341,26 @@ great help for our future endeavor."</p>
                     </div>
                 </div>
                 <div class="col-12 mb-4" >
-                    <p> Any other comments to Appreciate or help us Improve the training/workshop:</p>
+                    <p>6. Any other comments to Appreciate or help us Improve the training/workshop:</p>
                     <div class="d-flex justify-content-between" style="height: 150px;" >
                         <div style="flex-basis: 25%;" class="d-flex justify-content-center align-items-center flex-column ">
                             <h1>7</h1>
-                            <h6>Responses</h6>
+                            <h5>Responses</h5>
                         </div>
                         <div style="flex-basis: 72%;" class="d-flex justify-content-center align-items-center flex-column " >
                            <div class="d-flex" >
-                           <i class="fa fa-star" aria-hidden="true"></i>
-                           <i class="fa fa-star" aria-hidden="true"></i>
-                           <i class="fa fa-star" aria-hidden="true"></i>
-                           <i class="fa fa-star" aria-hidden="true"></i>
-                           <i class="fa fa-star" aria-hidden="true"></i>
+                           <i class="fa fa-star   "  style="color:#16a5f2;font-size:30px;"  aria-hidden="true"></i>
+                           <i class="fa fa-star   "  style="color:#16a5f2;font-size:30px;"  aria-hidden="true"></i>
+                           <i class="fa fa-star   "  style="color:#16a5f2;font-size:30px;"  aria-hidden="true"></i>
+                           <i class="fa fa-star   "  style="color:#16a5f2;font-size:30px;"  aria-hidden="true"></i>
+                           <i class="fa fa-star   "  style="color:#16a5f2;font-size:30px;"  aria-hidden="true"></i>
+                           <i class="fa fa-star"  style="color:#16a5f2;font-size:30px;"  aria-hidden="true"></i>
+                           <i class="fa fa-star"  style="color:#16a5f2;font-size:30px;"  aria-hidden="true"></i>
+                           <i class="fa fa-star "  style="color:#16a5f2;font-size:30px;"  aria-hidden="true"></i>
+                           <i class="fa fa-star "  style="color:#16a5f2;font-size:30px;"  aria-hidden="true"></i>
+                           <i class="fa fa-star"  style="color:gray;font-size:30px;"  aria-hidden="true"></i>
                            </div>
-                            <p>9.21 Average Rating</p>
+                            <h5>9.21 Average Rating</h5>
                     </div>
                     </div>
                 </div>
