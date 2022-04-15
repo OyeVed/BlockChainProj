@@ -54,7 +54,7 @@ try{
         $results = $query->fetchAll(PDO::FETCH_OBJ);
         $student_id = $results[0]->student_id;
 
-        if($course_date_id == null){
+        if($student_id == null){
             $student_id = 1;
         }
         else{

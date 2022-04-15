@@ -234,7 +234,7 @@
               <input type="hidden" class="form-control" name="course-id" placeholder="Course Id" value=""
                 id="pre_assesment_course_id" /><br>
               <p style="text-align:left; font-size:14px; margin-top: -20px;" for="exampleInputFile">Import File</p>
-              <input class="form-control-file" style="font-size:14px;" name="pre-assessment-file" id="exampleInputFile"
+              <input class="form-control-file" style="font-size:14px;" name="feedback-file" id="exampleInputFile"
                 type="file" accept=".csv" aria-describedby="fileHelp"><small class="form-text text-muted"
                 id="fileHelp"><a href="./files/feedback.pdf" download>Download Sample</a></small>
               <div class="modal-footer " style="justify-content: center;margin-top:20px;">

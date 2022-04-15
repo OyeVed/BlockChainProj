@@ -21,6 +21,7 @@ include('../back-end/common/connection.php');
     <!-- Font-icon css-->
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   </head>
 
 <body class="app sidebar-mini">
@@ -207,166 +208,97 @@ include('../back-end/common/connection.php');
             <div class="tile " >
                 <h4>Feedback :-</h4>
                 <div class="row mt-3">
-                <div class="col-6 mb-4"   >
-                    <div class="d-flex justify-content-between " >
-                        <div style="flex-basis: 55%;" >
-                            <p>1. The trainer communicated clearly and was easy to understand</p>
-                                <table style="width: 200px;" >
-                                    <tr >
-                                        <td class="pb-2" > <i class="fa fa-circle" aria-hidden="true" style="color:#16a5f2;" ></i>&nbsp;&nbsp;Excellent</td>
-                                        <td class="pb-2">11</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="pb-2"><i class="fa fa-circle" aria-hidden="true" style="color:#f2bf16;" ></i>&nbsp;&nbsp;Good</td>
-                                        <td class="pb-2">1</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="pb-2"><i class="fa fa-circle" aria-hidden="true" style="color:green;" ></i>&nbsp;&nbsp;Average</td>
-                                        <td class="pb-2">2</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="pb-2"><i class="fa fa-circle" aria-hidden="true" style="color:#ab0c0c;" ></i>&nbsp;&nbsp;Poor</td>
-                                        <td class="pb-2">0</td>
-                                    </tr>
+                <?php
+                  $stmt = $conn->prepare("
+                  SELECT
+                  feedback_table.feedback_id AS 'feedback_id',
+                  feedback_table.feedback_question AS 'feedback_question',
+                  GROUP_CONCAT(feedback_response_table.feedback_response) AS 'feedback_responses'
+                  FROM feedback_table
+                  JOIN feedback_response_table ON feedback_response_table.feedback_id = feedback_table.feedback_id
+                  WHERE feedback_table.feedback_course_id = $course_id
+                  GROUP BY feedback_table.feedback_id
+                  ");
+                  $stmt->execute();
+                  $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
+        
+                  function php_to_js_array($array) {
+                    $js_array = json_encode($array);
+                    return $js_array;
+                  }
+                  
+                  foreach((new RecursiveArrayIterator($stmt->fetchAll())) as $k=>$v) {
+
+                    $feedback_responses = explode(",", $v['feedback_responses']);
+
+                    $feedback_labels_array = array_values(array_unique($feedback_responses));
+                    $feedback_values_array = array_values(array_count_values($feedback_responses));
+                    
+                    $feedback_labels = php_to_js_array($feedback_labels_array);
+                    $feedback_values = php_to_js_array($feedback_values_array);
+                    
+                    ?>
+                      <div class="col-6 mb-4"   >
+                          <div class="d-flex justify-content-between " >
+                              <div style="flex-basis: 55%;" >
+                                  <p><?php echo $v['feedback_question'] ?></p>
+                                  <table style="width: 200px;" >
+
+                                    <?php
+                                      for ($i=0; $i < sizeof($feedback_labels_array); $i++) { 
+                                        ?>
+                                          <tr>
+                                              <td><?php echo $feedback_labels_array[$i]; ?></td>
+                                              <td>: </td>
+                                              <td><?php echo $feedback_values_array[$i]; ?></td>
+                                          </tr>
+                                        <?php
+                                      }
+                                    ?>
+                                  
                                 </table>
-                        </div>
-                        <div style="flex-basis: 40%;height:250px;" >
-                            <canvas id="feedbackchart1" ></canvas> 
-                        </div>
-                    </div>
-                </div>
-                <div class="col-6 mb-4"   >
-                    <div class="d-flex justify-content-between " >
-                        <div style="flex-basis: 55%;" >
-                            <p>2. The trainer communicated clearly and was easy to understand</p>
-                                <table style="width: 200px;" >
-                                    <tr >
-                                        <td class="pb-2" > <i class="fa fa-circle" aria-hidden="true" style="color:#16a5f2;" ></i>&nbsp;&nbsp;Excellent</td>
-                                        <td class="pb-2">11</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="pb-2"><i class="fa fa-circle" aria-hidden="true" style="color:#f2bf16;" ></i>&nbsp;&nbsp;Good</td>
-                                        <td class="pb-2">1</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="pb-2"><i class="fa fa-circle" aria-hidden="true" style="color:green;" ></i>&nbsp;&nbsp;Average</td>
-                                        <td class="pb-2">2</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="pb-2"><i class="fa fa-circle" aria-hidden="true" style="color:#ab0c0c;" ></i>&nbsp;&nbsp;Poor</td>
-                                        <td class="pb-2">0</td>
-                                    </tr>
-                                </table>
-                        </div>
-                        <div style="flex-basis: 40%;height:250px;" >
-                            <canvas id="feedbackchart2" ></canvas> 
-                        </div>
-                    </div>
-                </div>
-                <div class="col-6 mb-4"   >
-                    <div class="d-flex justify-content-between " >
-                        <div style="flex-basis: 55%;" >
-                            <p>3. he trainer communicated clearly and was easy to understand</p>
-                                <table style="width: 200px;" >
-                                    <tr >
-                                        <td class="pb-2" > <i class="fa fa-circle" aria-hidden="true" style="color:#16a5f2;" ></i>&nbsp;&nbsp;Excellent</td>
-                                        <td class="pb-2">11</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="pb-2"><i class="fa fa-circle" aria-hidden="true" style="color:#f2bf16;" ></i>&nbsp;&nbsp;Good</td>
-                                        <td class="pb-2">1</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="pb-2"><i class="fa fa-circle" aria-hidden="true" style="color:green;" ></i>&nbsp;&nbsp;Average</td>
-                                        <td class="pb-2">2</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="pb-2"><i class="fa fa-circle" aria-hidden="true" style="color:#ab0c0c;" ></i>&nbsp;&nbsp;Poor</td>
-                                        <td class="pb-2">0</td>
-                                    </tr>
-                                </table>
-                        </div>
-                        <div style="flex-basis: 40%;height:250px;" >
-                            <canvas id="feedbackchart3" ></canvas> 
-                        </div>
-                    </div>
-                </div>
-                <div class="col-6 mb-4"   >
-                    <div class="d-flex justify-content-between " >
-                        <div style="flex-basis: 55%;" >
-                            <p>4. The trainer communicated clearly and was easy to understand</p>
-                                <table style="width: 200px;" >
-                                    <tr >
-                                        <td class="pb-2" > <i class="fa fa-circle" aria-hidden="true" style="color:#16a5f2;" ></i>&nbsp;&nbsp;Excellent</td>
-                                        <td class="pb-2">11</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="pb-2"><i class="fa fa-circle" aria-hidden="true" style="color:#f2bf16;" ></i>&nbsp;&nbsp;Good</td>
-                                        <td class="pb-2">1</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="pb-2"><i class="fa fa-circle" aria-hidden="true" style="color:green;" ></i>&nbsp;&nbsp;Average</td>
-                                        <td class="pb-2">2</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="pb-2"><i class="fa fa-circle" aria-hidden="true" style="color:#ab0c0c;" ></i>&nbsp;&nbsp;Poor</td>
-                                        <td class="pb-2">0</td>
-                                    </tr>
-                                </table>
-                        </div>
-                        <div style="flex-basis: 40%;height:250px;" >
-                            <canvas id="feedbackchart4" ></canvas> 
-                        </div>
-                    </div>
-                </div>
-                <div class="col-12 mb-4" >
-                    <p>5. Any other comments to Appreciate or help us Improve the training/workshop:</p>
-                    <div class="d-flex justify-content-between" >
-                        <div style="flex-basis: 25%;" class="d-flex justify-content-center align-items-center flex-column ">
-                            <h1>7</h1>
-                            <h5>Responses</h5>
-                        </div>
-                        <div style="flex-basis: 72%;" >
-                            <p>"excellent as always. keep sharing the knowledge that will be of
-great help for our future endeavor."</p>
-                            <p>"Thank Mr. Abul Bayan"</p>
-                            <p>"excellent as always. keep sharing the knowledge that will be of
-great help for our future endeavor."</p>
-                            <p>"Thank Mr. Abul Bayan"</p>
-                            <p>"excellent as always. keep sharing the knowledge that will be of
-great help for our future endeavor."</p>
-                            <p>"Thank Mr. Abul Bayan"</p>
-                            <p>"excellent as always. keep sharing the knowledge that will be of
-great help for our future endeavor."</p>
-                    </div>
-                    </div>
-                </div>
-                <div class="col-12 mb-4" >
-                    <p>6. Any other comments to Appreciate or help us Improve the training/workshop:</p>
-                    <div class="d-flex justify-content-between" style="height: 150px;" >
-                        <div style="flex-basis: 25%;" class="d-flex justify-content-center align-items-center flex-column ">
-                            <h1>7</h1>
-                            <h5>Responses</h5>
-                        </div>
-                        <div style="flex-basis: 72%;" class="d-flex justify-content-center align-items-center flex-column " >
-                           <div class="d-flex" >
-                           <i class="fa fa-star   "  style="color:#16a5f2;font-size:30px;"  aria-hidden="true"></i>
-                           <i class="fa fa-star   "  style="color:#16a5f2;font-size:30px;"  aria-hidden="true"></i>
-                           <i class="fa fa-star   "  style="color:#16a5f2;font-size:30px;"  aria-hidden="true"></i>
-                           <i class="fa fa-star   "  style="color:#16a5f2;font-size:30px;"  aria-hidden="true"></i>
-                           <i class="fa fa-star   "  style="color:#16a5f2;font-size:30px;"  aria-hidden="true"></i>
-                           <i class="fa fa-star"  style="color:#16a5f2;font-size:30px;"  aria-hidden="true"></i>
-                           <i class="fa fa-star"  style="color:#16a5f2;font-size:30px;"  aria-hidden="true"></i>
-                           <i class="fa fa-star "  style="color:#16a5f2;font-size:30px;"  aria-hidden="true"></i>
-                           <i class="fa fa-star "  style="color:#16a5f2;font-size:30px;"  aria-hidden="true"></i>
-                           <i class="fa fa-star"  style="color:gray;font-size:30px;"  aria-hidden="true"></i>
-                           </div>
-                            <h5>9.21 Average Rating</h5>
-                    </div>
-                    </div>
+                              </div>
+                              <div style="flex-basis: 40%;height:250px;" >
+                                  <canvas id="<?php echo $v['feedback_id']; ?>" ></canvas> 
+                              </div>
+                          </div>
+                      </div>
+
+                      <script>
+                        new Chart(
+                        document.getElementById('<?php echo $v['feedback_id']; ?>'),
+                          {
+                            type: 'pie',
+                            data: {
+                              labels: <?php echo $feedback_labels; ?>,
+                              datasets: [{
+                                label: 'Feedback Chart',
+                                data: <?php echo $feedback_values; ?>,
+                                backgroundColor: [
+                                  '#16a5f2',
+                                  '#f2bf16',
+                                  'green',
+                                  '#ab0c0c'
+                                ],
+                                hoverOffset: 4
+                              }]
+                            },
+                            options: {
+                                  plugins: {
+                                      legend: {
+                                          display: false
+                                      }
+                                  },
+                                  maintainAspectRatio: false,
+                              },
+                          }
+                        );
+                      </script>
+                    <?php
+                  }
+                ?>
                 </div>
                 </div>
-                
             </div>
         </div>
     </div>
@@ -380,7 +312,7 @@ great help for our future endeavor."</p>
     <script src="js/plugins/pace.min.js"></script>
     <!-- Page specific javascripts-->
     <!-- <script type="text/javascript" src="js/plugins/chart.js"></script> -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> -->
 
     <?php
         $stmt = $conn->prepare("

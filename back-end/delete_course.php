@@ -21,6 +21,11 @@ try{
     $attendance_delete_query = "DELETE attendance_table FROM attendance_table JOIN course_date_table ON attendance_table.attendance_course_date_id = course_date_table.course_date_id WHERE course_date_table.course_id = '$course_id'";
     $course_date_delete_query = "DELETE FROM course_date_table WHERE course_date_table.course_id = '$course_id'";
 
+    $feedback_response_delete_query = "DELETE feedback_response_table FROM feedback_response_table JOIN feedback_table ON feedback_response_table.feedback_id = feedback_table.feedback_id WHERE feedback_table.feedback_course_id = '$course_id'";
+    $feedback_delete_query = "DELETE FROM feedback_table WHERE feedback_table.feedback_course_id = '$course_id'";
+
+    $conn->exec($feedback_response_delete_query);
+    $conn->exec($feedback_delete_query);
     $conn->exec($attendance_delete_query);
     $conn->exec($student_delete_query);
     $conn->exec($course_date_delete_query);
