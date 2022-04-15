@@ -45,6 +45,15 @@
         });
       });
     });
+      window.onload = function()
+      {
+        document.getElementById('markAttendanceFormId').reset()
+        document.getElementById('edit_course_form_id').reset()
+        document.getElementById('uploadPostAssessmentId').reset()
+        document.getElementById('editStudentModalId').reset()
+        document.getElementById('uploadPreAssessmentId').reset()
+
+      }
   </script>
 </head>
 
@@ -176,7 +185,7 @@
             <button type="button" class="close" data-dismiss="modal">&times;</button>
           </div>
           <div class="modal-body">
-            <form action="/BlockChainProj/back-end/edit_course.php" method="POST" enctype="multipart/form-data">
+            <form action="/BlockChainProj/back-end/edit_course.php" id="edit_course_form_id" method="POST" enctype="multipart/form-data">
               <input type="hidden" class="form-control" name="course-id" id="edit_course_course_id"
                 placeholder="Course Id" value="" />
               <input type="text" class="form-control" name="course-name" id="edit_course_course_name"
@@ -220,7 +229,7 @@
             <button type="button" class="close" data-dismiss="modal">&times;</button>
           </div>
           <div class="modal-body">
-            <form action="/BlockChainProj/back-end/pre_assessment.php" method="POST" enctype="multipart/form-data">
+            <form action="/BlockChainProj/back-end/pre_assessment.php" id="uploadPreAssessmentId" method="POST" enctype="multipart/form-data">
               <input type="hidden" class="form-control" name="course-id" placeholder="Course Id" value=""
                 id="pre_assesment_course_id" /><br>
               <p style="text-align:left; font-size:14px; margin-top: -20px;" for="exampleInputFile">Import File</p>
@@ -251,7 +260,7 @@
             <button type="button" class="close" data-dismiss="modal">&times;</button>
           </div>
           <div class="modal-body">
-            <form action="/BlockChainProj/back-end/post_assessment.php" method="POST" enctype="multipart/form-data">
+            <form action="/BlockChainProj/back-end/post_assessment.php" id="uploadPostAssessmentId" method="POST" enctype="multipart/form-data">
               <input type="hidden" class="form-control" name="course-id" placeholder="Course Id" value=""
                 id="post_assesment_course_id" /><br>
               <p style="text-align:left; font-size:14px; margin-top: -20px;" for="exampleInputFile">Import File</p>
@@ -279,7 +288,7 @@
             <button type="button" class="close" data-dismiss="modal">&times;</button>
           </div>
           <div class="modal-body">
-            <form action="/BlockChainProj/back-end/edit_student.php" method="POST" enctype="multipart/form-data">
+            <form action="/BlockChainProj/back-end/edit_student.php" id="editStudentModalId" method="POST" enctype="multipart/form-data">
               <input type="hidden" class="form-control" name="student-id" placeholder="Course Id" value="" />
               <div class="container">
                 <div class="row justify-content-between ">
@@ -356,7 +365,7 @@
             <button type="button" class="close" data-dismiss="modal">&times;</button>
           </div>
           <div class="modal-body">
-            <form action="/BlockChainProj/back-end/attendance.php" method="POST" enctype="multipart/form-data">
+            <form action="/BlockChainProj/back-end/attendance.php"  id="markAttendanceFormId" method="POST" enctype="multipart/form-data">
               <input type="hidden" class="form-control" name="course-id" placeholder="Course Id" value=""
                 id="mark_attendance_course_id" /><br>
               <div class="form-group">
