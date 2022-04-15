@@ -99,9 +99,10 @@ include('../back-end/common/connection.php');
           90 AS 'avg_attendance',
           AVG(student_table.student_pre_assesment_score) AS 'avg_pre_assessment',
           AVG(student_table.student_post_assesment_score) AS 'avg_post_assessment',
-          course_table.course_trainer AS 'trainer'
+          trainer_table.trainer_name AS 'trainer'
           FROM course_table
           JOIN student_table ON student_table.student_course_id = course_table.course_id
+          LEFT JOIN trainer_table ON trainer_table.trainer_id = course_table.course_trainer_id
           WHERE course_table.course_id = $course_id
           GROUP BY student_table.student_course_id;
           ");
@@ -129,6 +130,7 @@ include('../back-end/common/connection.php');
         <h1 style="display: inline;">Report :-</h1>
         <span style="float: right;">
         <button class="btn btn-outline-success">Download Report</button>
+        <button onclick="window.location.href = 'view_course.php?courseid=<?php echo $course_id; ?>' " class="btn btn-outline-success">View Course</button>
         </span>
       </div>
     </div>
@@ -138,7 +140,7 @@ include('../back-end/common/connection.php');
                 <div class="tile-body">
                     <div class="mb-1" >
                         <h1><?php echo $course[1]; ?></h1>
-                        <p>Total Students Enrolled: 3<br>Trainer Name: <?php echo $course[6]; ?><br>Duration:</p>
+                        <p>Total Students Enrolled: <?php echo $course[2]; ?><br>Trainer Name: <?php echo $course[6]; ?><br>Duration:</p>
                     </div>
                 </div>
             </div>

@@ -116,14 +116,28 @@ $(document).ready(function() {
         <form action="/BlockChainProj/back-end/add_course.php" method="POST" enctype="multipart/form-data">
             <input type="text" class="form-control" name="course-name" placeholder="Course Name"/><br>
             <div class="form-group">
-                    <select class="form-control" id="exampleSelect1" name="course-trainer">
-                      <option value="" >Select Trainer Name</option>
-                      <option>trainer 1</option>
-                      <option>trainer 2</option>
-                      <option>trainer 3</option>
-                      <option>trainer 4</option>
-                    </select>
-                  </div>
+              <select class="form-control" id="exampleSelect1" name="course-trainer">
+                <option value="" >Select Trainer Name</option>
+                <?php
+                  $stmt = $conn->prepare("
+                  SELECT
+                  trainer_id,
+                  trainer_name
+                  FROM trainer_table
+                  ");
+                  $stmt->execute();
+                  $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
+                  ?>
+
+                  <?php
+                  foreach((new RecursiveArrayIterator($stmt->fetchAll())) as $k=>$v) {
+                  ?>
+                    <option value="<?php echo $v['trainer_id'] ?>"><?php echo $v['trainer_name'] ?></option>
+                  <?php
+                  }
+                ?>
+              </select>
+            </div>
             <div class="input-group date form-group" style="margin-top: 60px;" id="datepicker">
                <input type="text" class="form-control" id="Dates" name="course-dates" style="margin-top: -40px;" placeholder="Course Dates" required />
                 <span class="input-group-addon"  style="margin-top: -35px;margin-left:5px;"  ><i class="glyphicon glyphicon-calendar fa fa-calendar"></i><span class="count"></span></span>
@@ -202,13 +216,14 @@ $(document).ready(function() {
                     SELECT
                     course_table.course_id AS 'id',
                     course_table.course_name AS 'name',
-                    course_table.course_trainer AS 'trainer',
+                    trainer_table.trainer_name AS 'trainer',
                     course_table.course_student_count AS 'no_of_students',
                     90 AS 'avg_attendance',
                     AVG(student_table.student_pre_assesment_score) AS 'avg_pre_assessment',
                     AVG(student_table.student_post_assesment_score) AS 'avg_post_assessment'
                     FROM course_table
                     JOIN student_table ON student_table.student_course_id = course_table.course_id
+                    LEFT JOIN trainer_table ON trainer_table.trainer_id = course_table.course_trainer_id
                     GROUP BY student_table.student_course_id;
                     ");
                     $stmt->execute();

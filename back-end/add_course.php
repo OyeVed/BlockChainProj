@@ -96,7 +96,7 @@ try{
         $attendance_details_query = rtrim($attendance_details_query, ",");
 
         // insert query to insert the course details.
-        $course_details_query = "INSERT INTO course_table (course_id, course_name, course_trainer, course_student_count) VALUES ($course_id, '$course_name', '$course_trainer', $no_of_students)";
+        $course_details_query = "INSERT INTO course_table (course_id, course_name, course_trainer_id, course_student_count) VALUES ($course_id, '$course_name', $course_trainer, $no_of_students)";
         
         // echo $course_details_query;
 

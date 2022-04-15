@@ -1,20 +1,34 @@
 -- https://docs.google.com/spreadsheets/d/1va-RIRffH9-CAWIusqDBtRT0O9R57eDVHVTN69m2eVA/edit#gid=0
 
+
+-- trainer table
+CREATE TABLE IF NOT EXISTS trainer_table
+(
+    trainer_id INT PRIMARY KEY AUTO_INCREMENT,
+    trainer_name VARCHAR(255) NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    created_by INT NOT NULL DEFAULT 0,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_by INT NOT NULL DEFAULT 0
+);
+
 -- courses table
 CREATE TABLE IF NOT EXISTS course_table
 (
     course_id INT PRIMARY KEY AUTO_INCREMENT,
     course_name VARCHAR(255) NOT NULL,
+    course_trainer_id INT,
     course_student_count INT NOT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     created_by INT NOT NULL DEFAULT 0,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    updated_by INT NOT NUL DEFAULT 0L
+    updated_by INT NOT NULL DEFAULT 0,
+    FOREIGN KEY (course_trainer_id) REFERENCES trainer_table(trainer_id)
 );
 
 CREATE TABLE IF NOT EXISTS course_date_table
 (
-    course_date_id INT PRIMARY KEY AUTOINCREMENT,
+    course_date_id INT PRIMARY KEY AUTO_INCREMENT,
     course_id INT NOT NULL,
     course_date DATE NOT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -59,4 +73,32 @@ CREATE TABLE IF NOT EXISTS attendance_table
     updated_by INT NOT NULL DEFAULT 0,
     FOREIGN KEY (attendance_student_id) REFERENCES student_table(student_id),
     FOREIGN KEY (attendance_course_date_id) REFERENCES course_date_table(course_date_id)
+);
+
+-- feedback table
+CREATE TABLE IF NOT EXISTS feedback_table
+(
+    feedback_id INT PRIMARY KEY AUTO_INCREMENT,
+    feedback_course_id INT NOT NULL,
+    feedback_question VARCHAR(255) NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    created_by INT NOT NULL DEFAULT 0,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_by INT NOT NULL DEFAULT 0,
+    FOREIGN KEY (feedback_course_id) REFERENCES course_table(course_id)
+);
+
+-- feedback response table
+CREATE TABLE IF NOT EXISTS feedback_response_table
+(
+    feedback_response_id INT PRIMARY KEY AUTO_INCREMENT,
+    feedback_id INT NOT NULL,
+    feedback_student_id INT NOT NULL,
+    feedback_response VARCHAR(255) NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    created_by INT NOT NULL DEFAULT 0,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_by INT NOT NULL DEFAULT 0,
+    FOREIGN KEY (feedback_id) REFERENCES feedback_table(feedback_id),
+    FOREIGN KEY (feedback_student_id) REFERENCES student_table(student_id)
 );

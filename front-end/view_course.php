@@ -135,9 +135,10 @@
           90 AS 'avg_attendance',
           AVG(student_table.student_pre_assesment_score) AS 'avg_pre_assessment',
           AVG(student_table.student_post_assesment_score) AS 'avg_post_assessment',
-          course_table.course_trainer AS 'trainer'
+          trainer_table.trainer_name AS 'trainer'
           FROM course_table
           JOIN student_table ON student_table.student_course_id = course_table.course_id
+          LEFT JOIN trainer_table ON trainer_table.trainer_id = course_table.course_trainer_id
           WHERE course_table.course_id = $course_id
           GROUP BY student_table.student_course_id;
           ");
