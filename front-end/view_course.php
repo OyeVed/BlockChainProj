@@ -481,10 +481,14 @@
                     $stmt->execute();
                     $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
 
+                    $course_dates = array();
+
                     foreach((new RecursiveArrayIterator($stmt->fetchAll())) as $k=>$v) {
                       $date = explode("-", $v['date']);
 
                       $date = "$date[2]-$date[1]-$date[0]";
+
+                      array_push($course_dates, array("id" => $v['id'], "date" => $date));
                       
                       echo "<option value='".$v['id']."'>".$date."</option>";
                     }
@@ -574,22 +578,9 @@
                     <th>Email</th>
                     <th>Final Attendance</th>
                     <?php
-
-                        $days = array();
-
-                        $stmt = $conn->prepare("
-                        select
-                        course_date_table.course_date
-                        from course_date_table
-                        WHERE course_date_table.course_id=$course_id
-                        ");
-                        $stmt->execute();
-                        $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
-                        
-                        foreach((new RecursiveArrayIterator($stmt->fetchAll())) as $k=>$v) {
-                          echo "<th style='min-width: 100px;'>" . $v['course_date'] . "</th>";
+                        foreach ($course_dates as $key => $value) {
+                          echo "<th style='min-width: 100px;'>" . $value['date'] . "</th>";
                         }
-                        
                       ?>
                     <th>Pre Assesment Score</th>
                     <th>Post Assesment Score</th>
@@ -617,7 +608,8 @@
                         }
                       }
 
-                      echo  "<th><i onclick='editStudent([\"$student[0]\",\"$student[1]\", \"$student[2]\", \"$student[3]\", \"$student[4]\", \"$student[8]\", \"$student[9]\", \"$student[10]\", \"$student[11]\", \"$student[12]\"])' data-toggle='modal' data-target='#edit_student_Modal' class='fa fa-pencil-square-o ml-1' style='cursor:pointer;' aria-hidden='true'></i><i onclick='deleteCourse()' class='fa fa-trash-o ml-3' style='cursor:pointer;' aria-hidden='true'></i></th>";
+                      $course_dates_js = json_encode($course_dates);
+                      echo  "<th><i onclick='editStudent([\"$student[0]\",\"$student[1]\", \"$student[2]\", \"$student[3]\", \"$student[4]\", \"$student[8]\", \"$student[9]\", \"$student[10]\", \"$student[11]\", \"$student[12]\", $course_dates_js])' data-toggle='modal' data-target='#edit_student_Modal' class='fa fa-pencil-square-o ml-1' style='cursor:pointer;' aria-hidden='true'></i><i onclick='deleteCourse()' class='fa fa-trash-o ml-3' style='cursor:pointer;' aria-hidden='true'></i></th>";
                       echo "</tr>";
                     }
                   ?>
@@ -660,18 +652,18 @@
     </script> -->
 <script>
   function editStudent(student){
-                      console.log(student,'dfasl');
-              document.getElementById('student_id').value = student[0];
-              document.getElementById('student_name').value = student[1];
-              document.getElementById('edit_student_position').value = student[2];
-              document.getElementById('edit_student_email').value = student[3];
-              document.getElementById('edit_student_final_attendance').value = student[4] !== '-' ? student[4] : ''
-              document.getElementById('edit_student_employee_no').value = student[5]
-              document.getElementById('edit_student_contact_no').value = student[6]
-              document.getElementById('edit_student_division').value = student[7]
-              document.getElementById('edit_student_region').value = student[8]
-              document.getElementById('edit_student_manager-name').value = student[9]
-        }
+    console.log(student);
+    document.getElementById('student_id').value = student[0];
+    document.getElementById('student_name').value = student[1];
+    document.getElementById('edit_student_position').value = student[2];
+    document.getElementById('edit_student_email').value = student[3];
+    document.getElementById('edit_student_final_attendance').value = student[4];
+    document.getElementById('edit_student_employee_no').value = student[5];
+    document.getElementById('edit_student_contact_no').value = student[6];
+    document.getElementById('edit_student_division').value = student[7];
+    document.getElementById('edit_student_region').value = student[8];
+    document.getElementById('edit_student_manager-name').value = student[9];
+  }
 </script>
 </body>
 
