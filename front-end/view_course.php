@@ -162,6 +162,56 @@
     <?php
           }
         }
+
+
+        $query = "
+          SELECT
+          student_table.student_id 'ID',
+          student_table.student_name 'NAME',
+          student_table.student_position 'POSITION',
+          student_table.student_email 'EMAIL',
+          student_table.student_emp_no 'EMP_NO',
+          student_table.student_final_attendance 'FINAL_ATTENDANCE',
+          (SELECT COUNT(attendance_table.attendance_status) FROM attendance_table WHERE attendance_table.attendance_student_id=student_table.student_id AND attendance_table.attendance_status='P') 'FINAL_ATTENDANCE_COUNT',
+          student_table.student_phonenumber 'CONTACT_NO',
+          student_table.student_division 'DIVISION',
+          student_table.student_region 'REGION',
+          student_table.student_manager_name 'MANAGER_NAME',
+          GROUP_CONCAT(attendance_table.attendance_status) 'ATTENDANCE',
+          student_table.student_pre_assesment_score 'PRE_ASSESMENT_SCORE',
+          student_table.student_post_assesment_score 'POST_ASSESMENT_SCORE'
+          FROM student_table
+          LEFT JOIN attendance_table on attendance_table.attendance_student_id=student_table.student_id
+          WHERE student_table.student_course_id=$course_id
+          GROUP BY student_table.student_id
+          ";
+
+            $stmt = $conn->prepare($query);
+            $stmt->execute();
+            $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
+
+            $students = array();
+
+            foreach((new RecursiveArrayIterator($stmt->fetchAll())) as $k=>$v) {
+              array_push($students, array(
+                  $v['ID'],
+                  $v['NAME'],
+                  $v['POSITION'],
+                  $v['EMAIL'],
+                  $v['FINAL_ATTENDANCE'],
+                  explode(",", $v['ATTENDANCE']),
+                  $v['PRE_ASSESMENT_SCORE'],
+                  $v['POST_ASSESMENT_SCORE'],
+                  $v['EMP_NO'],
+                  $v['CONTACT_NO'],
+                  $v['DIVISION'],
+                  $v['REGION'],
+                  $v['MANAGER_NAME'],
+                )
+              );
+            }
+            $selected_student_id = 0;
+
       ?>
     <div class="app-title">
       <div style="width: 100%;">
@@ -190,24 +240,38 @@
           <div class="modal-body">
             <form action="/BlockChainProj/back-end/edit_course.php" id="edit_course_form_id" method="POST" enctype="multipart/form-data">
               <input type="hidden" class="form-control" name="course-id" id="edit_course_course_id"
-                placeholder="Course Id" value="" />
+                placeholder="Course Id" value="<?php echo $course_id ?>" />
               <input type="text" class="form-control" name="course-name" id="edit_course_course_name"
                 placeholder="Course Name" value="" /><br>
               <div class="form-group">
-                <select class="form-control" id="exampleSelect1">
+                <select class="form-control" id="exampleSelect1" name="course-trainer">
                   <option value="">Select Trainer Name</option>
-                  <option>trainer 1</option>
-                  <option>trainer 2</option>
-                  <option>trainer 3</option>
-                  <option>trainer 4</option>
+                  <?php
+                    $stmt = $conn->prepare("
+                    SELECT
+                    id AS 'trainer_id',
+                    name AS 'trainer_name'
+                    FROM user_tables
+                    ");
+                    $stmt->execute();
+                    $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
+                    ?>
+
+                    <?php
+                    foreach((new RecursiveArrayIterator($stmt->fetchAll())) as $k=>$v) {
+                    ?>
+                      <option value="<?php echo $v['trainer_id'] ?>" <?php if($v['trainer_name'] == $course[6]){echo "selected";} ?>><?php echo $v['trainer_name'] ?></option>
+                    <?php
+                    }
+                  ?>
                 </select>
               </div>
-              <div class="input-group date form-group " style="margin-top: 60px;" id="datepicker3">
+              <!-- <div class="input-group date form-group " style="margin-top: 60px;" id="datepicker3">
                 <input type="text" class="form-control" id="Dates" style="margin-top: -40px;" name="Dates"
                   placeholder="Course Dates" required />
                 <span class="input-group-addon" style="margin-top: -35px;margin-left:5px;"><i
                     class="glyphicon glyphicon-calendar fa fa-calendar"></i><span class="count"></span></span>
-              </div>
+              </div> -->
               <div class="modal-footer " style="justify-content: center;">
                 <button class="btn btn-success " type="submit">Save</button>
               </div>
@@ -486,10 +550,10 @@
             </div>
             <div class="mt-2 mb-4">
               <p style="display: inline;">Total Students Enrolled:
-                <?php echo $course[2] ?>
+                <?php echo $course[2]; ?>
               </p><br />
               <p style="display: inline;">Trainer Name:
-                <?php echo $course[6] ?>
+                <?php echo $course[6]; ?>
               </p><br />
               <p style="display: inline;">Duration: <?php echo $course[7] ?> Days</p><br />
             </div>
@@ -522,8 +586,6 @@
                         $stmt->execute();
                         $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
 
-                        $students = array();
-
                         foreach((new RecursiveArrayIterator($stmt->fetchAll())) as $k=>$v) {
                           echo "<th style='min-width: 100px;'>" . $v['course_date'] . "</th>";
                         }
@@ -543,74 +605,30 @@
 
                   <?php
 
-                      $query = "
-                      SELECT
-                      student_table.student_id 'ID',
-                      student_table.student_name 'NAME',
-                      student_table.student_position 'POSITION',
-                      student_table.student_email 'EMAIL',
-                      student_table.student_emp_no 'EMP_NO',
-                      student_table.student_final_attendance 'FINAL_ATTENDANCE',
-                      (SELECT COUNT(attendance_table.attendance_status) FROM attendance_table WHERE attendance_table.attendance_student_id=student_table.student_id AND attendance_table.attendance_status='P') 'FINAL_ATTENDANCE_COUNT',
-                      student_table.student_phonenumber 'CONTACT_NO',
-                      student_table.student_division 'DIVISION',
-                      student_table.student_region 'REGION',
-                      student_table.student_manager_name 'MANAGER_NAME',
-                      GROUP_CONCAT(attendance_table.attendance_status) 'ATTENDANCE',
-                      student_table.student_pre_assesment_score 'PRE_ASSESMENT_SCORE',
-                      student_table.student_post_assesment_score 'POST_ASSESMENT_SCORE'
-                      FROM student_table
-                      LEFT JOIN attendance_table on attendance_table.attendance_student_id=student_table.student_id
-                      WHERE student_table.student_course_id=$course_id
-                      GROUP BY student_table.student_id
-                      ";
+                    echo "<script>";
 
-                        $stmt = $conn->prepare($query);
-                        $stmt->execute();
-                        $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
+                    echo "function editStudent(student){
+                      console.log(student);
+                    }";
 
-                        $students = array();
-
-                        foreach((new RecursiveArrayIterator($stmt->fetchAll())) as $k=>$v) {
-                          array_push($students, array(
-                              $v['ID'],
-                              $v['NAME'],
-                              $v['POSITION'],
-                              $v['EMAIL'],
-                              $v['FINAL_ATTENDANCE'],
-                              explode(",", $v['ATTENDANCE']),
-                              $v['PRE_ASSESMENT_SCORE'],
-                              $v['POST_ASSESMENT_SCORE'],
-                              $v['EMP_NO'],
-                              $v['CONTACT_NO'],
-                              $v['DIVISION'],
-                              $v['REGION'],
-                              $v['MANAGER_NAME'],
-                            )
-                          );
-                        }
-
-                        foreach ($students as $student) {
-                          echo "<tr>";
-                          
-                          foreach ($student as $value) {
-
-                            if(is_array($value)){
-                              foreach ($value as $val) {
-                                echo "<td>".$val."</td>";
-                              }
-                            }else{
-                              echo "<td>".$value."</td>";
-                            }
-                            
+                    echo "</script>";
+                  
+                    foreach ($students as $student) {
+                      echo "<tr>";
+                      foreach ($student as $value) {
+                        if(is_array($value)){
+                          foreach ($value as $val) {
+                            echo "<td>".$val."</td>";
                           }
-                          echo  "<th><i data-toggle='modal' data-target='#edit_student_Modal' class='fa fa-pencil-square-o ml-1' style='cursor:pointer;' aria-hidden='true'></i> <i onclick='deleteCourse()' class='fa fa-trash-o ml-3' style='cursor:pointer;' aria-hidden='true'></i></th>";
-                          
-                          echo "</tr>";
+                        }else{
+                          echo "<td>".$value."</td>";
                         }
-                        
-                      ?>
+                      }
 
+                      echo  "<th><i onclick='editStudent([\"$student[1]\", \"$student[2]\", \"$student[3]\", \"$student[4]\", \"$student[8]\", \"$student[9]\", \"$student[10]\", \"$student[11]\", \"$student[12]\"])' data-toggle='modal' data-target='#edit_student_Modal' class='fa fa-pencil-square-o ml-1' style='cursor:pointer;' aria-hidden='true'></i><i onclick='deleteCourse()' class='fa fa-trash-o ml-3' style='cursor:pointer;' aria-hidden='true'></i></th>";
+                      echo "</tr>";
+                    }
+                  ?>
                 </tbody>
               </table>
             </div>

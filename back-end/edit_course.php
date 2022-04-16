@@ -14,10 +14,11 @@ try{
     // taking variables form the HTML.
     $course_id = $_POST['course-id'];
     $course_name = $_POST['course-name'];
-    $course_dates = $_POST['course-dates'];
+    $course_trainer = $_POST['course-trainer'];
+    // $course_dates = $_POST['course-dates'];
 
     // insert query
-    $course_details_query = "UPDATE `course_table` SET `course_name` = '$course_name' WHERE `course_table`.`course_id` = $course_id;";
+    $course_details_query = "UPDATE `course_table` SET `course_name` = '$course_name', `course_trainer_id`=$course_trainer WHERE `course_table`.`course_id` = $course_id;";
 
     $conn->exec($course_details_query);
 
@@ -37,7 +38,7 @@ try{
     </script>";
 } 
 catch(PDOException $e) {
-    echo $sql . "<br>" . $e->getMessage();
+    echo $e->getMessage();
 }
 
 

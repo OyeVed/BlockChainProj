@@ -170,15 +170,29 @@ $(document).ready(function() {
         <form action="/BlockChainProj/back-end/edit_course.php" method="POST" enctype="multipart/form-data">
         <input type="hidden" class="form-control" name="course-id" id="edit_course_course_id" placeholder="Course Id" value="" />    
         <input type="text" class="form-control" name="course-name" id="edit_course_course_name" placeholder="Course Name" value=""/><br>
-        <div class="form-group">
-                    <select class="form-control" id="exampleSelect1">
-                      <option  value="" >Select Trainer Name</option>
-                      <option>trainer 1</option>
-                      <option>trainer 2</option>
-                      <option>trainer 3</option>
-                      <option>trainer 4</option>
-                    </select>
-                  </div>
+            <div class="form-group">
+              <select class="form-control" id="exampleSelect1">
+                <option  value="" >Select Trainer Name</option>
+                  <?php
+                    $stmt = $conn->prepare("
+                    SELECT
+                    id AS 'trainer_id',
+                    name AS 'trainer_name'
+                    FROM user_tables
+                    ");
+                    $stmt->execute();
+                    $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
+                    ?>
+
+                    <?php
+                    foreach((new RecursiveArrayIterator($stmt->fetchAll())) as $k=>$v) {
+                    ?>
+                      <option value="<?php echo $v['trainer_id'] ?>"><?php echo $v['trainer_name'] ?></option>
+                    <?php
+                    }
+                  ?>
+              </select>
+            </div>
             <div class="input-group date form-group" id="datepicker2" style="margin-top: 60px;">
                <input type="text" class="form-control" id="Dates" style="margin-top: -40px;" name="Dates" placeholder="Course Dates" required />
                 <span class="input-group-addon"  style="margin-top: -35px ;margin-left: 5px;"  ><i class="glyphicon glyphicon-calendar fa fa-calendar"></i><span class="count"></span></span>
@@ -223,6 +237,8 @@ $(document).ready(function() {
                     AVG(student_table.student_post_assesment_score) AS 'avg_post_assessment'
                     FROM course_table
                     JOIN student_table ON student_table.student_course_id = course_table.course_id
+                    JOIN course_date_table ON course_date_table.course_id = course_table.course_id
+                    JOIN attendance_table ON attendance_table.attendance_course_date_id = course_date_table.course_date_id
                     LEFT JOIN user_tables ON user_tables.id = course_table.course_trainer_id
                     GROUP BY student_table.student_course_id;
                     ");
