@@ -237,7 +237,7 @@
               <p style="text-align:left; font-size:14px; margin-top: -20px;" for="exampleInputFile">Import File</p>
               <input class="form-control-file" style="font-size:14px;" name="feedback-file" id="exampleInputFile"
                 type="file" accept=".csv" aria-describedby="fileHelp"><small class="form-text text-muted"
-                id="fileHelp"><a href="./files/feedback.pdf" download>Download Sample</a></small>
+                id="fileHelp"><a href="./files/feedback.csv" download>Download Sample</a></small>
               <div class="modal-footer " style="justify-content: center;margin-top:20px;">
                 <button class="btn btn-success " type="submit">Upload</button>
               </div>
