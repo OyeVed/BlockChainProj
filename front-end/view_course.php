@@ -386,11 +386,11 @@
           </div>
           <div class="modal-body">
             <form action="/BlockChainProj/back-end/edit_student.php" id="editStudentModalId" method="POST" enctype="multipart/form-data">
-              <input type="hidden" class="form-control" name="student-id" placeholder="Course Id" value="" />
+              <input type="hidden" class="form-control" name="student-id" id="student_id" placeholder="Student Id" value="" />
               <div class="container">
                 <div class="row justify-content-between ">
                   <div class="col">
-                    <input type="text" class="form-control" name="student-name" id="edit_student_name"
+                    <input type="text" class="form-control" name="student-name" id="student_name" id="edit_student_name"
                       placeholder="Student Name" value="" /><br>
                     <input type="email" class="form-control" name="student-email" id="edit_student_email"
                       placeholder="Email" value="" /><br>
@@ -585,7 +585,7 @@
                         ");
                         $stmt->execute();
                         $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
-
+                        
                         foreach((new RecursiveArrayIterator($stmt->fetchAll())) as $k=>$v) {
                           echo "<th style='min-width: 100px;'>" . $v['course_date'] . "</th>";
                         }
@@ -604,14 +604,6 @@
                 <tbody>
 
                   <?php
-
-                    echo "<script>";
-
-                    echo "function editStudent(student){
-                      console.log(student);
-                    }";
-
-                    echo "</script>";
                   
                     foreach ($students as $student) {
                       echo "<tr>";
@@ -625,7 +617,7 @@
                         }
                       }
 
-                      echo  "<th><i onclick='editStudent([\"$student[1]\", \"$student[2]\", \"$student[3]\", \"$student[4]\", \"$student[8]\", \"$student[9]\", \"$student[10]\", \"$student[11]\", \"$student[12]\"])' data-toggle='modal' data-target='#edit_student_Modal' class='fa fa-pencil-square-o ml-1' style='cursor:pointer;' aria-hidden='true'></i><i onclick='deleteCourse()' class='fa fa-trash-o ml-3' style='cursor:pointer;' aria-hidden='true'></i></th>";
+                      echo  "<th><i onclick='editStudent([\"$student[0]\",\"$student[1]\", \"$student[2]\", \"$student[3]\", \"$student[4]\", \"$student[8]\", \"$student[9]\", \"$student[10]\", \"$student[11]\", \"$student[12]\"])' data-toggle='modal' data-target='#edit_student_Modal' class='fa fa-pencil-square-o ml-1' style='cursor:pointer;' aria-hidden='true'></i><i onclick='deleteCourse()' class='fa fa-trash-o ml-3' style='cursor:pointer;' aria-hidden='true'></i></th>";
                       echo "</tr>";
                     }
                   ?>
@@ -666,7 +658,21 @@
         format: 'dd-mm-yyyy'
       });
     </script> -->
-
+<script>
+  function editStudent(student){
+                      console.log(student,'dfasl');
+              document.getElementById('student_id').value = student[0];
+              document.getElementById('student_name').value = student[1];
+              document.getElementById('edit_student_position').value = student[2];
+              document.getElementById('edit_student_email').value = student[3];
+              document.getElementById('edit_student_final_attendance').value = student[4] !== '-' ? student[4] : ''
+              document.getElementById('edit_student_employee_no').value = student[5]
+              document.getElementById('edit_student_contact_no').value = student[6]
+              document.getElementById('edit_student_division').value = student[7]
+              document.getElementById('edit_student_region').value = student[8]
+              document.getElementById('edit_student_manager-name').value = student[9]
+        }
+</script>
 </body>
 
 </html>
