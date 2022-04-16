@@ -171,7 +171,7 @@ $(document).ready(function() {
         <input type="hidden" class="form-control" name="course-id" id="edit_course_course_id" placeholder="Course Id" value="" />    
         <input type="text" class="form-control" name="course-name" id="edit_course_course_name" placeholder="Course Name" value=""/><br>
             <div class="form-group">
-              <select class="form-control" id="exampleSelect1">
+              <select class="form-control" id="edit_course_course_trainer" name="course-trainer">
                 <option  value="" >Select Trainer Name</option>
                   <?php
                     $stmt = $conn->prepare("
@@ -193,10 +193,10 @@ $(document).ready(function() {
                   ?>
               </select>
             </div>
-            <div class="input-group date form-group" id="datepicker2" style="margin-top: 60px;">
+            <!-- <div class="input-group date form-group" id="datepicker2" style="margin-top: 60px;">
                <input type="text" class="form-control" id="Dates" style="margin-top: -40px;" name="Dates" placeholder="Course Dates" required />
                 <span class="input-group-addon"  style="margin-top: -35px ;margin-left: 5px;"  ><i class="glyphicon glyphicon-calendar fa fa-calendar"></i><span class="count"></span></span>
-            </div>
+            </div> -->
            <div class="modal-footer " style="justify-content: center;" >
           <button class="btn btn-success " type="submit">Save</button>
         </div> 
@@ -230,6 +230,7 @@ $(document).ready(function() {
                     SELECT
                     course_table.course_id AS 'id',
                     course_table.course_name AS 'name',
+                    user_tables.id AS 'trainer_id',
                     user_tables.name AS 'trainer',
                     course_table.course_student_count AS 'no_of_students',
                     90 AS 'avg_attendance',
@@ -246,6 +247,7 @@ $(document).ready(function() {
                     $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
 
                     foreach((new RecursiveArrayIterator($stmt->fetchAll())) as $k=>$v) {
+                      echo "<br>";
                       echo "<tr style=\"cursor: pointer;\" >";
                       echo "<td style=\"vertical-align: middle; text-align:center; line-height: 100%;\" onclick=\" window.location.href= 'view_course.php?courseid=$v[id]' \" >".$v['id']."</td>";
                       echo "<td style=\"vertical-align: middle; text-align:center; line-height: 100%;\" onclick=\" window.location.href= 'view_course.php?courseid=$v[id]' \" >".$v['name']."</td>";
@@ -255,7 +257,7 @@ $(document).ready(function() {
                       echo "<td style=\"vertical-align: middle; text-align:center; line-height: 100%;\" onclick=\" window.location.href= 'view_course.php?courseid=$v[id]' \" >".$v['avg_pre_assessment']."</td>";
                       echo "<td style=\"vertical-align: middle; text-align:center; line-height: 100%;\" onclick=\" window.location.href= 'view_course.php?courseid=$v[id]' \" >".$v['avg_post_assessment']."</td>";
                       echo "<td style=\"vertical-align: middle; text-align:center; line-height: 100%;\">
-                              <i data-toggle=\"modal\" data-target=\"#edit_course_Modal\" onclick=\"editCourse([$v[id], '$v[name]', $v[no_of_students]])\"  class='fa fa-pencil-square-o btn btn-warning text-light pt-2 pb-2' aria-hidden='true' ></i>
+                              <i data-toggle=\"modal\" data-target=\"#edit_course_Modal\" onclick=\"editCourseAndSave([$v[id], '$v[name]', '$v[trainer_id]'])\"  class='fa fa-pencil-square-o btn btn-warning text-light pt-2 pb-2' aria-hidden='true' ></i>
                              <i onclick=\"deleteCourse($v[id], '$v[name]')\" class='fa fa-trash btn btn-danger text-light pt-2 pb-2' aria-hidden='true'></i>
                             </td>";
                       echo "</tr>";
@@ -291,5 +293,16 @@ $(document).ready(function() {
     <script type="text/javascript" src="js/plugins/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="js/plugins/dataTables.bootstrap.min.js"></script>
     <script type="text/javascript">$('#sampleTable').DataTable();</script>
+
+    <script>
+      function editCourseAndSave(course) {
+        console.log(course);
+        document.getElementById("edit_course_course_id").value = course[0];
+        document.getElementById("edit_course_course_name").value = course[1];
+        document.getElementById("edit_course_course_trainer").value = course[2];
+      }
+    </script>
+    
+    
   </body>
 </html>

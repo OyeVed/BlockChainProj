@@ -400,7 +400,6 @@
                       placeholder="Division" value="" /><br>
                     <input type="text" class="form-control" name="student-manager-name" id="edit_student_manager-name"
                       placeholder="Manager Name" value="" /><br>
-
                   </div>
                   <div class="col">
                     <input type="text" class="form-control" name="student-position" id="edit_student_position"
@@ -411,7 +410,6 @@
                       placeholder="Contact No." value="" /><br>
                     <input type="text" class="form-control" name="student-region" id="edit_student_region"
                       placeholder="Region" value="" /><br>
-
                   </div>
                 </div>
                 <label for="">Day Wise Attendance:</label>
@@ -599,7 +597,7 @@
 
                       $student_attendance_js = json_encode(array_values($student[5]));
                       
-                      echo  "<th><i onclick='editStudent([\"$student[0]\",\"$student[1]\", \"$student[2]\", \"$student[3]\", \"$student[4]\", \"$student[8]\", \"$student[9]\", \"$student[10]\", \"$student[11]\", \"$student[12]\", $course_dates_js, $student_attendance_js])' data-toggle='modal' data-target='#edit_student_Modal' class='fa fa-pencil-square-o ml-1' style='cursor:pointer;' aria-hidden='true'></i><i onclick='deleteCourse()' class='fa fa-trash-o ml-3' style='cursor:pointer;' aria-hidden='true'></i></th>";
+                      echo  "<th><i onclick='editStudent([\"$student[0]\",\"$student[1]\", \"$student[2]\", \"$student[3]\", \"$student[4]\", \"$student[8]\", \"$student[9]\", \"$student[10]\", \"$student[11]\", \"$student[12]\", $course_dates_js, $student_attendance_js])' data-toggle='modal' data-target='#edit_student_Modal' class='fa fa-pencil-square-o ml-1' style='cursor:pointer;' aria-hidden='true'></i><i onclick='deleteStudent($student[0], \"$student[1]\", $course_id)' class='fa fa-trash-o ml-3' style='cursor:pointer;' aria-hidden='true'></i></th>";
                       echo "</tr>";
                     }
                   ?>
