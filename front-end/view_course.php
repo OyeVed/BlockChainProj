@@ -565,10 +565,10 @@
                     <th>Email</th>
                     <th>Final Attendance</th>
                     <?php
-                        foreach ($course_dates as $key => $value) {
-                          echo "<th style='min-width: 100px;'>" . $value['date'] . "</th>";
-                        }
-                      ?>
+                      foreach ($course_dates as $key => $value) {
+                        echo "<th style='min-width: 100px;'>" . $value['date'] . "</th>";
+                      }
+                    ?>
                     <th>Pre Assesment Score</th>
                     <th>Post Assesment Score</th>
                     <th>Employee No.</th>
@@ -596,7 +596,10 @@
                       }
 
                       $course_dates_js = json_encode($course_dates);
-                      echo  "<th><i onclick='editStudent([\"$student[0]\",\"$student[1]\", \"$student[2]\", \"$student[3]\", \"$student[4]\", \"$student[8]\", \"$student[9]\", \"$student[10]\", \"$student[11]\", \"$student[12]\", $course_dates_js])' data-toggle='modal' data-target='#edit_student_Modal' class='fa fa-pencil-square-o ml-1' style='cursor:pointer;' aria-hidden='true'></i><i onclick='deleteCourse()' class='fa fa-trash-o ml-3' style='cursor:pointer;' aria-hidden='true'></i></th>";
+
+                      $student_attendance_js = json_encode(array_values($student[5]));
+                      
+                      echo  "<th><i onclick='editStudent([\"$student[0]\",\"$student[1]\", \"$student[2]\", \"$student[3]\", \"$student[4]\", \"$student[8]\", \"$student[9]\", \"$student[10]\", \"$student[11]\", \"$student[12]\", $course_dates_js, $student_attendance_js])' data-toggle='modal' data-target='#edit_student_Modal' class='fa fa-pencil-square-o ml-1' style='cursor:pointer;' aria-hidden='true'></i><i onclick='deleteCourse()' class='fa fa-trash-o ml-3' style='cursor:pointer;' aria-hidden='true'></i></th>";
                       echo "</tr>";
                     }
                   ?>
