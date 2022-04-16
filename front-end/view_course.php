@@ -135,10 +135,12 @@
           90 AS 'avg_attendance',
           AVG(student_table.student_pre_assesment_score) AS 'avg_pre_assessment',
           AVG(student_table.student_post_assesment_score) AS 'avg_post_assessment',
-          trainer_table.trainer_name AS 'trainer'
+          user_tables.name AS 'trainer',
+          (SELECT COUNT(course_date_table.course_date_id) FROM course_date_table WHERE course_date_table.course_id=course_table.course_id) 'duration'
           FROM course_table
           JOIN student_table ON student_table.student_course_id = course_table.course_id
-          LEFT JOIN trainer_table ON trainer_table.trainer_id = course_table.course_trainer_id
+          LEFT JOIN user_tables ON user_tables.id = course_table.course_trainer_id
+          JOIN course_date_table ON course_date_table.course_id = course_table.course_id
           WHERE course_table.course_id = $course_id
           GROUP BY student_table.student_course_id;
           ");
@@ -231,8 +233,7 @@
           </div>
           <div class="modal-body">
             <form action="/BlockChainProj/back-end/feedback.php" id="uploadPreAssessmentId" method="POST" enctype="multipart/form-data">
-              <input type="hidden" class="form-control" name="course-id" placeholder="Course Id" value=""
-                id="pre_assesment_course_id" /><br>
+              <input type="hidden" class="form-control" name="course-id" placeholder="Course Id" value="<?php echo $course_id; ?>" id="pre_assesment_course_id" /><br>
               <p style="text-align:left; font-size:14px; margin-top: -20px;" for="exampleInputFile">Import File</p>
               <input class="form-control-file" style="font-size:14px;" name="feedback-file" id="exampleInputFile"
                 type="file" accept=".csv" aria-describedby="fileHelp"><small class="form-text text-muted"
@@ -262,7 +263,7 @@
           </div>
           <div class="modal-body">
             <form action="/BlockChainProj/back-end/pre_assessment.php" id="uploadPreAssessmentId" method="POST" enctype="multipart/form-data">
-              <input type="hidden" class="form-control" name="course-id" placeholder="Course Id" value=""
+              <input type="hidden" class="form-control" name="course-id" placeholder="Course Id" value="<?php echo $course_id; ?>"
                 id="pre_assesment_course_id" /><br>
               <p style="text-align:left; font-size:14px; margin-top: -20px;" for="exampleInputFile">Import File</p>
               <input class="form-control-file" style="font-size:14px;" name="pre-assessment-file" id="exampleInputFile"
@@ -293,7 +294,7 @@
           </div>
           <div class="modal-body">
             <form action="/BlockChainProj/back-end/post_assessment.php" id="uploadPostAssessmentId" method="POST" enctype="multipart/form-data">
-              <input type="hidden" class="form-control" name="course-id" placeholder="Course Id" value=""
+              <input type="hidden" class="form-control" name="course-id" placeholder="Course Id" value="<?php echo $course_id; ?>"
                 id="post_assesment_course_id" /><br>
               <p style="text-align:left; font-size:14px; margin-top: -20px;" for="exampleInputFile">Import File</p>
               <input class="form-control-file" style="font-size:14px;" name="post-assessment-file" id="exampleInputFile"
@@ -398,7 +399,7 @@
           </div>
           <div class="modal-body">
             <form action="/BlockChainProj/back-end/attendance.php"  id="markAttendanceFormId" method="POST" enctype="multipart/form-data">
-              <input type="hidden" class="form-control" name="course-id" placeholder="Course Id" value=""
+              <input type="hidden" class="form-control" name="course-id" placeholder="Course Id" value="<?php echo $course_id; ?>"
                 id="mark_attendance_course_id" /><br>
               <div class="form-group">
                 <select name="course-date" class="form-control" id="exampleSelect1">
@@ -490,7 +491,7 @@
               <p style="display: inline;">Trainer Name:
                 <?php echo $course[6] ?>
               </p><br />
-              <p style="display: inline;">Duration: </p><br />
+              <p style="display: inline;">Duration: <?php echo $course[7] ?> Days</p><br />
             </div>
             <div class="mb-3" style="margin-top: 60px;">
               <h5 style="display: inline;">Students Attendance Table</h5>
@@ -528,6 +529,8 @@
                         }
                         
                       ?>
+                    <th>Pre Assesment Score</th>
+                    <th>Post Assesment Score</th>
                     <th>Employee No.</th>
                     <th>Contact No.</th>
                     <th>Division</th>
@@ -547,12 +550,15 @@
                       student_table.student_position 'POSITION',
                       student_table.student_email 'EMAIL',
                       student_table.student_emp_no 'EMP_NO',
-                      (SELECT COUNT(attendance_table.attendance_status) FROM attendance_table WHERE attendance_table.attendance_student_id=student_table.student_id AND attendance_table.attendance_status='P') 'FINAL_ATTENDANCE',
+                      student_table.student_final_attendance 'FINAL_ATTENDANCE',
+                      (SELECT COUNT(attendance_table.attendance_status) FROM attendance_table WHERE attendance_table.attendance_student_id=student_table.student_id AND attendance_table.attendance_status='P') 'FINAL_ATTENDANCE_COUNT',
                       student_table.student_phonenumber 'CONTACT_NO',
                       student_table.student_division 'DIVISION',
                       student_table.student_region 'REGION',
                       student_table.student_manager_name 'MANAGER_NAME',
-                      GROUP_CONCAT(attendance_table.attendance_status) 'ATTENDANCE'
+                      GROUP_CONCAT(attendance_table.attendance_status) 'ATTENDANCE',
+                      student_table.student_pre_assesment_score 'PRE_ASSESMENT_SCORE',
+                      student_table.student_post_assesment_score 'POST_ASSESMENT_SCORE'
                       FROM student_table
                       LEFT JOIN attendance_table on attendance_table.attendance_student_id=student_table.student_id
                       WHERE student_table.student_course_id=$course_id
@@ -573,6 +579,8 @@
                               $v['EMAIL'],
                               $v['FINAL_ATTENDANCE'],
                               explode(",", $v['ATTENDANCE']),
+                              $v['PRE_ASSESMENT_SCORE'],
+                              $v['POST_ASSESMENT_SCORE'],
                               $v['EMP_NO'],
                               $v['CONTACT_NO'],
                               $v['DIVISION'],

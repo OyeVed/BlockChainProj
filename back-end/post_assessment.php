@@ -21,6 +21,7 @@ try{
         $file_to_be_validated = fopen($filepath, "r");
         require_once("validations/find_column.php");
         $column_indices = find_columns($file_to_be_validated, array("Email", "Total points"));
+
         fclose($file_to_be_validated);
 
         $email_column = $column_indices["Email"];
@@ -41,10 +42,11 @@ try{
             $data = fgetcsv($post_assessment_file, 1000, ","); // read out the first line in file to not count the header.
             while (($data = fgetcsv($post_assessment_file, 1000, ",")) !== FALSE){
 
-                // update query to update the student details.
-                $post_assessment_details_query = "UPDATE `student_table` SET `student_post_assesment_score` = $data[$total_points_column] WHERE `student_table`.`student_email` = '$data[$email_column]' AND `student_table`.`student_course_id` = $course_id;";
-
-                $conn->exec($post_assessment_details_query);
+                if(in_array($data[$email_column], $email_list_db)){
+                    // update query to update the student details.
+                    $post_assessment_details_query = "UPDATE `student_table` SET `student_post_assesment_score` = $data[$total_points_column] WHERE `student_table`.`student_email` = '$data[$email_column]' AND `student_table`.`student_course_id` = $course_id;";
+                    $conn->exec($post_assessment_details_query);
+                }
                 
             }
             fclose($post_assessment_file);

@@ -25,14 +25,14 @@ while (($data = fgetcsv($file_to_be_validated, 1000, ",")) !== FALSE){
 $emails_in_sheet_but_not_in_db = array_diff($email_list, $email_list_db);
 $emails_in_db_but_not_in_sheet = array_diff($email_list_db, $email_list);
 
-echo "Emails in Sheet But Not In Db: ";
-echo "<br>";
-print_r($emails_in_sheet_but_not_in_db);
+// echo "Emails in Sheet But Not In Db: ";
+// echo "<br>";
+// print_r($emails_in_sheet_but_not_in_db);
 
-echo "<br>";
-echo "<br>";
-echo "Emails in Db But Not In Sheet: ";
-echo "<br>";
-print_r($emails_in_db_but_not_in_sheet);
+// echo "<br>";
+// echo "<br>";
+// echo "Emails in Db But Not In Sheet: ";
+// echo "<br>";
+// print_r($emails_in_db_but_not_in_sheet);
 
 ?>

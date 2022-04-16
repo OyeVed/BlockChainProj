@@ -1,17 +1,5 @@
 -- https://docs.google.com/spreadsheets/d/1va-RIRffH9-CAWIusqDBtRT0O9R57eDVHVTN69m2eVA/edit#gid=0
 
-
--- trainer table
-CREATE TABLE IF NOT EXISTS trainer_table
-(
-    trainer_id INT PRIMARY KEY AUTO_INCREMENT,
-    trainer_name VARCHAR(255) NOT NULL,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    created_by INT NOT NULL DEFAULT 0,
-    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    updated_by INT NOT NULL DEFAULT 0
-);
-
 -- courses table
 CREATE TABLE IF NOT EXISTS course_table
 (
@@ -23,9 +11,10 @@ CREATE TABLE IF NOT EXISTS course_table
     created_by INT NOT NULL DEFAULT 0,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_by INT NOT NULL DEFAULT 0,
-    FOREIGN KEY (course_trainer_id) REFERENCES trainer_table(trainer_id)
+    FOREIGN KEY (course_trainer_id) REFERENCES user_tables(id)
 );
 
+-- course dates table
 CREATE TABLE IF NOT EXISTS course_date_table
 (
     course_date_id INT PRIMARY KEY AUTO_INCREMENT,
@@ -47,6 +36,7 @@ CREATE TABLE IF NOT EXISTS student_table
     student_emp_no INT NOT NULL,
     student_phonenumber INT NOT NULL,
     student_email VARCHAR(255) NOT NULL,
+    student_final_attendance CHAR(1) DEFAULT '-' NOT NULL,
     student_division VARCHAR(255) NOT NULL,
     student_position VARCHAR(255) NOT NULL,
     student_manager_name VARCHAR(255) NOT NULL,

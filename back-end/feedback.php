@@ -108,7 +108,7 @@ try{
                 Swal.fire
                     ({
                     'title': 'Successful',
-                    'text': 'Pre Assessment Report filled Successfully.',
+                    'text': 'Feedback Report filled Successfully.',
                     'type': 'success'
                     })
             </script>";

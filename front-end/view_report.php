@@ -100,10 +100,11 @@ include('../back-end/common/connection.php');
           90 AS 'avg_attendance',
           AVG(student_table.student_pre_assesment_score) AS 'avg_pre_assessment',
           AVG(student_table.student_post_assesment_score) AS 'avg_post_assessment',
-          trainer_table.trainer_name AS 'trainer'
+          user_tables.name AS 'trainer',
+          (SELECT COUNT(course_date_table.course_date_id) FROM course_date_table WHERE course_date_table.course_id=course_table.course_id) 'duration'
           FROM course_table
           JOIN student_table ON student_table.student_course_id = course_table.course_id
-          LEFT JOIN trainer_table ON trainer_table.trainer_id = course_table.course_trainer_id
+          LEFT JOIN user_tables ON user_tables.id = course_table.course_trainer_id
           WHERE course_table.course_id = $course_id
           GROUP BY student_table.student_course_id;
           ");
@@ -141,7 +142,7 @@ include('../back-end/common/connection.php');
                 <div class="tile-body">
                     <div class="mb-1" >
                         <h1><?php echo $course[1]; ?></h1>
-                        <p>Total Students Enrolled: <?php echo $course[2]; ?><br>Trainer Name: <?php echo $course[6]; ?><br>Duration:</p>
+                        <p>Total Students Enrolled: <?php echo $course[2]; ?><br>Trainer Name: <?php echo $course[6]; ?><br>Duration: <?php echo $course[7]; ?> Days</p>
                     </div>
                 </div>
             </div>
@@ -183,7 +184,8 @@ include('../back-end/common/connection.php');
                         student_table.student_name AS 'name',
                         student_table.student_pre_assesment_score AS 'pre_assesment',
                         student_table.student_post_assesment_score AS 'post_assesment',
-                        (SELECT COUNT(attendance_table.attendance_status) FROM attendance_table WHERE attendance_table.attendance_student_id=student_table.student_id AND attendance_table.attendance_status='P') 'final_attendance'
+                        student_table.student_final_attendance 'final_attendance',
+                        (SELECT COUNT(attendance_table.attendance_status) FROM attendance_table WHERE attendance_table.attendance_student_id=student_table.student_id AND attendance_table.attendance_status='P') 'final_attendance_count'
                         FROM student_table
                         WHERE student_table.student_course_id = $course_id
                         ");
@@ -316,10 +318,12 @@ include('../back-end/common/connection.php');
     <?php
         $stmt = $conn->prepare("
         SELECT
-        course_date_table.course_date as 'date',
-        COUNT(attendance_table.attendance_status) as 'attendance'
+        CONCAT(DAY(course_date_table.course_date), '/', MONTH(course_date_table.course_date), '/', YEAR(course_date_table.course_date)) as 'date',
+        ((COUNT(attendance_table.attendance_status) / course_table.course_student_count) * 100) as 'attendance',
+        course_table.course_student_count as 'student_count'
         FROM attendance_table
         JOIN course_date_table ON course_date_table.course_date_id = attendance_table.attendance_course_date_id
+        JOIN course_table ON course_table.course_id = course_date_table.course_id
         WHERE attendance_table.attendance_status='P' AND course_date_table.course_id=$course_id
         GROUP BY course_date_table.course_date_id
         ");

@@ -121,9 +121,9 @@ $(document).ready(function() {
                 <?php
                   $stmt = $conn->prepare("
                   SELECT
-                  trainer_id,
-                  trainer_name
-                  FROM trainer_table
+                  id AS 'trainer_id',
+                  name AS 'trainer_name'
+                  FROM user_tables
                   ");
                   $stmt->execute();
                   $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
@@ -216,14 +216,14 @@ $(document).ready(function() {
                     SELECT
                     course_table.course_id AS 'id',
                     course_table.course_name AS 'name',
-                    trainer_table.trainer_name AS 'trainer',
+                    user_tables.name AS 'trainer',
                     course_table.course_student_count AS 'no_of_students',
                     90 AS 'avg_attendance',
                     AVG(student_table.student_pre_assesment_score) AS 'avg_pre_assessment',
                     AVG(student_table.student_post_assesment_score) AS 'avg_post_assessment'
                     FROM course_table
                     JOIN student_table ON student_table.student_course_id = course_table.course_id
-                    LEFT JOIN trainer_table ON trainer_table.trainer_id = course_table.course_trainer_id
+                    LEFT JOIN user_tables ON user_tables.id = course_table.course_trainer_id
                     GROUP BY student_table.student_course_id;
                     ");
                     $stmt->execute();

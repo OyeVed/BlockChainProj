@@ -42,10 +42,11 @@ try{
             $data = fgetcsv($pre_assessment_file, 1000, ","); // read out the first line in file to not count the header.
             while (($data = fgetcsv($pre_assessment_file, 1000, ",")) !== FALSE){
 
-                // update query to update the student details.
-                $pre_assessment_details_query = "UPDATE `student_table` SET `student_pre_assesment_score` = $data[$total_points_column] WHERE `student_table`.`student_email` = '$data[$email_column]' AND `student_table`.`student_course_id` = $course_id;";
-
-                $conn->exec($pre_assessment_details_query);
+                if(in_array($data[$email_column], $email_list_db)){
+                    // update query to update the student details.
+                    $pre_assessment_details_query = "UPDATE `student_table` SET `student_pre_assesment_score` = $data[$total_points_column] WHERE `student_table`.`student_email` = '$data[$email_column]' AND `student_table`.`student_course_id` = $course_id;";
+                    $conn->exec($pre_assessment_details_query);
+                }
                 
             }
             fclose($pre_assessment_file);
