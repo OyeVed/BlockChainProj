@@ -655,15 +655,24 @@
     document.getElementById('edit_student_manager-name').value = student[9];
     let dateWiseAttendanceDiv = document.getElementById('dateWiseAttendance');
     let dateWiseArray = student[10]
+    let dateWiseAttenArray = student[11]
     dateWiseAttendanceDiv.innerHTML = ''
     if(dateWiseArray)
     {
 
       for(var i = 0; i < dateWiseArray?.length ; i++)
       {
-        dateWiseAttendanceDiv.innerHTML = dateWiseAttendanceDiv.innerHTML +
-    `<div class='col-12 d-flex justify-content-around align-items-center mt-3'><label for='${dateWiseArray[i]['id']}' class='ml-2'>${dateWiseArray[i]['date']}</label><input name='${dateWiseArray[i]['id']}' type='checkbox' class='ml-4'></div>`
-      console.log(dateWiseAttendanceDiv.innerHTML)
+        let valNowTee = dateWiseAttenArray[i] === 'P' ? true : false
+         if(valNowTee)
+         {
+           dateWiseAttendanceDiv.innerHTML = dateWiseAttendanceDiv.innerHTML +
+
+           `<div class='col-12 d-flex justify-content-around align-items-center mt-3'><label for='${dateWiseArray[i]['id']}' class='ml-2'>${dateWiseArray[i]['date']}</label><input name='${dateWiseArray[i]['id']}' type='checkbox' checked class='ml-4'></div>`
+         }else{
+          dateWiseAttendanceDiv.innerHTML = dateWiseAttendanceDiv.innerHTML +
+
+`<div class='col-12 d-flex justify-content-around align-items-center mt-3'><label for='${dateWiseArray[i]['id']}' class='ml-2'>${dateWiseArray[i]['date']}</label><input name='${dateWiseArray[i]['id']}' type='checkbox'  class='ml-4'></div>`
+         }
       }
     }
   }
