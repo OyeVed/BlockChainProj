@@ -420,21 +420,8 @@
                   <label for="" class="ml-2">Date</label>
                   <label for="">Present/Absent</label>
                 </div>
-                <div class="col-12 d-flex justify-content-around align-items-center mt-3">
-                  <label for="">2022-04-02</label>
-                  <input type="checkbox" class="ml-4">
-                </div>
-                <div class="col-12 d-flex justify-content-around align-items-center mt-3">
-                  <label for="">2022-04-02</label>
-                  <input type="checkbox" class="ml-4">
-                </div>
-                <div class="col-12 d-flex justify-content-around align-items-center mt-3">
-                  <label for="">2022-04-02</label>
-                  <input type="checkbox" class="ml-4">
-                </div>
-                <div class="col-12 d-flex justify-content-around align-items-center mt-3">
-                  <label for="">2022-04-02</label>
-                  <input type="checkbox" class="ml-4">
+                <div id="dateWiseAttendance" >
+
                 </div>
               </div>
 
@@ -663,6 +650,19 @@
     document.getElementById('edit_student_division').value = student[7];
     document.getElementById('edit_student_region').value = student[8];
     document.getElementById('edit_student_manager-name').value = student[9];
+    let dateWiseAttendanceDiv = document.getElementById('dateWiseAttendance');
+    let dateWiseArray = student[10]
+    dateWiseAttendanceDiv.innerHTML = ''
+    if(dateWiseArray)
+    {
+
+      for(var i = 0; i < dateWiseArray?.length ; i++)
+      {
+        dateWiseAttendanceDiv.innerHTML = dateWiseAttendanceDiv.innerHTML +
+    `<div class='col-12 d-flex justify-content-around align-items-center mt-3'><label for='${dateWiseArray[i]['id']}' class='ml-2'>${dateWiseArray[i]['date']}</label><input name='${dateWiseArray[i]['id']}' type='checkbox' class='ml-4'></div>`
+      console.log(dateWiseAttendanceDiv.innerHTML)
+      }
+    }
   }
 </script>
 </body>
