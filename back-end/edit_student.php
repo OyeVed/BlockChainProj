@@ -70,6 +70,26 @@ try{
     $conn->exec($present_details_query);
     $conn->exec($absent_details_query);
 
+    $stmt = $conn->prepare("
+        SELECT
+        student_table.student_id AS 'student_id',
+        (SELECT COUNT(attendance_table.attendance_id) FROM attendance_table WHERE attendance_table.attendance_status='P' AND attendance_table.attendance_student_id=student_table.student_id) AS 'attendance_count',
+        (SELECT COUNT(course_date_table.course_date_id) FROM course_date_table WHERE course_date_table.course_id=course_table.course_id) AS 'course_dates_count'
+        FROM student_table
+        JOIN course_table ON course_table.course_id=student_table.student_course_id
+        WHERE student_table.student_id=$student_id
+        ");
+    $stmt->execute();
+    foreach((new RecursiveArrayIterator($stmt->fetchAll())) as $key => $value) {
+        if($value['attendance_count'] == $value['course_dates_count']){
+            $final_attendance = 'P';
+        } else{
+            $final_attendance = 'A';
+        }
+        $update_student_query = "UPDATE student_table SET student_final_attendance = '$final_attendance' WHERE student_id = '$value[student_id]'";
+        $conn->exec($update_student_query);
+    }
+    
     echo ".";
     echo "<script src='https://cdn.jsdelivr.net/npm/sweetalert2@8'></script><script type='text/javascript'>console.log('Error: ' );
         Swal.fire
