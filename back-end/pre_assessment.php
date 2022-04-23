@@ -61,7 +61,9 @@ try{
             </script>";
             echo "<script>
                 setTimeout(function() {
-                    window.history.go(-1);
+                    let redirect = window.location.href.split('/');
+                    redirect = redirect.slice(0, redirect.indexOf('back-end')).join('/') + '/front-end/view_course.php?courseid=$course_id';
+                    window.location.href = redirect;
                 }, 2000);
             </script>";
         }
