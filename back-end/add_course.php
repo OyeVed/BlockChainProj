@@ -12,6 +12,10 @@ require_once("common/connection.php");
 
 try{
 
+    if(!file_exists('uploads/')){
+        mkdir('uploads/');
+    }
+    
     $filepath = 'uploads/' . basename($_FILES['students-file']['name']);
 
     if (move_uploaded_file($_FILES['students-file']['tmp_name'], $filepath)) {
@@ -131,10 +135,12 @@ try{
                 })
         </script>";
         echo "<script>
-            setTimeout(function() {
-                window.history.go(-1);
-            }, 1000);
-        </script>";
+                setTimeout(function() {
+                    let redirect = window.location.href.split('/');
+                    redirect = redirect.slice(0, redirect.indexOf('back-end')).join('/') + '/front-end/view_courses.php';
+                    window.location.href = redirect;
+                }, 2000);
+            </script>";
 
     } else {
         echo "<script src='https://cdn.jsdelivr.net/npm/sweetalert2@8'></script><script type='text/javascript'>console.log('Error: ' );
@@ -145,10 +151,12 @@ try{
                   )
         </script>";
         echo "<script>
-        setTimeout(function() {
-            window.history.go(-1);
-        }, 1000);
-        </script>";
+                setTimeout(function() {
+                    let redirect = window.location.href.split('/');
+                    redirect = redirect.slice(0, redirect.indexOf('back-end')).join('/') + '/front-end/view_courses.php';
+                    window.location.href = redirect;
+                }, 2000);
+            </script>";
     }
 
 } 
