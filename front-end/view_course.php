@@ -581,7 +581,9 @@
 
                   <?php
                   
+                    $students_js = array();
                     foreach ($students as $student) {
+                      array_push($students_js, array("id" => $student[0], "name" => $student[1]));
                       echo "<tr>";
                       foreach ($student as $value) {
                         if(is_array($value)){
@@ -609,6 +611,11 @@
       </div>
     </div>
   </main>
+
+  <script>
+    var students = <?php echo json_encode($students_js); ?>;
+    console.log(students);
+  </script>
 
   <!-- Essential javascripts for application to work-->
   <script>
