@@ -482,7 +482,14 @@
               </div>
               <div class="form-group">
               </div>
-              <label for="">Mark Attendance:</label>
+              <div class="d-flex justify-content-between" >
+               <label for="">Mark Attendance:</label>
+               <div>
+                 <input name='mark_all' type='checkbox' onclick="handleMarkAllAttendance()" id="mark_all_attendance_input"  class='ml-4'> 
+                 <label for='mark_all' class='ml-2'>Mark All</label>
+              </input>
+               </div>
+               </div>
               <div style="max-height:200px;overflow:auto;">
                 <div class="col-12 d-flex justify-content-around align-items-center mt-3">
                   <label class="">Student Name</label>
@@ -505,7 +512,7 @@
                   foreach((new RecursiveArrayIterator($stmt->fetchAll())) as $k=>$v) {
                     echo "<div class='col-12 d-flex justify-content-around align-items-center mt-3'>";
                     echo "<label for='$v[id]' class='ml-2'>$v[name]</label>";
-                    echo "<input name='$v[id]' type='checkbox' class='ml-4'>";
+                    echo "<input name='$v[id]' id='mark_attendance_student_$v[id]' type='checkbox' class='ml-4'>";
                     echo "</div>";
                   }
                 ?>
@@ -612,11 +619,6 @@
     </div>
   </main>
 
-  <script>
-    var students = <?php echo json_encode($students_js); ?>;
-    console.log(students);
-  </script>
-
   <!-- Essential javascripts for application to work-->
   <script>
     function myFunction() {
@@ -682,6 +684,23 @@
     }
   }
 </script>
+<!-- handle mark all attendance -->
+<script>
+    var students = <?php echo json_encode($students_js); ?>;
+    function handleMarkAllAttendance()
+    {
+      if(document.getElementById('mark_all_attendance_input').checked)
+      {
+        students?.forEach(student =>{
+          document.getElementById(`mark_attendance_student_${student['id']}`).checked = true
+        })
+      }else{
+        students?.forEach(student =>{
+          document.getElementById(`mark_attendance_student_${student['id']}`).checked = false
+        })
+      }
+    }
+  </script>
 </body>
 
 </html>
