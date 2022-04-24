@@ -247,13 +247,41 @@ $(document).ready(function() {
                     $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
 
                     foreach((new RecursiveArrayIterator($stmt->fetchAll())) as $k=>$v) {
-                      echo "<br>";
+
+                      $inner_stmt = $conn->prepare("
+                      SELECT
+                      course_date_table.course_id,
+                      (SELECT COUNT(course_date_table.course_date_id) FROM course_date_table WHERE course_date_table.course_id = course_table.course_id) AS 'no_of_dates',
+                      (COUNT(attendance_table.attendance_id) / course_table.course_student_count) AS 'attendance_percentage'
+                      FROM attendance_table
+                      JOIN course_date_table ON course_date_table.course_date_id = attendance_table.attendance_course_date_id
+                      JOIN course_table ON course_table.course_id = course_date_table.course_id
+                      WHERE attendance_table.attendance_status = 'P' AND course_date_table.course_id = $v[id]
+                      GROUP BY attendance_table.attendance_course_date_id
+                      ");
+
+                      $inner_stmt->execute();
+                      
+                      $attendance_percentage = 0;
+                      foreach((new RecursiveArrayIterator($inner_stmt->fetchAll())) as $ik=>$iv) {
+                        $no_of_dates = $iv['no_of_dates'];
+                        if(isset($iv['attendance_percentage'])) {
+                          $attendance_percentage += $iv['attendance_percentage'];
+                        }
+                      }
+                      if(isset($no_of_dates)) {
+                        $attendance_percentage = $attendance_percentage * 100 / $no_of_dates;
+                      }
+                      else {
+                        $attendance_percentage = 0;
+                      }
+                      
                       echo "<tr style=\"cursor: pointer;\" >";
                       echo "<td style=\"vertical-align: middle; text-align:center; line-height: 100%;\" onclick=\" window.location.href= 'view_course.php?courseid=$v[id]' \" >".$v['id']."</td>";
                       echo "<td style=\"vertical-align: middle; text-align:center; line-height: 100%;\" onclick=\" window.location.href= 'view_course.php?courseid=$v[id]' \" >".$v['name']."</td>";
                       echo "<td style=\"vertical-align: middle; text-align:center; line-height: 100%;\" onclick=\" window.location.href= 'view_course.php?courseid=$v[id]' \" >".$v['trainer']."</td>";
                       echo "<td style=\"vertical-align: middle; text-align:center; line-height: 100%;\" onclick=\" window.location.href= 'view_course.php?courseid=$v[id]' \" >".$v['no_of_students']."</td>";
-                      echo "<td style=\"vertical-align: middle; text-align:center; line-height: 100%;\" onclick=\" window.location.href= 'view_course.php?courseid=$v[id]' \" >".$v['avg_attendance']."</td>";
+                      echo "<td style=\"vertical-align: middle; text-align:center; line-height: 100%;\" onclick=\" window.location.href= 'view_course.php?courseid=$v[id]' \" >".$attendance_percentage."</td>";
                       echo "<td style=\"vertical-align: middle; text-align:center; line-height: 100%;\" onclick=\" window.location.href= 'view_course.php?courseid=$v[id]' \" >".$v['avg_pre_assessment']."</td>";
                       echo "<td style=\"vertical-align: middle; text-align:center; line-height: 100%;\" onclick=\" window.location.href= 'view_course.php?courseid=$v[id]' \" >".$v['avg_post_assessment']."</td>";
                       echo "<td style=\"vertical-align: middle; text-align:center; line-height: 100%;\">

@@ -199,7 +199,7 @@
                   $v['POSITION'],
                   $v['EMAIL'],
                   $v['FINAL_ATTENDANCE'],
-                  array_reverse(explode(",", $v['ATTENDANCE'])),
+                  explode(",", $v['ATTENDANCE']),
                   $v['PRE_ASSESMENT_SCORE'],
                   $v['POST_ASSESMENT_SCORE'],
                   $v['EMP_NO'],
