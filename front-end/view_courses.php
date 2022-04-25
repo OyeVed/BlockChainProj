@@ -271,19 +271,23 @@ $(document).ready(function() {
                       }
                       if(isset($no_of_dates)) {
                         $attendance_percentage = $attendance_percentage * 100 / $no_of_dates;
+                        $attendance_percentage = round($attendance_percentage,2);
                       }
                       else {
                         $attendance_percentage = 0;
                       }
-                      
+                      $pre_assessment_avg = round($v['avg_pre_assessment'],2); 
+                      $post_assessment_avg = round($v['avg_post_assessment'],2);
+
+
                       echo "<tr style=\"cursor: pointer;\" >";
                       echo "<td style=\"vertical-align: middle; text-align:center; line-height: 100%;\" onclick=\" window.location.href= 'view_course.php?courseid=$v[id]' \" >".$v['id']."</td>";
                       echo "<td style=\"vertical-align: middle; text-align:center; line-height: 100%;\" onclick=\" window.location.href= 'view_course.php?courseid=$v[id]' \" >".$v['name']."</td>";
                       echo "<td style=\"vertical-align: middle; text-align:center; line-height: 100%;\" onclick=\" window.location.href= 'view_course.php?courseid=$v[id]' \" >".$v['trainer']."</td>";
                       echo "<td style=\"vertical-align: middle; text-align:center; line-height: 100%;\" onclick=\" window.location.href= 'view_course.php?courseid=$v[id]' \" >".$v['no_of_students']."</td>";
                       echo "<td style=\"vertical-align: middle; text-align:center; line-height: 100%;\" onclick=\" window.location.href= 'view_course.php?courseid=$v[id]' \" >".$attendance_percentage."</td>";
-                      echo "<td style=\"vertical-align: middle; text-align:center; line-height: 100%;\" onclick=\" window.location.href= 'view_course.php?courseid=$v[id]' \" >".$v['avg_pre_assessment']."</td>";
-                      echo "<td style=\"vertical-align: middle; text-align:center; line-height: 100%;\" onclick=\" window.location.href= 'view_course.php?courseid=$v[id]' \" >".$v['avg_post_assessment']."</td>";
+                      echo "<td style=\"vertical-align: middle; text-align:center; line-height: 100%;\" onclick=\" window.location.href= 'view_course.php?courseid=$v[id]' \" >".$pre_assessment_avg."</td>";
+                      echo "<td style=\"vertical-align: middle; text-align:center; line-height: 100%;\" onclick=\" window.location.href= 'view_course.php?courseid=$v[id]' \" >".$post_assessment_avg."</td>";
                       echo "<td style=\"vertical-align: middle; text-align:center; line-height: 100%;\">
                               <i data-toggle=\"modal\" data-target=\"#edit_course_Modal\" onclick=\"editCourseAndSave([$v[id], '$v[name]', '$v[trainer_id]'])\"  class='fa fa-pencil-square-o btn btn-warning text-light pt-2 pb-2' aria-hidden='true' ></i>
                              <i onclick=\"deleteCourse($v[id], '$v[name]')\" class='fa fa-trash btn btn-danger text-light pt-2 pb-2' aria-hidden='true'></i>
