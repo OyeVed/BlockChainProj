@@ -405,7 +405,7 @@
                     <input type="text" class="form-control" name="student-position" id="edit_student_position"
                       placeholder="Position" value="" /><br>
                     <input type="text" class="form-control" name="student-final-attendance"
-                      id="edit_student_final_attendance" placeholder="Final Attendance" value="" /><br>
+                      id="edit_student_final_attendance" placeholder="Final Attendance" value="" readonly /><br>
                     <input type="text" class="form-control" name="student-contact-no" id="edit_student_contact_no"
                       placeholder="Contact No." value="" /><br>
                     <input type="text" class="form-control" name="student-region" id="edit_student_region"
