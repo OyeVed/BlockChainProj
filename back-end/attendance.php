@@ -34,7 +34,7 @@ try{
     } else{
         $absent_students = "(";
         foreach ($_POST as $key => $value) {
-            if($key != 'course-id' && $key != 'course-date'){
+            if($key != 'course-id' && $key != 'course-date' && $key != 'mark_all'){
                 $update_attendance_query = "UPDATE attendance_table SET attendance_status = 'P' WHERE attendance_course_date_id = '$course_date' AND attendance_student_id = '$key'";
                 $absent_students .= "$key,";
                 // echo $update_attendance_query . "<br>";
