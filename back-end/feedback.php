@@ -74,36 +74,41 @@ try{
 
             while (($data = fgetcsv($feedback_file, 1000, ",")) !== FALSE){
 
-                $sql = "SELECT student_table.student_id AS student_id FROM student_table WHERE student_table.student_email = '$data[$email_column]'";
-                $query = $conn -> prepare($sql);
-                $query->execute();
-                $results = $query->fetchAll(PDO::FETCH_OBJ);
-                $student_id = $results[0]->student_id;
-
-                if($student_id != null){
-
-                    $question_index = 0;
+                if($data[$email_column] != ''){
+                    $sql = "SELECT student_table.student_id AS student_id FROM student_table WHERE student_table.student_email = '$data[$email_column]'";
                     
-                    $feedback_details_query = "INSERT INTO feedback_response_table (feedback_id, feedback_student_id, feedback_response) VALUES";
-                    
-                    for ($i = $start_feedback_questions_column; $i < sizeof($data); $i++) { 
+                    $query = $conn -> prepare($sql);
+                    $query->execute();
+                    $results = $query->fetchAll(PDO::FETCH_OBJ);
+                    $student_id = $results[0]->student_id;
 
-                        $question_id = $feedback_questions[$question_index][0];
+                    if($student_id != null){
+
+                        $question_index = 0;
                         
-                        $feedback_details_query .= " ($question_id, $student_id, '$data[$i]'),";
+                        $feedback_details_query = "INSERT INTO feedback_response_table (feedback_id, feedback_student_id, feedback_response) VALUES";
                         
-                        $question_index++;
-                        
+                        for ($i = $start_feedback_questions_column; $i < sizeof($data); $i++) { 
+
+                            $question_id = $feedback_questions[$question_index][0];
+                            
+                            $feedback_details_query .= " ($question_id, $student_id, '$data[$i]'),";
+                            
+                            $question_index++;
+                            
+                        }
+                        $feedback_details_query = rtrim($feedback_details_query, ",");
+
                     }
-                    $feedback_details_query = rtrim($feedback_details_query, ",");
 
+                    $conn->exec($feedback_details_query);
                 }
-
-                $conn->exec($feedback_details_query);
                 
             }
             fclose($feedback_file);
 
+            die();
+            
             echo "<script src='https://cdn.jsdelivr.net/npm/sweetalert2@8'></script><script type='text/javascript'>console.log('Error: ' );
                 Swal.fire
                     ({
@@ -125,6 +130,7 @@ try{
         unlink($filepath);
 
     } else {
+        die();
         echo "File not uploaded\n";
     }
 
