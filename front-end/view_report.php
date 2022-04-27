@@ -240,7 +240,7 @@ include('../back-end/common/connection.php');
                     
                     ?>
                       <div class="col-6 mb-4"   >
-                          <div class="d-flex justify-content-between " >
+                          <div class="d-flex justify-content-between" style="min-height: 200px;" >
                               <div style="flex-basis: 55%;" >
                                   <p><?php echo $v['feedback_question'] ?></p>
                                   <table style="width: 200px;" >
@@ -259,7 +259,7 @@ include('../back-end/common/connection.php');
                                   
                                 </table>
                               </div>
-                              <div style="flex-basis: 40%;height:250px;" >
+                              <div style="flex-basis: 40%;height:120px;" >
                                   <canvas id="<?php echo $v['feedback_id']; ?>" ></canvas> 
                               </div>
                           </div>
