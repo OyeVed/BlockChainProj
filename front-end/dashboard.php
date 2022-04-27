@@ -191,16 +191,60 @@
         </div>
 
         <div class=" col-md-6 col-12" >
-          <div class="tile" style="min-height: 500px;" >
+          <div class="tile"  style="height: 94%;" >
 
             <h3 class="tile-title">Performance Report</h3>
-            <div  >
+            <div style="height: 88%;"  >
                 <canvas id="performance_report_chart" ></canvas>   
            </div>
           </div>
 
         </div>
         
+      </div>
+      <div class="tile" >
+            <h6 class="tile-title">Courses :-</h6>
+            <table class="table table-hover table-bordered" id="sampleTable" >
+                    <thead>
+                    <tr>
+                      <th>Course Name</th>
+                      <th>Trainer Name</th>
+                      <th>Avg. Attendance</th>
+                      <th>Avg. Pre Assessment</th>
+                      <th>Avg. Post Assessment</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                            <tr>
+                                <td>Aws</td>
+                                <td>Robert </td>
+                                <td>80%</td>
+                                <td>90%</td>
+                                <td>90%</td>
+                            <tr>
+                            <tr>
+                                <td>Aws</td>
+                                <td>Robert </td>
+                                <td>80%</td>
+                                <td>90%</td>
+                                <td>90%</td>
+                            <tr>
+                            <tr>
+                                <td>Aws</td>
+                                <td>Robert </td>
+                                <td>80%</td>
+                                <td>90%</td>
+                                <td>90%</td>
+                            <tr>
+                            <tr>
+                                <td>Aws</td>
+                                <td>Robert </td>
+                                <td>80%</td>
+                                <td>90%</td>
+                                <td>90%</td>
+                            <tr>
+                    </tbody>
+                </table>
       </div>
     </main>
     <!-- Essential javascripts for application to work-->
@@ -247,39 +291,60 @@
   }
 });
 
-new Chart(document.getElementById("performance_report_chart"), {
-        type: 'bar',
-        data: {
-            labels:['Google...','AWS B...','testing...','Docker ...'],
-            datasets: [{ 
-                data:[90,80,70,60],
-                label: "Avg. Attendance",
-                borderColor: "#ff2323",//red
-                backgroundColor: "#ff2323",
-                fill: false
-            }, 
-            { 
-                data: [80,70,60,50],
-                label: "Avg. Pre Assessment",
-                borderColor: "#0606c4",//blue
-                backgroundColor: '#0606c4',
-                fill: false
-            }, 
-            { 
-                data:[70,60,50,40],
-                label: "Avg. Post Assessment",
-                borderColor: "#059b19",//green
-                backgroundColor: '#059b19',
-                fill: false
+const dataAssessment = {
+    labels: ['Google Web Development Bootcamp','AWS Bootcamp','testing series','Docker Expert','Google Web Development Bootcamp','AWS Bootcamp','testing series','Docker Expert','Google Web Development Bootcamp','AWS Bootcamp','testing series','Docker Expert'],
+    datasets: [{
+      label: 'Avg. Attendance',
+      backgroundColor: '#ff2323',
+      borderColor: '#ff2323',
+      data: [90,80,70,60,90,80,70,60,90,80,70,60],
+    },{
+      label: 'Avg. Pre Assessment',
+      backgroundColor: '#0606c4',
+      borderColor: '#0606c4',
+      data:  [80,70,60,50,90,80,70,60,90,80,70,60],
+
+    },{
+      label: 'Avg. Pre Assessment',
+      backgroundColor: '#059b19',
+      borderColor: '#059b19',
+      data:[70,60,50,40,90,80,70,60,90,80,70,60],
+    }]
+  };
+  const configAssessment = {
+    type: 'bar',
+    data: dataAssessment,
+    options: {
+        maintainAspectRatio: false,
+        scales: {
+        yAxes: [{
+            ticks: {
+                min: 0, // minimum value
+                max: 100 // maximum value
             }
-            ]
-        },
-  options: {
-    title: {
-      display: true
+        }],
+        xAxes: [
+    {
+      ticks: {
+        callback: function(label) {
+          if (label.length > 7) {
+            return label.substring(0,7) + "...";
+          }else{
+            return label;
+          }              
+        }
+      },
+      
     }
-  }
-});
+  ]
+
+      }
+    }
+  };
+  const assesmentChart = new Chart(
+    document.getElementById('performance_report_chart'),
+    configAssessment
+  );
     </script>
   </body>
 </html>

@@ -354,7 +354,7 @@ include('../back-end/common/connection.php');
                 backgroundColor: 'rgb(255, 99, 132)',
                 borderColor: 'rgb(255, 99, 132)',
                 data: attendanceData,
-                // maxBarThickness: 30
+                maxBarThickness: 30
             }]
         };
 
