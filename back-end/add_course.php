@@ -71,9 +71,20 @@ try{
         $new_student_id = $student_id;
         $data = fgetcsv($students_file, 1000, ","); // read out the first line in file to not count the header.
         while (($data = fgetcsv($students_file, 1000, ",")) !== FALSE){
-            $student_details_query .= " ('$new_student_id', '$course_id', '$data[0]', '$data[1]', '$data[2]', '$data[3]', '$data[4]', '$data[5]', '$data[6]', '$data[7]'),";
-            $no_of_students++;
-            $new_student_id++;
+            if(
+                $data[0] != ''
+                && $data[1] != ''
+                && $data[2] != ''
+                && $data[3] != ''
+                && $data[4] != ''
+                && $data[5] != ''
+                && $data[6] != ''
+                && $data[7] != ''
+            ){
+                $student_details_query .= " ('$new_student_id', '$course_id', '$data[0]', '$data[1]', '$data[2]', '$data[3]', '$data[4]', '$data[5]', '$data[6]', '$data[7]'),";
+                $no_of_students++;
+                $new_student_id++;
+            }
         }
         fclose($students_file);
         $student_details_query = rtrim($student_details_query, ",");

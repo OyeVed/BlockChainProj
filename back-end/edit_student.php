@@ -68,7 +68,7 @@ try{
     ";
     
     $conn->exec($present_details_query);
-    // $conn->exec($absent_details_query);
+    $conn->exec($absent_details_query);
 
     $stmt = $conn->prepare("
         SELECT
