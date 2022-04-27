@@ -77,15 +77,15 @@
     
     <main class="app-content">
       <div class="row">
-        <div class="col-md-6 col-lg-4">
+        <div class="col-md-6 col-lg-3">
           <div class="widget-small primary coloured-icon"><i class="icon fa fa-users fa-3x"></i>
             <div class="info">
-              <h4><a href="view_certificate.php">Total Certificates</a></h4>
+              <h4><a href="view_certificate.php">Certificates</a></h4>
               <p><b><?php echo"$tcertificate"; ?></b></p>
             </div>
           </div>
         </div>
-        <div class="col-md-6 col-lg-4">
+        <div class="col-md-6 col-lg-3">
           <div class="widget-small info coloured-icon"><i class="icon fa fa-thumbs-o-up fa-3x"></i>
             <div class="info">
               <h4><a href="issued_today.php">Issued Today</a></h4>
@@ -93,17 +93,25 @@
             </div>
           </div>
         </div>
-        <div class="col-md-6 col-lg-4">
-          <div class="widget-small danger coloured-icon"><i class="icon fa fa-star fa-3x"></i>
+        <div class="col-md-6 col-lg-3">
+          <div class="widget-small danger coloured-icon"><i class="icon fa fa-envelope fa-3x"></i>
             <div class="info">
-              <h4>Total Emails Send</h4>
+              <h4><a href="">Emails Send</a></h4>
+              <p><b><?php echo"$tcertificate"; ?></b></p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3">
+          <div class="widget-small warning coloured-icon"><i class="icon fa fa-book fa-3x"></i>
+            <div class="info">
+              <h4><a href="view_courses.php">Total Course</a></h4>
               <p><b><?php echo"$tcertificate"; ?></b></p>
             </div>
           </div>
         </div>
       </div>
       <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-6 col-12">
           <div class="tile">
             <h3 class="tile-title">System Summary</h3>
             <div class="text-lg-right">
@@ -178,6 +186,9 @@
               <canvas class="embed-responsive-item" id="lineChartDemo"></canvas>
             </div>
           </div>
+        </div>
+        <div class="" >
+
         </div>
       </div>
     </main>
