@@ -107,8 +107,6 @@ try{
             }
             fclose($feedback_file);
 
-            die();
-            
             echo "<script src='https://cdn.jsdelivr.net/npm/sweetalert2@8'></script><script type='text/javascript'>console.log('Error: ' );
                 Swal.fire
                     ({
@@ -130,7 +128,6 @@ try{
         unlink($filepath);
 
     } else {
-        die();
         echo "File not uploaded\n";
     }
 
