@@ -16,6 +16,7 @@
     <link rel="stylesheet" type="text/css" href="css/main.css">
     <!-- Font-icon css-->
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   </head>
   <body class="app sidebar-mini">
     <!-- Navbar-->
@@ -111,8 +112,9 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-md-6 col-12">
-          <div class="tile">
+        <div class="  col-md-6 col-12">
+          <div class="tile" style="min-height: 500px;" >
+
             <h3 class="tile-title">System Summary</h3>
             <div class="text-lg-right">
             <div class="btn-group btn-group-sm">
@@ -181,15 +183,24 @@
 				}
               ?>
           </div>
-      </div>
+        </div>
             <div class="embed-responsive embed-responsive-16by9">
               <canvas class="embed-responsive-item" id="lineChartDemo"></canvas>
             </div>
           </div>
         </div>
-        <div class="" >
+
+        <div class=" col-md-6 col-12" >
+          <div class="tile" style="min-height: 500px;" >
+
+            <h3 class="tile-title">Performance Report</h3>
+            <div  >
+                <canvas id="performance_report_chart" ></canvas>   
+           </div>
+          </div>
 
         </div>
+        
       </div>
     </main>
     <!-- Essential javascripts for application to work-->
@@ -203,6 +214,8 @@
     <script type="text/javascript" src="js/plugins/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
     <script type="text/javascript">
+      
+
       new Chart(document.getElementById("lineChartDemo"), {
         type: 'line',
         data: {
@@ -223,6 +236,40 @@
                 data:<?php echo json_encode($dataPoints4,JSON_NUMERIC_CHECK); ?>,
                 label: "Verified",
                 borderColor: "#059b19",//green
+                fill: false
+            }
+            ]
+        },
+  options: {
+    title: {
+      display: true
+    }
+  }
+});
+
+new Chart(document.getElementById("performance_report_chart"), {
+        type: 'bar',
+        data: {
+            labels:['Google...','AWS B...','testing...','Docker ...'],
+            datasets: [{ 
+                data:[90,80,70,60],
+                label: "Avg. Attendance",
+                borderColor: "#ff2323",//red
+                backgroundColor: "#ff2323",
+                fill: false
+            }, 
+            { 
+                data: [80,70,60,50],
+                label: "Avg. Pre Assessment",
+                borderColor: "#0606c4",//blue
+                backgroundColor: '#0606c4',
+                fill: false
+            }, 
+            { 
+                data:[70,60,50,40],
+                label: "Avg. Post Assessment",
+                borderColor: "#059b19",//green
+                backgroundColor: '#059b19',
                 fill: false
             }
             ]

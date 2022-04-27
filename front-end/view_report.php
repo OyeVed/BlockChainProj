@@ -147,19 +147,19 @@ include('../back-end/common/connection.php');
                 </div>
             </div>
             <div class="row"  >
-                <div class="col-8"  >
+                <div class="col-8 "  >
                 <div class="tile"  >
             <h6 class="tile-title">Attendance :-</h6>
-            <div style="height: 300px;">
+            <div>
 
                 <canvas id="attendanceChart"></canvas>           
             </div>
           </div>
                 </div>
-                <div class="col-4"  >
-                    <div class="tile"  >
+                <div class="col-4 "  >
+                    <div class="tile" style="height: 94%;" >
                     <h6 class="tile-title">Assessment :-</h6>
-                    <div style="height: 300px;" >
+                    <div  style="height: 88%;"  >
                         <canvas id="assesmentChart" ></canvas>   
                     </div>
                     </div>
@@ -354,7 +354,7 @@ include('../back-end/common/connection.php');
                 backgroundColor: 'rgb(255, 99, 132)',
                 borderColor: 'rgb(255, 99, 132)',
                 data: attendanceData,
-                barThickness: 30
+                // maxBarThickness: 30
             }]
         };
 
@@ -368,7 +368,6 @@ include('../back-end/common/connection.php');
             }
         },
         indexAxis: 'y',
-        maintainAspectRatio: false,
 
     },
   };
