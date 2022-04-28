@@ -202,6 +202,66 @@
         </div>
         
       </div>
+      <?php
+$sql = $conn->prepare("
+SELECT
+course_date_table.course_id,
+course_table.course_name,
+(SELECT COUNT(course_date_table.course_date_id) FROM course_date_table WHERE course_date_table.course_id = course_table.course_id) AS 'no_of_dates',
+(COUNT(attendance_table.attendance_id) / course_table.course_student_count) AS 'attendance_percentage'
+FROM attendance_table
+JOIN course_date_table ON course_date_table.course_date_id = attendance_table.attendance_course_date_id
+JOIN course_table ON course_table.course_id = course_date_table.course_id
+WHERE attendance_table.attendance_status = 'P'
+GROUP BY attendance_table.attendance_course_date_id
+");
+
+$sql->execute();
+
+$courses = array();
+
+$attendance_percentage = 0;
+foreach((new RecursiveArrayIterator($sql->fetchAll())) as $ik=>$iv) {
+  if(isset($courses[$iv['course_id']])){
+    $courses[$iv['course_id']]['attendance_percentage'] += $iv['attendance_percentage'];
+  }else{
+    $courses[$iv['course_id']] = array(
+      "course_name" => $iv['course_name'],
+      "no_of_dates" => $iv['no_of_dates'],
+      "attendance_percentage" => $iv['attendance_percentage'],
+    );
+  }
+}
+
+$sql = $conn->prepare("
+SELECT
+course_table.course_id,
+course_table.course_name,
+user_tables.name AS 'trainer',
+AVG(student_table.student_pre_assesment_score) AS 'avg_pre_assessment',
+AVG(student_table.student_post_assesment_score) AS 'avg_post_assessment'
+FROM course_table
+JOIN student_table ON student_table.student_course_id = course_table.course_id
+JOIN course_date_table ON course_date_table.course_id = course_table.course_id
+JOIN attendance_table ON attendance_table.attendance_course_date_id = course_date_table.course_date_id
+LEFT JOIN user_tables ON user_tables.id = course_table.course_trainer_id
+GROUP BY student_table.student_course_id;
+");
+
+$sql->execute();
+foreach((new RecursiveArrayIterator($sql->fetchAll())) as $ik=>$iv) {
+  $courses[$iv['course_id']]["avg_pre_assessment"] = $iv["avg_pre_assessment"];
+  $courses[$iv['course_id']]["avg_post_assessment"] = $iv["avg_post_assessment"];
+  $courses[$iv['course_id']]["trainer"] = $iv["trainer"];
+}
+
+$labels = array();
+$avg_attendance = array();
+$avg_pre_assessment_score = array();
+$avg_post_assessment_score = array();
+
+?>
+
       <div class="tile" >
             <h6 class="tile-title">Courses :-</h6>
             <table class="table table-hover table-bordered" id="sampleTable" >
@@ -215,34 +275,32 @@
                     </tr>
                     </thead>
                     <tbody>
-                            <tr>
-                                <td>Aws</td>
-                                <td>Robert </td>
-                                <td>80%</td>
-                                <td>90%</td>
-                                <td>90%</td>
-                            <tr>
-                            <tr>
-                                <td>Aws</td>
-                                <td>Robert </td>
-                                <td>80%</td>
-                                <td>90%</td>
-                                <td>90%</td>
-                            <tr>
-                            <tr>
-                                <td>Aws</td>
-                                <td>Robert </td>
-                                <td>80%</td>
-                                <td>90%</td>
-                                <td>90%</td>
-                            <tr>
-                            <tr>
-                                <td>Aws</td>
-                                <td>Robert </td>
-                                <td>80%</td>
-                                <td>90%</td>
-                                <td>90%</td>
-                            <tr>
+                      <?php
+                      foreach ($courses as $course) {
+                        array_push($labels, $course['course_name']);
+
+                        array_push($avg_pre_assessment_score, $course['avg_pre_assessment']);
+                        array_push($avg_post_assessment_score, $course['avg_post_assessment']);
+
+                        if(isset($course['no_of_dates'])){
+                          $attendance_percentage = round(
+                            $course['attendance_percentage'] * 100 / $course['no_of_dates']
+                          , 2);
+                        }else{
+                          $attendance_percentage = 0;
+                        }
+                        array_push($avg_attendance, $attendance_percentage);
+                        ?>
+                          <tr>
+                            <td><?php echo $course['course_name']; ?></td>
+                            <td><?php echo $course['trainer']; ?></td>
+                            <td><?php echo $attendance_percentage; ?></td>
+                            <td><?php echo $course['avg_pre_assessment']; ?></td>
+                            <td><?php echo $course['avg_post_assessment']; ?></td>
+                          </tr>
+                        <?php
+                      }
+                      ?>                
                     </tbody>
                 </table>
       </div>
@@ -292,23 +350,23 @@
 });
 
 const dataAssessment = {
-    labels: ['Google Web Development Bootcamp','AWS Bootcamp','testing series','Docker Expert','Google Web Development Bootcamp','AWS Bootcamp','testing series','Docker Expert','Google Web Development Bootcamp','AWS Bootcamp','testing series','Docker Expert'],
+    labels: <?php echo json_encode(array_values($labels)); ?>,
     datasets: [{
       label: 'Avg. Attendance',
       backgroundColor: '#ff2323',
       borderColor: '#ff2323',
-      data: [90,80,70,60,90,80,70,60,90,80,70,60],
+      data: <?php echo json_encode(array_values($avg_attendance)); ?>,
     },{
       label: 'Avg. Pre Assessment',
       backgroundColor: '#0606c4',
       borderColor: '#0606c4',
-      data:  [80,70,60,50,90,80,70,60,90,80,70,60],
+      data: <?php echo json_encode(array_values($avg_pre_assessment_score)); ?>,
 
     },{
-      label: 'Avg. Pre Assessment',
+      label: 'Avg. Post Assessment',
       backgroundColor: '#059b19',
       borderColor: '#059b19',
-      data:[70,60,50,40,90,80,70,60,90,80,70,60],
+      data: <?php echo json_encode(array_values($avg_post_assessment_score)); ?>,
     }]
   };
   const configAssessment = {
