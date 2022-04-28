@@ -223,6 +223,7 @@
           <button class="btn btn-outline-success" data-toggle="modal" data-target="#post_assesment_course_modal"
             onclick='postAssessment(<?php echo $course_id; ?>, "<?php echo $course[1]; ?>")'>Post-Assessment</button>
           <a href="view_report.php?courseid=<?php echo $course_id; ?>" class="btn btn-outline-success" >View Reports</a>
+          <button class="btn btn-outline-success" >Export Certificates</button>
         </span>
       </div>
     </div>
