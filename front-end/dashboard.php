@@ -250,6 +250,7 @@ GROUP BY student_table.student_course_id;
 
 $sql->execute();
 foreach((new RecursiveArrayIterator($sql->fetchAll())) as $ik=>$iv) {
+  $courses[$iv['course_id']]["course_name"] = $iv["course_name"];
   $courses[$iv['course_id']]["avg_pre_assessment"] = $iv["avg_pre_assessment"];
   $courses[$iv['course_id']]["avg_post_assessment"] = $iv["avg_post_assessment"];
   $courses[$iv['course_id']]["trainer"] = $iv["trainer"];
@@ -276,6 +277,7 @@ $avg_post_assessment_score = array();
                     </thead>
                     <tbody>
                       <?php
+
                       foreach ($courses as $course) {
                         array_push($labels, $course['course_name']);
 
