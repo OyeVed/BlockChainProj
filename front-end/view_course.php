@@ -232,10 +232,14 @@
 
             $export_csv_labels = [
               'Batch Code',
+              'Staff Name',
+              'Staff Employee Number',
               'Training Title',
               'Training Code',
-              'Trainer',
-              'Training Start Date'
+              'Batch Trainer',
+              'Batch Start Date',
+              'Staff Email',
+              'Certificate Name'
             ];
 
             $query = "
@@ -255,14 +259,23 @@
               $course_start_date = $v['course_date'];
             }
             
-            $export_csv_data = [
-              $course[8],
-              $course[1],
-              $course[9],
-              $course[6],
-              $course_start_date
-            ];
-
+            $export_csv_data = array();
+            
+            foreach ($students as $student) {
+              array_push($export_csv_data,
+                [
+                  $course[8],
+                  $student[1],
+                  $student[0],
+                  $course[1],
+                  $course[9],
+                  $course[6],
+                  $course_start_date,
+                  $student[3],
+                  str_replace(" ", "_", $student[1]).".pdf"
+                ]
+              );
+            }
           ?>
           
           <button class="btn btn-outline-success" onclick='exportToCsv({labels:<?php echo json_encode(array_values($export_csv_labels)); ?>, data:<?php echo json_encode(array_values($export_csv_data)); ?>})' >Export Certificates</button>
