@@ -114,8 +114,8 @@ $(document).ready(function() {
         </div>
         <div class="modal-body">
         <form action="/BlockChainProj/back-end/add_course.php" method="POST" enctype="multipart/form-data">
-        <input type="text" class="form-control" name="batch-code" placeholder="Batch Code"/><br>
-            <input type="text" class="form-control" name="training-code" placeholder="Training Code"/><br>    
+        <input type="text" class="form-control" name="course-batch-code" placeholder="Batch Code"/><br>
+            <input type="text" class="form-control" name="course-training-code" placeholder="Training Code"/><br>    
         <input type="text" class="form-control" name="course-name" placeholder="Course Name"/><br>
             <div class="form-group">
               <select class="form-control" id="exampleSelect1" name="course-trainer">
@@ -171,8 +171,8 @@ $(document).ready(function() {
         <div class="modal-body">
         <form action="/BlockChainProj/back-end/edit_course.php" method="POST" enctype="multipart/form-data">
         <input type="hidden" class="form-control" name="course-id" id="edit_course_course_id" placeholder="Course Id" value="" />    
-        <input type="text" class="form-control" name="batch-code" placeholder="Batch Code"/><br>
-            <input type="text" class="form-control" name="training-code" placeholder="Training Code"/><br>    
+        <input type="text" class="form-control" name="course-batch-code" id="edit_course_course_batch_code" placeholder="Batch Code"/><br>
+            <input type="text" class="form-control" name="course-training-code" id="edit_course_course_training_code" placeholder="Training Code"/><br>    
         <input type="text" class="form-control" name="course-name" id="edit_course_course_name" placeholder="Course Name" value=""/><br>
             <div class="form-group">
               <select class="form-control" id="edit_course_course_trainer" name="course-trainer">
@@ -239,7 +239,9 @@ $(document).ready(function() {
                     course_table.course_student_count AS 'no_of_students',
                     90 AS 'avg_attendance',
                     AVG(student_table.student_pre_assesment_score) AS 'avg_pre_assessment',
-                    AVG(student_table.student_post_assesment_score) AS 'avg_post_assessment'
+                    AVG(student_table.student_post_assesment_score) AS 'avg_post_assessment',
+                    course_table.course_batch_code,
+                    course_table.course_training_code
                     FROM course_table
                     JOIN student_table ON student_table.student_course_id = course_table.course_id
                     JOIN course_date_table ON course_date_table.course_id = course_table.course_id
@@ -293,7 +295,7 @@ $(document).ready(function() {
                       echo "<td style=\"vertical-align: middle; text-align:center; line-height: 100%;\" onclick=\" window.location.href= 'view_course.php?courseid=$v[id]' \" >".$pre_assessment_avg."</td>";
                       echo "<td style=\"vertical-align: middle; text-align:center; line-height: 100%;\" onclick=\" window.location.href= 'view_course.php?courseid=$v[id]' \" >".$post_assessment_avg."</td>";
                       echo "<td style=\"vertical-align: middle; text-align:center; line-height: 100%;\">
-                              <i data-toggle=\"modal\" data-target=\"#edit_course_Modal\" onclick=\"editCourseAndSave([$v[id], '$v[name]', '$v[trainer_id]'])\"  class='fa fa-pencil-square-o btn btn-warning text-light pt-2 pb-2' aria-hidden='true' ></i>
+                              <i data-toggle=\"modal\" data-target=\"#edit_course_Modal\" onclick=\"editCourseAndSave([$v[id], '$v[name]', '$v[trainer_id]', '$v[course_batch_code]', '$v[course_training_code]'])\"  class='fa fa-pencil-square-o btn btn-warning text-light pt-2 pb-2' aria-hidden='true' ></i>
                              <i onclick=\"deleteCourse($v[id], '$v[name]')\" class='fa fa-trash btn btn-danger text-light pt-2 pb-2' aria-hidden='true'></i>
                             </td>";
                       echo "</tr>";
@@ -336,6 +338,8 @@ $(document).ready(function() {
         document.getElementById("edit_course_course_id").value = course[0];
         document.getElementById("edit_course_course_name").value = course[1];
         document.getElementById("edit_course_course_trainer").value = course[2];
+        document.getElementById("edit_course_course_batch_code").value = course[3];
+        document.getElementById("edit_course_course_training_code").value = course[4];
       }
     </script>
     

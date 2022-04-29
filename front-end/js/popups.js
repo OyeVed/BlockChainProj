@@ -33,10 +33,15 @@ function sendReports(course_id) {
 }
 
 function editCourse(course) {
+    console.log(course);
     let course_id = document.getElementById('edit_course_course_id')
     course_id.value = course[0]
     let course_name = document.getElementById('edit_course_course_name')
     course_name.value = course[1]
+    let course_batch_code = document.getElementById('edit_course_course_batch_code')
+    course_batch_code.value = course[3]
+    let course_training_code = document.getElementById('edit_course_course_training_code')
+    course_training_code.value = course[4]
 }
 
 function deleteCourse(course_id, course_name) {

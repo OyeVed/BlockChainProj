@@ -138,7 +138,9 @@
           AVG(student_table.student_pre_assesment_score) AS 'avg_pre_assessment',
           AVG(student_table.student_post_assesment_score) AS 'avg_post_assessment',
           user_tables.name AS 'trainer',
-          (SELECT COUNT(course_date_table.course_date_id) FROM course_date_table WHERE course_date_table.course_id=course_table.course_id) 'duration'
+          (SELECT COUNT(course_date_table.course_date_id) FROM course_date_table WHERE course_date_table.course_id=course_table.course_id) 'duration',
+          course_table.course_batch_code,
+          course_table.course_training_code
           FROM course_table
           JOIN student_table ON student_table.student_course_id = course_table.course_id
           LEFT JOIN user_tables ON user_tables.id = course_table.course_trainer_id
@@ -244,8 +246,8 @@
             <form action="/BlockChainProj/back-end/edit_course.php" id="edit_course_form_id" method="POST" enctype="multipart/form-data">
               <input type="hidden" class="form-control" name="course-id" id="edit_course_course_id"
                 placeholder="Course Id" value="<?php echo $course_id ?>" />
-                <input type="text" class="form-control" name="batch-code" placeholder="Batch Code"/><br>
-            <input type="text" class="form-control" name="training-code" placeholder="Training Code"/><br>    
+                <input type="text" class="form-control" name="course-batch-code" id="edit_course_course_batch_code" placeholder="Batch Code"/><br>
+            <input type="text" class="form-control" name="course-training-code" id="edit_course_course_training_code" placeholder="Training Code"/><br>
               <input type="text" class="form-control" name="course-name" id="edit_course_course_name"
                 placeholder="Course Name" value="" /><br>
               <div class="form-group">
@@ -542,7 +544,7 @@
                 <?php echo $course[1] ?>
               </h1>
               <span style="float: right;">
-                <i onclick='editCourse(<?php echo "[$course[0], \"$course[1]\", $course[2] ]"; ?>)' data-toggle="modal"
+                <i onclick='editCourse(<?php echo "[$course[0], \"$course[1]\", $course[2], \"$course[8]\", \"$course[9]\" ]"; ?>)' data-toggle="modal"
                   data-target="#edit_course_Modal" class="fa fa-pencil-square-o btn btn-warning text-light "
                   aria-hidden="true"></i>
                 <i onclick='deleteCourse(<?php echo $course_id; ?>, "<?php echo $course[1]; ?>")'

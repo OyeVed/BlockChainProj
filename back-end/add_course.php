@@ -11,7 +11,7 @@
 require_once("common/connection.php");
 
 try{
-
+    
     if(!file_exists('uploads/')){
         mkdir('uploads/');
     }
@@ -111,7 +111,10 @@ try{
         $attendance_details_query = rtrim($attendance_details_query, ",");
 
         // insert query to insert the course details.
-        $course_details_query = "INSERT INTO course_table (course_id, course_name, course_trainer_id, course_student_count) VALUES ($course_id, '$course_name', $course_trainer, $no_of_students)";
+        $batch_code = $_POST['course-batch-code'];
+        $training_code = $_POST['course-training-code'];
+
+        $course_details_query = "INSERT INTO course_table (course_id, course_name, course_trainer_id, course_student_count, course_batch_code, course_training_code) VALUES ($course_id, '$course_name', $course_trainer, $no_of_students, '$batch_code', '$training_code')";
         
         // echo $course_details_query;
 

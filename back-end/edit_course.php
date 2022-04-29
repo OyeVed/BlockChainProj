@@ -11,14 +11,17 @@
 require_once("common/connection.php");
 
 try{
+    
     // taking variables form the HTML.
     $course_id = $_POST['course-id'];
     $course_name = $_POST['course-name'];
     $course_trainer = $_POST['course-trainer'];
+    $course_batch_code = $_POST['course-batch-code'];
+    $course_training_code = $_POST['course-training-code'];
     // $course_dates = $_POST['course-dates'];
 
     // insert query
-    $course_details_query = "UPDATE `course_table` SET `course_name` = '$course_name', `course_trainer_id`=$course_trainer WHERE `course_table`.`course_id` = $course_id;";
+    $course_details_query = "UPDATE `course_table` SET `course_name` = '$course_name', `course_trainer_id`=$course_trainer, `course_batch_code`='$course_batch_code', `course_training_code`='$course_training_code' WHERE `course_table`.`course_id` = $course_id;";
 
     $conn->exec($course_details_query);
 

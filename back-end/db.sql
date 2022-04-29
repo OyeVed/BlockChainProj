@@ -7,6 +7,8 @@ CREATE TABLE IF NOT EXISTS course_table
     course_name VARCHAR(255) NOT NULL,
     course_trainer_id INT,
     course_student_count INT NOT NULL,
+    course_batch_code VARCHAR(20) NOT NULL,
+    course_training_code VARCHAR(20) NOT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     created_by INT NOT NULL DEFAULT 0,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
