@@ -55,6 +55,8 @@
 
       }
   </script>
+  <!-- export to excel -->
+  <script src="https://cdn.jsdelivr.net/gh/linways/table-to-excel@v1.0.4/dist/tableToExcel.js"></script>
 </head>
 
 <body class="app sidebar-mini">
@@ -223,7 +225,7 @@
           <button class="btn btn-outline-success" data-toggle="modal" data-target="#post_assesment_course_modal"
             onclick='postAssessment(<?php echo $course_id; ?>, "<?php echo $course[1]; ?>")'>Post-Assessment</button>
           <a href="view_report.php?courseid=<?php echo $course_id; ?>" class="btn btn-outline-success" >View Reports</a>
-          <button class="btn btn-outline-success" >Export Certificates</button>
+          <button class="btn btn-outline-success" onclick="exportToCsv()" >Export Certificates</button>
         </span>
       </div>
     </div>
@@ -705,51 +707,65 @@
     }
   </script>
   <script>
-    function exportData(){
-    /* Get the HTML data using Element by Id */
-    var table = document.getElementById("tblStocks");
+   var Results = [
+["Col1", "Col2", "Col3", "Col4"],
+["Data", 50, 100, 500],
+["Data", -100, 20, 100],
+];
 
-    /* Declaring array variable */
-    var rows =[];
-
-      //iterate through rows of table
-    for(var i=0,row; row = table.rows[i];i++){
-        //rows would be accessed using the "row" variable assigned in the for loop
-        //Get each cell value/column from the row
-        column1 = row.cells[0].innerText;
-        column2 = row.cells[1].innerText;
-        column3 = row.cells[2].innerText;
-        column4 = row.cells[3].innerText;
-        column5 = row.cells[4].innerText;
-
-    /* add a new records in the array */
-        rows.push(
-            [
-                column1,
-                column2,
-                column3,
-                column4,
-                column5
-            ]
-        );
-
-        }
-        csvContent = "data:text/csv;charset=utf-8,";
-         /* add the column delimiter as comma(,) and each row splitted by new line character (\n) */
-        rows.forEach(function(rowArray){
-            row = rowArray.join(",");
-            csvContent += row + "\r\n";
-        });
-
-        /* create a hidden <a> DOM node and set its download attribute */
-        var encodedUri = encodeURI(csvContent);
-        var link = document.createElement("a");
-        link.setAttribute("href", encodedUri);
-        link.setAttribute("download", "Stock_Price_Report.csv");
-        document.body.appendChild(link);
-         /* download the data file named "Stock_Price_Report.csv" */
-        link.click();
+exportToCsv = function() {
+  var CsvString = "";
+  Results.forEach(function(RowItem, RowIndex) {
+    RowItem.forEach(function(ColItem, ColIndex) {
+      CsvString += ColItem + ',';
+    });
+    CsvString += "\r\n";
+  });
+  CsvString = "data:application/csv," + encodeURIComponent(CsvString);
+  var x = document.createElement("A");
+  x.setAttribute("href", CsvString );
+  x.setAttribute("download","somedata.csv");
+  document.body.appendChild(x);
+  x.click();
 }
+// function exportReportToExcel( filename = '') {
+//   // let table = document.getElementById("sampleTable"); // you can use document.getElementById(''tableId'') as well by providing id to the table tag
+//   // TableToExcel.convert(table[0], { // html code may contain multiple tables so here we are refering to 1st table tag
+//   //   name: `export.xlsx`, // fileName you could use any name
+//   //   sheet: {
+//   //     name: 'Sheet 1' // sheetName
+//   //   }
+//   // });
+//   var downloadLink;
+//     var dataType = 'application/vnd.ms-excel';
+//     var tableSelect = document.getElementById('sampleTable');
+//     var tableHTML = tableSelect.outerHTML.replace(/ /g, '%20');
+    
+//     // Specify file name
+//     filename = filename?filename+'.xls':'excel_data.xls';
+    
+//     // Create download link element
+//     downloadLink = document.createElement("a");
+    
+//     document.body.appendChild(downloadLink);
+    
+//     if(navigator.msSaveOrOpenBlob){
+//         var blob = new Blob(['\ufeff', tableHTML], {
+//             type: dataType
+//         });
+//         navigator.msSaveOrOpenBlob( blob, filename);
+//     }else{
+//         // Create a link to the file
+//         downloadLink.href = 'data:' + dataType + ', ' + tableHTML;
+    
+//         // Setting the file name
+//         downloadLink.download = filename;
+        
+//         //triggering the function
+//         downloadLink.click();
+//     }
+// }
+
   </script>
 </body>
 
