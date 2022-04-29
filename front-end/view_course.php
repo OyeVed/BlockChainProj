@@ -227,7 +227,45 @@
           <button class="btn btn-outline-success" data-toggle="modal" data-target="#post_assesment_course_modal"
             onclick='postAssessment(<?php echo $course_id; ?>, "<?php echo $course[1]; ?>")'>Post-Assessment</button>
           <a href="view_report.php?courseid=<?php echo $course_id; ?>" class="btn btn-outline-success" >View Reports</a>
-          <button class="btn btn-outline-success" onclick="exportToCsv()" >Export Certificates</button>
+
+          <?php
+
+            $export_csv_labels = [
+              'Batch Code',
+              'Training Title',
+              'Training Code',
+              'Trainer',
+              'Training Start Date'
+            ];
+
+            $query = "
+            SELECT
+            course_date_table.course_date
+            FROM course_date_table
+            WHERE course_date_table.course_id=$course_id
+            ORDER BY course_date_table.course_date
+            LIMIT 1
+            ";
+
+            $stmt = $conn->prepare($query);
+            $stmt->execute();
+            $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
+
+            foreach((new RecursiveArrayIterator($stmt->fetchAll())) as $k=>$v) {
+              $course_start_date = $v['course_date'];
+            }
+            
+            $export_csv_data = [
+              $course[8],
+              $course[1],
+              $course[9],
+              $course[6],
+              $course_start_date
+            ];
+
+          ?>
+          
+          <button class="btn btn-outline-success" onclick='exportToCsv({labels:<?php echo json_encode(array_values($export_csv_labels)); ?>, data:<?php echo json_encode(array_values($export_csv_data)); ?>})' >Export Certificates</button>
         </span>
       </div>
     </div>
@@ -715,7 +753,8 @@
 ["Data", -100, 20, 100],
 ];
 
-exportToCsv = function() {
+exportToCsv = function(course) {
+  console.log(course);
   var CsvString = "";
   Results.forEach(function(RowItem, RowIndex) {
     RowItem.forEach(function(ColItem, ColIndex) {
