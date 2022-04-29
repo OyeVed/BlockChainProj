@@ -192,8 +192,14 @@
 
         <div class=" col-md-6 col-12" >
           <div class="tile"  style="height: 94%;" >
+            <div class="d-flex justify-content-between" >
+              <h3 class="tile-title">Performance Report</h3>
+              <div>
+                <button  style="border-radius:3px;" ><</button>
+                <button  style="border-radius:3px;" >></button>
+              </div>
+            </div>
 
-            <h3 class="tile-title">Performance Report</h3>
             <div style="height: 88%;"  >
                 <canvas id="performance_report_chart" ></canvas>   
            </div>
