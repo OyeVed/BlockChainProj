@@ -290,13 +290,15 @@ $avg_post_assessment_score = array();
                           $attendance_percentage = 0;
                         }
                         array_push($avg_attendance, $attendance_percentage);
+                        $pre_assessment_avg = round($course['avg_pre_assessment'],2); 
+                        $post_assessment_avg = round($course['avg_post_assessment'],2);
                         ?>
                           <tr>
                             <td><?php echo $course['course_name']; ?></td>
                             <td><?php echo $course['trainer']; ?></td>
                             <td><?php echo $attendance_percentage; ?></td>
-                            <td><?php echo $course['avg_pre_assessment']; ?></td>
-                            <td><?php echo $course['avg_post_assessment']; ?></td>
+                            <td><?php echo $pre_assessment_avg ; ?></td>
+                            <td><?php echo $post_assessment_avg; ?></td>
                           </tr>
                         <?php
                       }
