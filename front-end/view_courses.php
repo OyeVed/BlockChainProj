@@ -114,7 +114,9 @@ $(document).ready(function() {
         </div>
         <div class="modal-body">
         <form action="/BlockChainProj/back-end/add_course.php" method="POST" enctype="multipart/form-data">
-            <input type="text" class="form-control" name="course-name" placeholder="Course Name"/><br>
+        <input type="text" class="form-control" name="batch-code" placeholder="Batch Code"/><br>
+            <input type="text" class="form-control" name="training-code" placeholder="Training Code"/><br>    
+        <input type="text" class="form-control" name="course-name" placeholder="Course Name"/><br>
             <div class="form-group">
               <select class="form-control" id="exampleSelect1" name="course-trainer">
                 <option value="" >Select Trainer Name</option>
@@ -169,6 +171,8 @@ $(document).ready(function() {
         <div class="modal-body">
         <form action="/BlockChainProj/back-end/edit_course.php" method="POST" enctype="multipart/form-data">
         <input type="hidden" class="form-control" name="course-id" id="edit_course_course_id" placeholder="Course Id" value="" />    
+        <input type="text" class="form-control" name="batch-code" placeholder="Batch Code"/><br>
+            <input type="text" class="form-control" name="training-code" placeholder="Training Code"/><br>    
         <input type="text" class="form-control" name="course-name" id="edit_course_course_name" placeholder="Course Name" value=""/><br>
             <div class="form-group">
               <select class="form-control" id="edit_course_course_trainer" name="course-trainer">
