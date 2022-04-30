@@ -762,13 +762,12 @@
     }
   </script>
   <script>
-   var Results = [
-["Col1", "Col2", "Col3", "Col4"],
-["Data", 50, 100, 500],
-["Data", -100, 20, 100],
-];
 
 exportToCsv = function(course) {
+  var Results = [
+course.labels,
+...course.data
+];
   console.log(course);
   var CsvString = "";
   Results.forEach(function(RowItem, RowIndex) {

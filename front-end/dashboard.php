@@ -192,8 +192,14 @@
 
         <div class=" col-md-6 col-12" >
           <div class="tile"  style="height: 94%;" >
+            <div class="d-flex justify-content-between" >
+              <h3 class="tile-title">Performance Report</h3>
+              <div>
+                <button  onclick="handlePerformanceReport('left')" style="border-radius: 7px;"  id="left_report_btn_navigatin" ><i class="fa fa-angle-left" aria-hidden="true"></i></button>&nbsp;&nbsp;
+                <button   onclick="handlePerformanceReport('right')" style="border-radius: 7px;" id="right_report_btn_navigatin"  ><i class="fa fa-angle-right" aria-hidden="true"></i></button>
+              </div>
+            </div>
 
-            <h3 class="tile-title">Performance Report</h3>
             <div style="height: 88%;"  >
                 <canvas id="performance_report_chart" ></canvas>   
            </div>
@@ -353,27 +359,34 @@ $avg_post_assessment_score = array();
   }
 });
 
-const dataAssessment = {
-    labels: <?php echo json_encode(array_values($labels)); ?>,
+let nowReportState = 0
+console.log(nowReportState)
+
+let report_labels = <?php echo json_encode(array_values($labels)); ?>;
+let report_avg_attendance = <?php echo json_encode(array_values($avg_attendance)); ?>;
+let report_avg_pre_assessment_score =  <?php echo json_encode(array_values($avg_pre_assessment_score)); ?>;
+let report_avg_post_assessment_score = <?php echo json_encode(array_values($avg_post_assessment_score)); ?>;
+let dataAssessment = {
+    labels: report_labels.slice(nowReportState,nowReportState+10),
     datasets: [{
       label: 'Avg. Attendance',
       backgroundColor: '#ff2323',
       borderColor: '#ff2323',
-      data: <?php echo json_encode(array_values($avg_attendance)); ?>,
+      data: report_avg_attendance.slice(nowReportState,nowReportState+10),
     },{
       label: 'Avg. Pre Assessment',
       backgroundColor: '#0606c4',
       borderColor: '#0606c4',
-      data: <?php echo json_encode(array_values($avg_pre_assessment_score)); ?>,
+      data: report_avg_pre_assessment_score.slice(nowReportState,nowReportState+10),
 
     },{
       label: 'Avg. Post Assessment',
       backgroundColor: '#059b19',
       borderColor: '#059b19',
-      data: <?php echo json_encode(array_values($avg_post_assessment_score)); ?>,
+      data: report_avg_post_assessment_score.slice(nowReportState,nowReportState+10),
     }]
   };
-  const configAssessment = {
+  let configAssessment = {
     type: 'bar',
     data: dataAssessment,
     options: {
@@ -403,10 +416,72 @@ const dataAssessment = {
       }
     }
   };
-  const assesmentChart = new Chart(
+  let assignmentChart = new Chart(
     document.getElementById('performance_report_chart'),
     configAssessment
   );
+  handlePerformanceReport('none')
+
+    function handlePerformanceReport(stateClick)
+      {
+        console.log(stateClick)
+        let labels = <?php echo json_encode(array_values($labels)); ?>;
+        if(stateClick != 'none')
+        {
+          if(stateClick == 'left')
+          {
+            nowReportState = nowReportState - 10
+          }else if(stateClick === 'right')
+          {
+            nowReportState = nowReportState + 10
+          }
+        }
+        if(labels.length < 11)
+        {
+          document.getElementById('right_report_btn_navigatin').disabled  = true
+          document.getElementById('left_report_btn_navigatin').disabled  = true
+        }else{
+          if(nowReportState == 0)
+          {
+            document.getElementById('left_report_btn_navigatin').disabled  = true
+            document.getElementById('right_report_btn_navigatin').disabled  = false
+          }else if(Math.floor(labels.length / 10) * 10 == nowReportState )
+          {
+            document.getElementById('left_report_btn_navigatin').disabled  = false
+            document.getElementById('right_report_btn_navigatin').disabled  = true
+          }
+          resetChatReport()
+        }
+      }
+      function resetChatReport()
+      {
+          let labelsInside = report_labels.slice(nowReportState,nowReportState+10);
+      let  datasetsInside = [{
+      label: 'Avg. Attendance',
+      backgroundColor: '#ff2323',
+      borderColor: '#ff2323',
+      data: report_avg_attendance.slice(nowReportState,nowReportState+10),
+    },{
+      label: 'Avg. Pre Assessment',
+      backgroundColor: '#0606c4',
+      borderColor: '#0606c4',
+      data: report_avg_pre_assessment_score.slice(nowReportState,nowReportState+10),
+
+    },{
+      label: 'Avg. Post Assessment',
+      backgroundColor: '#059b19',
+      borderColor: '#059b19',
+      data: report_avg_post_assessment_score.slice(nowReportState,nowReportState+10),
+    }]
+      console.log(labelsInside)
+      console.log(datasetsInside)
+      assignmentChart.data.labels = labelsInside;
+       assignmentChart.data.datasets = datasetsInside
+      assignmentChart.update();
+      }
+    </script>
+    <script>
+
     </script>
   </body>
 </html>
