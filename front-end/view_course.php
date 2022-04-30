@@ -56,7 +56,7 @@
       }
   </script>
   <!-- export to excel -->
-  <script src="https://cdn.jsdelivr.net/gh/linways/table-to-excel@v1.0.4/dist/tableToExcel.js"></script>
+  <script lang="javascript" src="js/xlsx.full.min.js"></script>
 </head>
 
 <body class="app sidebar-mini">
@@ -677,6 +677,7 @@
         </div>
       </div>
     </div>
+    <div class="table-b" style="display: none;" ></div>
   </main>
 
   <!-- Essential javascripts for application to work-->
@@ -762,64 +763,21 @@
     }
   </script>
   <script>
-
+  
+  
 exportToCsv = function(course) {
   var Results = [
 course.labels,
 ...course.data
 ];
-  console.log(course);
-  var CsvString = "";
-  Results.forEach(function(RowItem, RowIndex) {
-    RowItem.forEach(function(ColItem, ColIndex) {
-      CsvString += ColItem + ',';
-    });
-    CsvString += "\r\n";
-  });
-  CsvString = "data:application/csv," + encodeURIComponent(CsvString);
-  var x = document.createElement("A");
-  x.setAttribute("href", CsvString );
-  x.setAttribute("download","somedata.csv");
-  document.body.appendChild(x);
-  x.click();
+const worksheet1 = XLSX.utils.aoa_to_sheet(Results);
+document.querySelector('.table-b').innerHTML = XLSX.utils.sheet_to_html(worksheet1, { id: 'table2', header: 'sheet1' });  
+const table = document.querySelector('#table2');
+            const workbook = XLSX.utils.table_to_book(table, { sheet: 'sheet1' });
+            return XLSX.writeFile(workbook, 'certificates.xlsx');
+
+
 }
-// function exportReportToExcel( filename = '') {
-//   // let table = document.getElementById("sampleTable"); // you can use document.getElementById(''tableId'') as well by providing id to the table tag
-//   // TableToExcel.convert(table[0], { // html code may contain multiple tables so here we are refering to 1st table tag
-//   //   name: `export.xlsx`, // fileName you could use any name
-//   //   sheet: {
-//   //     name: 'Sheet 1' // sheetName
-//   //   }
-//   // });
-//   var downloadLink;
-//     var dataType = 'application/vnd.ms-excel';
-//     var tableSelect = document.getElementById('sampleTable');
-//     var tableHTML = tableSelect.outerHTML.replace(/ /g, '%20');
-    
-//     // Specify file name
-//     filename = filename?filename+'.xls':'excel_data.xls';
-    
-//     // Create download link element
-//     downloadLink = document.createElement("a");
-    
-//     document.body.appendChild(downloadLink);
-    
-//     if(navigator.msSaveOrOpenBlob){
-//         var blob = new Blob(['\ufeff', tableHTML], {
-//             type: dataType
-//         });
-//         navigator.msSaveOrOpenBlob( blob, filename);
-//     }else{
-//         // Create a link to the file
-//         downloadLink.href = 'data:' + dataType + ', ' + tableHTML;
-    
-//         // Setting the file name
-//         downloadLink.download = filename;
-        
-//         //triggering the function
-//         downloadLink.click();
-//     }
-// }
 
   </script>
 </body>
