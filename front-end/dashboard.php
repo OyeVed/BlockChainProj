@@ -449,6 +449,9 @@ let dataAssessment = {
           {
             document.getElementById('left_report_btn_navigatin').disabled  = false
             document.getElementById('right_report_btn_navigatin').disabled  = true
+          }else{
+            document.getElementById('right_report_btn_navigatin').disabled  = false
+          document.getElementById('left_report_btn_navigatin').disabled  = false
           }
           resetChatReport()
         }
