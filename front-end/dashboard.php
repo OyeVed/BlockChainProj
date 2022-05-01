@@ -220,6 +220,7 @@ JOIN course_date_table ON course_date_table.course_date_id = attendance_table.at
 JOIN course_table ON course_table.course_id = course_date_table.course_id
 WHERE attendance_table.attendance_status = 'P'
 GROUP BY attendance_table.attendance_course_date_id
+ORDER BY course_table.course_id DESC;
 ");
 
 $sql->execute();
@@ -251,7 +252,8 @@ JOIN student_table ON student_table.student_course_id = course_table.course_id
 JOIN course_date_table ON course_date_table.course_id = course_table.course_id
 JOIN attendance_table ON attendance_table.attendance_course_date_id = course_date_table.course_date_id
 LEFT JOIN user_tables ON user_tables.id = course_table.course_trainer_id
-GROUP BY student_table.student_course_id;
+GROUP BY student_table.student_course_id
+ORDER BY course_table.course_id DESC;
 ");
 
 $sql->execute();
@@ -285,6 +287,7 @@ $avg_post_assessment_score = array();
                       <?php
 
                       foreach ($courses as $course) {
+                        
                         array_push($labels, $course['course_name']);
 
                         array_push($avg_pre_assessment_score, $course['avg_pre_assessment']);
@@ -403,7 +406,7 @@ let dataAssessment = {
       ticks: {
         callback: function(label) {
           if (label.length > 7) {
-            return label.substring(0,7) + "...";
+            return label.substring(0,20) + "...";
           }else{
             return label;
           }              

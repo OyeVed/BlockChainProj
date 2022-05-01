@@ -247,7 +247,8 @@ $(document).ready(function() {
                     JOIN course_date_table ON course_date_table.course_id = course_table.course_id
                     JOIN attendance_table ON attendance_table.attendance_course_date_id = course_date_table.course_date_id
                     LEFT JOIN user_tables ON user_tables.id = course_table.course_trainer_id
-                    GROUP BY student_table.student_course_id;
+                    GROUP BY student_table.student_course_id
+                    ORDER BY course_table.course_id DESC;
                     ");
                     $stmt->execute();
                     $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
@@ -330,7 +331,11 @@ $(document).ready(function() {
     <!-- Data table plugin-->
     <script type="text/javascript" src="js/plugins/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="js/plugins/dataTables.bootstrap.min.js"></script>
-    <script type="text/javascript">$('#sampleTable').DataTable();</script>
+    <script type="text/javascript">
+      $('#sampleTable').DataTable({
+        "aaSorting": []
+      });
+    </script>
 
     <script>
       function editCourseAndSave(course) {
