@@ -9,6 +9,12 @@
 <?php
 // importing connection file and starting session.
 require_once("common/connection.php");
+require 'vendor/autoload.php';
+
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+
+$reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+
 
 try{
     
@@ -69,8 +75,13 @@ try{
         $student_details_query = "INSERT INTO student_table (student_id, student_course_id, student_name, student_emp_no, student_phonenumber, student_email, student_division, student_region, student_position, student_manager_name) VALUES";
         $no_of_students = 0;
         $new_student_id = $student_id;
-        $data = fgetcsv($students_file, 1000, ","); // read out the first line in file to not count the header.
-        while (($data = fgetcsv($students_file, 1000, ",")) !== FALSE){
+
+        $spreadsheet = $reader->load($filepath);
+        $sheetData = $spreadsheet->getActiveSheet()->toArray();
+
+        foreach ($sheetData as $data) {
+        // process element here;
+
             if(
                 $data[0] != ''
                 && $data[1] != ''
@@ -85,7 +96,26 @@ try{
                 $no_of_students++;
                 $new_student_id++;
             }
+            // echo '<pre>';
+            // print_r($t);
         }
+        // $data = fgetcsv($students_file, 1000, ","); // read out the first line in file to not count the header.
+        // while (($data = fgetcsv($students_file, 1000, ",")) !== FALSE){
+        //     if(
+        //         $data[0] != ''
+        //         && $data[1] != ''
+        //         && $data[2] != ''
+        //         && $data[3] != ''
+        //         && $data[4] != ''
+        //         && $data[5] != ''
+        //         && $data[6] != ''
+        //         && $data[7] != ''
+        //     ){
+        //         $student_details_query .= " ('$new_student_id', '$course_id', '$data[0]', '$data[1]', '$data[2]', '$data[3]', '$data[4]', '$data[5]', '$data[6]', '$data[7]'),";
+        //         $no_of_students++;
+        //         $new_student_id++;
+        //     }
+        // }
         fclose($students_file);
         $student_details_query = rtrim($student_details_query, ",");
 

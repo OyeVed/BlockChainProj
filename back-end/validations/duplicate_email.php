@@ -1,14 +1,19 @@
 <?php
 
 $email_list = array();
-
 $entry_no = 0;
-
 $validated = TRUE;
 
-$data = fgetcsv($file_to_be_validated, 1000, ","); // read out the first line in file to not count the header.
-while (($data = fgetcsv($file_to_be_validated, 1000, ",")) !== FALSE){
 
+// foreach ($sheetData as $array) {
+//     foreach($array as $data){
+//         if ( in_array($value, $column_names) ){
+//             $column_indices[$value] = $key;
+//         }
+//     }
+// }
+
+foreach ($sheetData as $data) {
     $entry_no++;
     if($data[$email_column] != ''){
         if(!in_array($data[$email_column], $email_list)){
@@ -34,7 +39,6 @@ while (($data = fgetcsv($file_to_be_validated, 1000, ",")) !== FALSE){
             
         }
     }
-    
 }
 
 

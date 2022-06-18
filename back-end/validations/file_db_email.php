@@ -17,10 +17,16 @@ foreach((new RecursiveArrayIterator($stmt->fetchAll())) as $k=>$v) {
 
 $email_list = array();
 
-$data = fgetcsv($file_to_be_validated, 1000, ","); // read out the first line in file to not count the header.
-while (($data = fgetcsv($file_to_be_validated, 1000, ",")) !== FALSE){
+$spreadsheet = $reader->load($filepath);
+$sheetData = $spreadsheet->getActiveSheet()->toArray();
+
+foreach ($sheetData as $data) {
     array_push($email_list, $data[$email_column]);
 }
+
+// foreach ($sheetData as $data) {
+//     array_push($email_list, $data[$email_column]);
+// }
 
 $emails_in_sheet_but_not_in_db = array_diff($email_list, $email_list_db);
 $emails_in_db_but_not_in_sheet = array_diff($email_list_db, $email_list);

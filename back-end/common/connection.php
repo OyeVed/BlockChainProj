@@ -1,12 +1,9 @@
 <?php
-$servername = "localhost";
-$username = "root";
-$password = "password";
-$dbname = "block_chain";
 
-$servername = 'database-1.cd9ccwppzsm2.ap-south-1.rds.amazonaws.com';
+$servername = 'testdb.cm6ahp8bvbm1.ap-south-1.rds.amazonaws.com:3306';
 $username = 'admin';
 $password = 'admin1234';
+$dbname = "block_chain";
 
 try {
   $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
