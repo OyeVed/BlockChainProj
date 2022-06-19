@@ -62,18 +62,24 @@
     <?php
     date_default_timezone_set("Asia/Kolkata");
     $date = date('Y-m-d');
-    $stmt= $conn->prepare("SELECT COUNT(*) as count FROM certificates");
+    $stmt= $conn->prepare("SELECT COUNT(*) as count2 FROM certificates");
     $stmt->execute();
     $result=$stmt->setFetchMode(PDO::FETCH_ASSOC);
     foreach((new RecursiveArrayIterator($stmt->fetchAll())) as $k=>$v) {
-        $tcertificate = $v["count"];
-	}
+        $tcertificate = $v["count2"];
+	    }
 	$stmt1= $conn->prepare("SELECT COUNT(*) as count1 FROM certificates WHERE SUBSTRING(createdAt, 1, 10) = '$date'");
     $stmt1->execute();
     $result1=$stmt1->setFetchMode(PDO::FETCH_ASSOC);
     foreach((new RecursiveArrayIterator($stmt1->fetchAll())) as $k1=>$v1) {
          $ttoday = $v1["count1"];
 	}
+  $stmt2= $conn->prepare("SELECT COUNT(*) as count2 FROM course_table ");
+  $stmt2->execute();
+  $result2=$stmt2->setFetchMode(PDO::FETCH_ASSOC);
+  foreach((new RecursiveArrayIterator($stmt2->fetchAll())) as $k2=>$v2) {
+       $tcourse = $v2["count2"];
+}
     ?>
     
     <main class="app-content">
@@ -106,7 +112,7 @@
           <div class="widget-small warning coloured-icon"><i class="icon fa fa-book fa-3x"></i>
             <div class="info">
               <h4><a href="view_courses.php">Total Course</a></h4>
-              <p><b><?php echo"$tcertificate"; ?></b></p>
+              <p><b><?php echo"$tcourse"; ?></b></p>
             </div>
           </div>
         </div>
