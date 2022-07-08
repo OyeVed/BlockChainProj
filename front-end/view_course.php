@@ -360,8 +360,8 @@
               <input type="hidden" class="form-control" name="course-id" placeholder="Course Id" value="<?php echo $course_id; ?>" id="pre_assesment_course_id" /><br>
               <p style="text-align:left; font-size:14px; margin-top: -20px;" for="exampleInputFile">Import File</p>
               <input class="form-control-file" style="font-size:14px;" name="feedback-file" id="exampleInputFile"
-                type="file" accept=".csv" aria-describedby="fileHelp"><small class="form-text text-muted"
-                id="fileHelp"><a href="./files/feedback.csv" download>Download Sample</a></small>
+                type="file" accept=".xlsx" aria-describedby="fileHelp"><small class="form-text text-muted"
+                id="fileHelp"><a href="./files/feedback.xlsx" download>Download Sample</a></small>
               <div class="modal-footer " style="justify-content: center;margin-top:20px;">
                 <button class="btn btn-success " type="submit">Upload</button>
               </div>
@@ -391,8 +391,8 @@
                 id="pre_assesment_course_id" /><br>
               <p style="text-align:left; font-size:14px; margin-top: -20px;" for="exampleInputFile">Import File</p>
               <input class="form-control-file" style="font-size:14px;" name="pre-assessment-file" id="exampleInputFile"
-                type="file" accept=".csv" aria-describedby="fileHelp"><small class="form-text text-muted"
-                id="fileHelp"><a href="./files/pre assessment report.csv" download>Download Sample</a></small>
+                type="file" accept=".xlsx" aria-describedby="fileHelp"><small class="form-text text-muted"
+                id="fileHelp"><a href="./files/pre assessment report.xlsx" download>Download Sample</a></small>
               <div class="modal-footer " style="justify-content: center;margin-top:20px;">
                 <button class="btn btn-success " type="submit">Upload</button>
               </div>
@@ -422,8 +422,8 @@
                 id="post_assesment_course_id" /><br>
               <p style="text-align:left; font-size:14px; margin-top: -20px;" for="exampleInputFile">Import File</p>
               <input class="form-control-file" style="font-size:14px;" name="post-assessment-file" id="exampleInputFile"
-                type="file" accept=".csv" aria-describedby="fileHelp"><small class="form-text text-muted"
-                id="fileHelp"><a href="./files/post assessment report.csv" download>Download Sample</a></small>
+                type="file" accept=".xlsx" aria-describedby="fileHelp"><small class="form-text text-muted"
+                id="fileHelp"><a href="./files/post assessment report.xlsx" download>Download Sample</a></small>
               <div class="modal-footer " style="justify-content: center;margin-top:20px;">
                 <button class="btn btn-success " type="submit">Upload</button>
               </div>
