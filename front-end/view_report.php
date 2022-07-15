@@ -219,8 +219,8 @@ include('../back-end/common/connection.php');
               $js_array = json_encode($array);
               return $js_array;
             }
-
-            foreach ((new RecursiveArrayIterator($stmt->fetchAll())) as $k => $v) {
+            $all_fetched_feedback = new RecursiveArrayIterator($stmt->fetchAll());
+            foreach ($all_fetched_feedback as $k => $v) {
 
               $feedback_responses = explode(",", $v['feedback_responses']);
 
@@ -229,98 +229,120 @@ include('../back-end/common/connection.php');
 
               $feedback_labels = php_to_js_array($feedback_labels_array);
               $feedback_values = php_to_js_array($feedback_values_array);
-
+              if (sizeof($all_fetched_feedback) - 1 == $k) {
+                echo ("<script>console.log(`" . json_encode($v) . "`);</script>");
+                $integerIDs = array_map('intval', explode(',', $v['feedback_responses']));
+                $floatValNow = array_sum($integerIDs) /  (float) sizeof($integerIDs);
+                echo ("<script>console.log(`" . json_encode($integerIDs) . "`);</script>");
+                echo ("<script>console.log(`" . $floatValNow . "`);</script>");
             ?>
-              <div class="col-6 mb-4">
-                <div class="d-flex justify-content-between" style="min-height: 200px;">
-                  <div style="flex-basis: 55%;">
-                    <p><b><?php echo $v['feedback_question'] ?></b></p>
-                    <table style="width: 200px;">
-
-                      <?php
-                      for ($i = 0; $i < sizeof($feedback_labels_array); $i++) {
-                      ?>
-                        <tr>
-                          <td><?php echo $feedback_labels_array[$i]; ?></td>
-                          <td>: </td>
-                          <td><?php echo $feedback_values_array[$i]; ?></td>
-                        </tr>
-                      <?php
-                      }
-                      ?>
-
-                    </table>
-                  </div>
-                  <div style="flex-basis: 40%;height:120px;">
-                    <canvas id="<?php echo $v['feedback_id']; ?>"></canvas>
+                <div class="col-12 mb-4">
+                  <p class="mb-4"><b><?php echo $v['feedback_question'] ?></b></p>
+                  <div class="row mb-5">
+                    <div class="col-6 d-flex justify-content-center align-items-center flex-column">
+                      <h4><?php echo sizeof($integerIDs) ?></h4>
+                      <p>Responses</p>
+                    </div>
+                    <div class="col-6 d-flex justify-content-center align-items-center flex-column">
+                      <p style="color: orange;font-size:30px;">
+                        <?php
+                        for ($i = 1; $i < 11; $i++) {
+                          if ($i <= $floatValNow) {
+                        ?>
+                            <span class="fa fa-star"></span>
+                          <?php
+                          } else {
+                          ?>
+                            <span class="fa fa-star-o"></span>
+                        <?php
+                          }
+                        }
+                        ?>
+                      </p>
+                      <span style="font-size: 15px;"><?php echo $floatValNow ?> Average Rating</span>
+                    </div>
                   </div>
                 </div>
-              </div>
+              <?php
+              } elseif (sizeof($all_fetched_feedback) - 2 == $k) {
+                // echo ("<script>console.log(`" . json_encode($v) . "`);</script>");
+                $arr_response_str = preg_split("/\,/", $v['feedback_responses']);
+              ?>
+                <div class="col-12 mb-4">
+                  <p class="mb-4"><b><?php echo $v['feedback_question'] ?></b></p>
+                  <div class="row mb-5">
+                    <div class="col-6 d-flex justify-content-center align-items-center flex-column">
+                      <h4><?php echo sizeof($arr_response_str) ?></h4>
+                      <p>Responses</p>
+                    </div>
+                    <div class="col-6 d-flex justify-content-center align-items-center flex-column">
+                      <p style="color:gray;">Latest Response</p>
+                      <p>"<?php echo $arr_response_str[sizeof($arr_response_str) - 1] ?>"</p>
+                    </div>
+                  </div>
+                </div>
+              <?php
+              } else {
+              ?>
+                <div class="col-6 mb-4">
+                  <div class="d-flex justify-content-between" style="min-height: 200px;">
+                    <div style="flex-basis: 55%;">
+                      <p><b><?php echo $v['feedback_question'] ?></b></p>
+                      <table style="width: 200px;">
 
-              <script>
-                new Chart(
-                  document.getElementById('<?php echo $v['feedback_id']; ?>'), {
-                    type: 'pie',
-                    data: {
-                      labels: <?php echo $feedback_labels; ?>,
-                      datasets: [{
-                        label: 'Feedback Chart',
-                        data: <?php echo $feedback_values; ?>,
-                        backgroundColor: [
-                          '#16a5f2',
-                          '#f2bf16',
-                          'green',
-                          '#ab0c0c'
-                        ],
-                        hoverOffset: 4
-                      }]
-                    },
-                    options: {
-                      plugins: {
-                        legend: {
-                          display: false
+                        <?php
+                        for ($i = 0; $i < sizeof($feedback_labels_array); $i++) {
+                        ?>
+                          <tr>
+                            <td><?php echo $feedback_labels_array[$i]; ?></td>
+                            <td>: </td>
+                            <td><?php echo $feedback_values_array[$i]; ?></td>
+                          </tr>
+                        <?php
                         }
+                        ?>
+
+                      </table>
+                    </div>
+                    <div style="flex-basis: 40%;height:120px;">
+                      <canvas id="<?php echo $v['feedback_id']; ?>"></canvas>
+                    </div>
+                  </div>
+                </div>
+
+                <script>
+                  new Chart(
+                    document.getElementById('<?php echo $v['feedback_id']; ?>'), {
+                      type: 'pie',
+                      data: {
+                        labels: <?php echo $feedback_labels; ?>,
+                        datasets: [{
+                          label: 'Feedback Chart',
+                          data: <?php echo $feedback_values; ?>,
+                          backgroundColor: [
+                            '#16a5f2',
+                            '#f2bf16',
+                            'green',
+                            '#ab0c0c'
+                          ],
+                          hoverOffset: 4
+                        }]
                       },
-                      maintainAspectRatio: false,
-                    },
-                  }
-                );
-              </script>
+                      options: {
+                        plugins: {
+                          legend: {
+                            display: false
+                          }
+                        },
+                        maintainAspectRatio: false,
+                      },
+                    }
+                  );
+                </script>
             <?php
+              }
             }
             ?>
-          </div>
-          <p class="mb-4"><b>Happiness Meter: How was your experience?</b></p>
-          <div class="row mb-5">
-            <div class="col-6 d-flex justify-content-center align-items-center flex-column">
-              <h4>14</h4>
-              <p>Responses</p>
-            </div>
-            <div class="col-6 d-flex justify-content-center align-items-center flex-column">
-              <p style="color: orange;font-size:30px;"><span class="fa fa-star"></span>
-                <span class="fa fa-star "></span>
-                <span class="fa fa-star "></span>
-                <span class="fa fa-star"></span>
-                <span class="fa fa-star "></span>
-                <span class="fa fa-star "></span>
-                <span class="fa fa-star"></span>
-                <span class="fa fa-star "></span>
-                <span class="fa fa-star "></span>
-                <span class="fa fa-star-half-o" ></span>
-              </p>
-              <span style="font-size: 15px;">9.5 Average Rating</span>
-            </div>
-          </div>
-          <p class="mb-4"><b>Any other comments to Appreciate or help us Improve the training/workshop:</b></p>
-          <div class="row mb-5">
-            <div class="col-6 d-flex justify-content-center align-items-center flex-column">
-              <h4>14</h4>
-              <p>Responses</p>
-            </div>
-            <div class="col-6 d-flex justify-content-center align-items-center flex-column">
-              <p style="color:gray;">Latest Response</p>
-              <p>"Lorem Ipsum is simply dummy text of the printing and typesetting industry."</p>
-            </div>
           </div>
           <div>
           </div>
