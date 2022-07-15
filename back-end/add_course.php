@@ -78,24 +78,24 @@ try{
 
         $spreadsheet = $reader->load($filepath);
         $sheetData = $spreadsheet->getActiveSheet()->toArray();
+        unset($sheetData[0]);
 
         foreach ($sheetData as $data) {
         // process element here;
-
-            if(
-                $data[0] != ''
-                && $data[1] != ''
-                && $data[2] != ''
-                && $data[3] != ''
-                && $data[4] != ''
-                && $data[5] != ''
-                && $data[6] != ''
-                && $data[7] != ''
-            ){
-                $student_details_query .= " ('$new_student_id', '$course_id', '$data[0]', '$data[1]', '$data[2]', '$data[3]', '$data[4]', '$data[5]', '$data[6]', '$data[7]'),";
-                $no_of_students++;
-                $new_student_id++;
-            }
+                if(
+                    $data[0] != ''
+                    && $data[1] != ''
+                    && $data[2] != ''
+                    && $data[3] != ''
+                    && $data[4] != ''
+                    && $data[5] != ''
+                    && $data[6] != ''
+                    && $data[7] != ''
+                ){
+                    $student_details_query .= " ('$new_student_id', '$course_id', '$data[0]', '$data[1]', '$data[2]', '$data[3]', '$data[4]', '$data[5]', '$data[6]', '$data[7]'),";
+                    $no_of_students++;
+                    $new_student_id++;
+                }
             // echo '<pre>';
             // print_r($t);
         }
