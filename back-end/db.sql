@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS student_table
     student_id INT PRIMARY KEY AUTO_INCREMENT,
     student_course_id INT NOT NULL,
     student_name VARCHAR(255) NOT NULL,
-    student_emp_no INT NOT NULL,
+    student_emp_no VARCHAR(255) NOT NULL,
     student_phonenumber INT NOT NULL,
     student_email VARCHAR(255) NOT NULL,
     student_final_attendance CHAR(1) DEFAULT '-' NOT NULL,

@@ -91,8 +91,9 @@ try{
                     && $data[5] != ''
                     && $data[6] != ''
                     && $data[7] != ''
+                    && $data[8] != ''
                 ){
-                    $student_details_query .= " ('$new_student_id', '$course_id', '$data[0]', '$data[1]', '$data[2]', '$data[3]', '$data[4]', '$data[5]', '$data[6]', '$data[7]'),";
+                    $student_details_query .= " ('$new_student_id', '$course_id', '$data[1]', '$data[2]', '$data[6]', '$data[7]', '$data[3]', '$data[4]', '$data[5]', '$data[8]'),";
                     $no_of_students++;
                     $new_student_id++;
                 }
