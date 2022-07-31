@@ -146,7 +146,7 @@ $(document).ready(function() {
             </div>
             <div class="form-group mt-3">
                     <label for="exampleInputFile">Students</label>
-                    <input class="form-control-file" name="students-file" id="exampleInputFile" type="file"  accept=".xlsx" aria-describedby="fileHelp"><small class="form-text text-muted" id="fileHelp">Import student list using .csv file. <a href="./files/students.xlsx" download>Download Sample</a></small>
+                    <input class="form-control-file" name="students-file" id="exampleInputFile" type="file"  accept=".xlsx" aria-describedby="fileHelp"><small class="form-text text-muted" id="fileHelp">Import student list using .csv file. <a href="./files/students_new.xlsx" download>Download Sample</a></small>
                   </div>
            <div class="modal-footer " style="justify-content: center;" >
           <button class="btn btn-success " type="submit">Save</button>
